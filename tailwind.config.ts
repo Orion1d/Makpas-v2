@@ -25,11 +25,11 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#1a365d",
+          DEFAULT: "#1a2b6d", // Makpas navy blue
           foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "#4a5568",
+          DEFAULT: "#e31837", // Makpas red
           foreground: "#ffffff",
         },
         destructive: {
