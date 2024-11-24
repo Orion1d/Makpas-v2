@@ -1,10 +1,29 @@
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+
 const Contact = () => {
+  const { data: logo } = useQuery({
+    queryKey: ['logo'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('icons')
+        .select('photo_url')
+        .eq('name', 'logo1')
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+  });
+
   return (
     <div className="min-h-screen pt-20 px-4">
       <div className="container mx-auto max-w-5xl">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-4xl font-bold text-primary">Contact Us</h1>
-          <img src="/lovable-uploads/4d4003d7-bea1-4405-a96d-72ce538d4e83.png" alt="Makpas Logo" className="h-12" />
+          {logo?.photo_url && (
+            <img src={logo.photo_url} alt="Makpas Logo" className="h-10" />
+          )}
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">

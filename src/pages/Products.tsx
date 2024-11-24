@@ -62,11 +62,7 @@ const Products = () => {
       <div className="container mx-auto">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-4xl font-bold text-primary">Our Products</h1>
-          <img 
-            src="/lovable-uploads/2401d1ed-a520-43c6-b7cd-99b558306b25.png" 
-            alt="Makpas Logo" 
-            className="h-12"
-          />
+          {/* Removed logo image */}
         </div>
 
         <div className="relative mb-8">
@@ -81,12 +77,12 @@ const Products = () => {
         </div>
         
         <Tabs defaultValue={productGroups[0]} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
+          <TabsList className="inline-flex p-1 bg-gray-100 rounded-xl mb-8 overflow-x-auto max-w-full">
             {productGroups.map((group) => (
               <TabsTrigger 
                 key={group} 
                 value={group} 
-                className="capitalize bg-gray-100 hover:bg-gray-200 px-6 py-2 rounded-lg font-medium transition-colors"
+                className="capitalize px-6 py-2.5 rounded-lg font-medium transition-colors data-[state=active]:bg-white data-[state=active]:shadow-sm hover:bg-gray-50"
               >
                 {group}
               </TabsTrigger>
@@ -94,7 +90,7 @@ const Products = () => {
           </TabsList>
           
           {productGroups.map((group) => (
-            <TabsContent key={group} value={group}>
+            <TabsContent key={group} value={group} className="space-y-8">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {groupedProducts[group].map((product: any) => (
                   <Card key={product.id}>

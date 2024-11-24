@@ -27,24 +27,6 @@ export type Database = {
         }
         Relationships: []
       }
-      Icons: {
-        Row: {
-          id: number
-          Name: string
-          Photo_Url: string | null
-        }
-        Insert: {
-          id?: number
-          Name: string
-          Photo_Url?: string | null
-        }
-        Update: {
-          id?: number
-          Name?: string
-          Photo_Url?: string | null
-        }
-        Relationships: []
-      }
       products: {
         Row: {
           created_at: string | null
