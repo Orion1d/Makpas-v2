@@ -9,6 +9,24 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      icons: {
+        Row: {
+          id: number
+          name: string
+          photo_url: string | null
+        }
+        Insert: {
+          id?: never
+          name: string
+          photo_url?: string | null
+        }
+        Update: {
+          id?: never
+          name?: string
+          photo_url?: string | null
+        }
+        Relationships: []
+      }
       Icons: {
         Row: {
           id: number
@@ -34,6 +52,7 @@ export type Database = {
           id: number
           name: string
           photo_url: string | null
+          product_group: string | null
           Product_Group: string | null
           updated_at: string | null
         }
@@ -43,6 +62,7 @@ export type Database = {
           id?: never
           name: string
           photo_url?: string | null
+          product_group?: string | null
           Product_Group?: string | null
           updated_at?: string | null
         }
@@ -52,6 +72,7 @@ export type Database = {
           id?: never
           name?: string
           photo_url?: string | null
+          product_group?: string | null
           Product_Group?: string | null
           updated_at?: string | null
         }

@@ -3,96 +3,59 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Products = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const products = {
-    measuring: [
-      {
-        name: "Diameter Measurement Ruler (10-115 mm)",
-        description: "Used in Cable and Coil Measuring Operations. Diameter Measurement Range: 10-115 mm",
-      },
-      {
-        name: "Diameter Measurement Ruler (5-35 mm)",
-        description: "Used in Cable and Coil Measuring Operations. Diameter Measurement Range: 5-35 mm",
-      },
-      {
-        name: "Ceramic Welding Rings",
-        description: "Production is Made in Specified Sizes. Inner Diameter Range: 0.50 - 47.7 mm",
-      },
-    ],
-    safetyKnives: [
-      {
-        name: "PHC RSC-432",
-        description: "Recyclable, Retractable and Replaceable Safety Blade. NSF Certified and Ideal for Food Service and Manufacturing Facilities.",
-      },
-      {
-        name: "Mascaret 103.1.152",
-        description: "Safety blade; Provides Superior Safety with Recoiling Spring System",
-      },
-      {
-        name: "Hundal H-818-P",
-        description: "Ideal Choice for Cutting Stretch Film, Plastic Bags, Plastic Straps, Twine and More. It Has a Self-Activating Safety Cap. The Blade Closes Automatically at the End of Each Cut",
-      },
-      {
-        name: "Hundal H-814-A",
-        description: "Short Cuff Argon Welding Glove, Made of Treated Goat Leather",
-      },
-      {
-        name: "Hundal H-820-DYP",
-        description: "Long Cuff Argon Welding Glove, Made of Cowhide. Non-Stick Surface for Welding Sparks",
-      },
-      {
-        name: "Hundal H-170418C",
-        description: "Leather Assembly Glove Reinforced Palm, Index Finger and Thumb CE EN388 4142X",
-      },
-      {
-        name: "Hundal H-828-B",
-        description: "Long Cuff Welding Glove, Non-Stick Surface for Welding Sparks Made of Cowhide EN388:2016 (3233X) EN407:2004 (413X4X) EN12477:2001+A1:2005",
-      },
-    ],
-    workGloves: [
-      {
-        name: "Hundal H-818-P",
-        description: "Leather Assembly Glove, Reinforced Palm, Index Finger and Thumb, CE EN388 4142X",
-      },
-      {
-        name: "Hundal H-814-A",
-        description: "Short Cuff Argon Welding Glove, Made of Treated Goat Leather",
-      },
-      {
-        name: "Hundal H-820-DYP",
-        description: "Long Cuff Argon Welding Glove, Made of Cowhide. Non-Stick Surface for Welding Sparks",
-      },
-      {
-        name: "Hundal H-170418C",
-        description: "Leather Assembly Glove Reinforced Palm, Index Finger and Thumb CE EN388 4142X",
-      },
-      {
-        name: "Hundal H-828-B",
-        description: "Leather Assembly Glove Made of Cowhide Hard Cotton Cuff CE EN388:2016 4123X",
-      },
-    ],
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ['products'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*');
+      
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  const groupProducts = (products: any[]) => {
+    return products.reduce((acc: any, product) => {
+      const group = product.Product_Group?.toLowerCase() || 'other';
+      if (!acc[group]) {
+        acc[group] = [];
+      }
+      acc[group].push(product);
+      return acc;
+    }, {});
   };
 
-  const filterProducts = (products: any, query: string) => {
+  const filterProducts = (products: any[], query: string) => {
     if (!query) return products;
     
-    const filtered: any = {};
-    Object.entries(products).forEach(([category, items]: [string, any]) => {
-      const filteredItems = items.filter((item: any) =>
-        item.name.toLowerCase().includes(query.toLowerCase()) ||
-        item.description.toLowerCase().includes(query.toLowerCase())
-      );
-      if (filteredItems.length > 0) {
-        filtered[category] = filteredItems;
-      }
-    });
-    return filtered;
+    return products.filter((product) =>
+      product.name.toLowerCase().includes(query.toLowerCase()) ||
+      product.description?.toLowerCase().includes(query.toLowerCase())
+    );
   };
 
   const filteredProducts = filterProducts(products, searchQuery);
+  const groupedProducts = groupProducts(filteredProducts);
+  const productGroups = Object.keys(groupedProducts);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen pt-20 px-4">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-20 px-4">
@@ -117,18 +80,29 @@ const Products = () => {
           />
         </div>
         
-        <Tabs defaultValue="measuring" className="w-full">
+        <Tabs defaultValue={productGroups[0]} className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="measuring">Measuring Tools</TabsTrigger>
-            <TabsTrigger value="safetyKnives">Safety Knives</TabsTrigger>
-            <TabsTrigger value="workGloves">Work Gloves</TabsTrigger>
+            {productGroups.map((group) => (
+              <TabsTrigger key={group} value={group} className="capitalize">
+                {group}
+              </TabsTrigger>
+            ))}
           </TabsList>
           
-          {Object.entries(filteredProducts).map(([category, items]: [string, any]) => (
-            <TabsContent key={category} value={category}>
+          {productGroups.map((group) => (
+            <TabsContent key={group} value={group}>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {items.map((product: any, index: number) => (
-                  <Card key={index}>
+                {groupedProducts[group].map((product: any) => (
+                  <Card key={product.id}>
+                    {product.photo_url && (
+                      <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
+                        <img
+                          src={product.photo_url}
+                          alt={product.name}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+                    )}
                     <CardHeader>
                       <CardTitle className="text-xl text-primary">{product.name}</CardTitle>
                     </CardHeader>
