@@ -83,7 +83,11 @@ const Products = () => {
         <Tabs defaultValue={productGroups[0]} className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-8">
             {productGroups.map((group) => (
-              <TabsTrigger key={group} value={group} className="capitalize">
+              <TabsTrigger 
+                key={group} 
+                value={group} 
+                className="capitalize bg-gray-100 hover:bg-gray-200 px-6 py-2 rounded-lg font-medium transition-colors"
+              >
                 {group}
               </TabsTrigger>
             ))}
