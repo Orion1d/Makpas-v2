@@ -1,11 +1,14 @@
 import { Mail } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const TopHeader = () => {
+  const { t } = useLanguage();
+  
   return (
     <div className="bg-primary text-white text-sm transition-all duration-300" id="top-header">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-8">
-          <div>ISO 9001 Certificated</div>
+          <div>{t('top_header_iso')}</div>
           <a href="mailto:Makpas@makpas.com" className="flex items-center gap-1 hover:text-secondary transition-colors">
             <Mail size={14} />
             Makpas@makpas.com

@@ -2,9 +2,12 @@ import { Link, useLocation } from "react-router-dom";
 import { Home, Mail, Package } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   const location = useLocation();
+  const { language, setLanguage, t } = useLanguage();
   
   const { data: logo } = useQuery({
     queryKey: ['logo'],
@@ -24,6 +27,10 @@ const Navbar = () => {
     return location.pathname === path ? "text-secondary border-b-2 border-secondary" : "text-primary hover:text-secondary";
   };
 
+  const toggleLanguage = () => {
+    setLanguage(language === 'en' ? 'tr' : 'en');
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm shadow-sm z-50">
       <div className="container mx-auto px-4">
@@ -34,19 +41,27 @@ const Navbar = () => {
             )}
           </Link>
           
-          <div className="flex space-x-8">
+          <div className="flex items-center space-x-8">
             <Link to="/" className={`flex items-center space-x-1 ${isActive("/")}`}>
               <Home size={20} />
-              <span>Home</span>
+              <span>{t('nav_home')}</span>
             </Link>
             <Link to="/products" className={`flex items-center space-x-1 ${isActive("/products")}`}>
               <Package size={20} />
-              <span>Products</span>
+              <span>{t('nav_products')}</span>
             </Link>
             <Link to="/contact" className={`flex items-center space-x-1 ${isActive("/contact")}`}>
               <Mail size={20} />
-              <span>Contact</span>
+              <span>{t('nav_contact')}</span>
             </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleLanguage}
+              className="ml-4"
+            >
+              {language.toUpperCase()}
+            </Button>
           </div>
         </div>
       </div>
