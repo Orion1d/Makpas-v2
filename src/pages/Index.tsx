@@ -1,3 +1,7 @@
+import ProductShowcase from "@/components/ProductShowcase";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+
 const Index = () => {
   return (
     <div className="min-h-screen">
@@ -12,14 +16,23 @@ const Index = () => {
         <div className="absolute inset-0 bg-primary/70"></div>
         <div className="relative z-10 text-center text-white px-4">
           <h1 className="text-5xl font-bold mb-6">Makpas Packing</h1>
-          <p className="text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
-            Since our establishment in 2000, our company has been a trusted provider of packaging and industrial materials, serving clients both within Türkiye and internationally. We are dedicated to staying at the forefront of advancements in the packaging, automotive, and cable industries, enabling us to deliver a comprehensive range of high-quality products to meet our customers' needs. With a strong global presence, we proudly import and export to numerous countries across the Americas, Asia, and Europe, continuing to build lasting partnerships based on reliability, innovation, and excellence.
+          <p className="text-xl mb-4">
+            Since our establishment in 2000, our company has been a trusted provider of packaging and industrial materials,
           </p>
-          <button className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all">
-            Get Started
-          </button>
+          <p className="text-lg mb-8">
+            Serving Türkiye, America, Europe and Asia
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Button asChild className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
+              <Link to="/products">Our Products</Link>
+            </Button>
+            <Button asChild variant="outline" className="bg-transparent border-white text-white hover:bg-white/10">
+              <Link to="/contact">Contact Us</Link>
+            </Button>
+          </div>
         </div>
       </div>
+      <ProductShowcase />
     </div>
   );
 };

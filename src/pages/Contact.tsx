@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { Mail, Phone, MapPin, Fax } from "lucide-react";
 
 const Contact = () => {
   const { data: logo } = useQuery({
@@ -70,6 +71,28 @@ const Contact = () => {
 
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-lg shadow-md">
+              <h2 className="text-xl font-semibold text-primary mb-4">Contact Information</h2>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <MapPin className="text-primary mt-1" />
+                  <p>Organize Sanayi Bölgesi Minareliçavuş Mah. Milas Sokak No:18/1 Nilüfer/Bursa/ TÜRKİYE</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone className="text-primary" />
+                  <p>+90 224 443 68 36</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Fax className="text-primary" />
+                  <p>+90 224 443 68 40</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Mail className="text-primary" />
+                  <a href="mailto:makpas@makpas.com" className="hover:text-primary">makpas@makpas.com</a>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold text-primary mb-4">Our Location</h2>
               <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d273.8202944351312!2d28.944218407279408!3d40.24007674750972!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ca11446a3f46d5%3A0x2b76598dc60f6156!2zTWFrcGHFnw!5e1!3m2!1str!2str!4v1732348820065!5m2!1str!2str"
@@ -81,14 +104,6 @@ const Contact = () => {
                 referrerPolicy="no-referrer-when-downgrade"
                 className="rounded-lg"
               ></iframe>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold text-primary mb-4">Contact Information</h2>
-              <div className="space-y-2">
-                <p><strong>Email:</strong> makpas@makpas.com</p>
-                <p><strong>Website:</strong> www.makpas.com</p>
-              </div>
             </div>
           </div>
         </div>
