@@ -39,24 +39,25 @@ const ProductShowcase = () => {
               delay: 3000,
             }),
           ]}
-          className="w-full max-w-5xl mx-auto"
+          className="w-full max-w-6xl mx-auto"
         >
           <CarouselContent>
             {products.map((product) => (
-              <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3">
-                <Card>
+              <CarouselItem key={product.id} className="md:basis-1/2">
+                <Card className="bg-gray-100 border-gray-200">
                   {product.photo_url && (
-                    <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
+                    <div className="relative h-72 w-full overflow-hidden rounded-t-lg">
                       <img
                         src={product.photo_url}
                         alt={product.name}
-                        className="object-cover w-full h-full"
+                        className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                   )}
                   <CardContent className="p-4">
-                    <h3 className="font-semibold text-lg text-primary mb-2">{product.name}</h3>
-                    <p className="text-gray-600 line-clamp-2">{product.description}</p>
+                    <h3 className="font-semibold text-xl text-primary text-center">
+                      {product.name}
+                    </h3>
                   </CardContent>
                 </Card>
               </CarouselItem>

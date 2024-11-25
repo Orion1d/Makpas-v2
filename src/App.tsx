@@ -10,7 +10,6 @@ import Footer from "./components/Footer";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
 import Contact from "./pages/Contact";
-import { useEffect } from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,28 +21,11 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
-  useEffect(() => {
-    const handleScroll = () => {
-      const header = document.getElementById("top-header");
-      if (header) {
-        if (window.scrollY > 0) {
-          header.style.height = "0px";
-          header.style.overflow = "hidden";
-        } else {
-          header.style.height = "32px";
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <TooltipProvider>
-          <div className="min-h-screen flex flex-col">
+          <div className="min-h-screen flex flex-col bg-gray-50">
             <Toaster />
             <Sonner />
             <BrowserRouter>

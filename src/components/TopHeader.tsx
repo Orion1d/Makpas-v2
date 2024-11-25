@@ -5,11 +5,17 @@ const TopHeader = () => {
   const { t } = useLanguage();
   
   return (
-    <div className="bg-primary text-white text-sm transition-all duration-300" id="top-header">
+    <div 
+      className="bg-primary text-white text-sm transition-all duration-300 sticky top-0 z-50 shadow-md" 
+      id="top-header"
+    >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-8">
-          <div>{t('top_header_iso')}</div>
-          <a href="mailto:Makpas@makpas.com" className="flex items-center gap-1 hover:text-secondary transition-colors">
+          <div className="text-xs md:text-sm">{t('top_header_iso')}</div>
+          <a 
+            href="mailto:Makpas@makpas.com" 
+            className="flex items-center gap-1 hover:text-secondary transition-colors text-xs md:text-sm"
+          >
             <Mail size={14} />
             Makpas@makpas.com
           </a>
