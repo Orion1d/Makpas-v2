@@ -1,3 +1,7 @@
+import { IconsTable } from './icons';
+import { ProductsTable } from './products';
+import { TranslationsTable } from './translations';
+
 export type Json =
   | string
   | number
