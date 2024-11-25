@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Mail, Phone, MapPin, Fax } from "lucide-react";
+import { Mail, Phone, MapPin, Printer } from "lucide-react";
 
 const Contact = () => {
   const { data: logo } = useQuery({
@@ -82,7 +82,7 @@ const Contact = () => {
                   <p>+90 224 443 68 36</p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Fax className="text-primary" />
+                  <Printer className="text-primary" />
                   <p>+90 224 443 68 40</p>
                 </div>
                 <div className="flex items-center gap-3">
