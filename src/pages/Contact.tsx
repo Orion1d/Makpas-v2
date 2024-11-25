@@ -1,11 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Mail, Phone, MapPin, Printer } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 const Contact = () => {
-  const { t } = useLanguage();
-  
   const { data: logo } = useQuery({
     queryKey: ['logo'],
     queryFn: async () => {
@@ -24,7 +21,7 @@ const Contact = () => {
     <div className="min-h-screen pt-20 px-4">
       <div className="container mx-auto max-w-5xl">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-4xl font-bold text-primary">{t('nav_contact')}</h1>
+          <h1 className="text-4xl font-bold text-primary">Contact Us</h1>
           {logo?.photo_url && (
             <img src={logo.photo_url} alt="Makpas Logo" className="h-10" />
           )}
@@ -35,7 +32,7 @@ const Contact = () => {
             <form className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('form_name')}
+                  Name
                 </label>
                 <input
                   type="text"
@@ -45,7 +42,7 @@ const Contact = () => {
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('form_email')}
+                  Email
                 </label>
                 <input
                   type="email"
@@ -55,7 +52,7 @@ const Contact = () => {
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('form_message')}
+                  Message
                 </label>
                 <textarea
                   id="message"
@@ -67,14 +64,14 @@ const Contact = () => {
                 type="submit"
                 className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition-all"
               >
-                {t('form_send')}
+                Send Message
               </button>
             </form>
           </div>
 
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold text-primary mb-4">{t('contact_info')}</h2>
+              <h2 className="text-xl font-semibold text-primary mb-4">Contact Information</h2>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <MapPin className="text-primary mt-1" />
@@ -96,7 +93,7 @@ const Contact = () => {
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold text-primary mb-4">{t('our_location')}</h2>
+              <h2 className="text-xl font-semibold text-primary mb-4">Our Location</h2>
               <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d273.8202944351312!2d28.944218407279408!3d40.24007674750972!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ca11446a3f46d5%3A0x2b76598dc60f6156!2zTWFrcGHFnw!5e1!3m2!1str!2str!4v1732348820065!5m2!1str!2str"
                 width="100%"

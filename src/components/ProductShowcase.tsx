@@ -9,11 +9,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import Autoplay from "embla-carousel-autoplay";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 const ProductShowcase = () => {
-  const { t } = useLanguage();
-  
   const { data: products = [] } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
@@ -30,7 +27,7 @@ const ProductShowcase = () => {
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-primary text-center mb-8">
-          {t('products_title')}
+          Our Products
         </h2>
         <Carousel
           opts={{
