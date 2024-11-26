@@ -5,9 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ['products'],
@@ -41,6 +43,10 @@ const Products = () => {
     );
   };
 
+  const handleProductClick = (productId: number) => {
+    navigate(`/product/${productId}`);
+  };
+
   const filteredProducts = filterProducts(products, searchQuery);
   const groupedProducts = groupProducts(filteredProducts);
   const productGroups = Object.keys(groupedProducts);
@@ -62,7 +68,6 @@ const Products = () => {
       <div className="container mx-auto">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-4xl font-bold text-primary">Our Products</h1>
-          {/* Removed logo image */}
         </div>
 
         <div className="relative mb-8">
@@ -93,7 +98,11 @@ const Products = () => {
             <TabsContent key={group} value={group} className="space-y-8">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {groupedProducts[group].map((product: any) => (
-                  <Card key={product.id}>
+                  <Card 
+                    key={product.id} 
+                    className="cursor-pointer transition-transform duration-300 hover:scale-105"
+                    onClick={() => handleProductClick(product.id)}
+                  >
                     {product.photo_url && (
                       <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
                         <img
