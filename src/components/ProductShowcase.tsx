@@ -9,9 +9,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import Autoplay from "embla-carousel-autoplay";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ProductShowcase = () => {
+  const navigate = useNavigate();
+
   const { data: products = [] } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
@@ -23,6 +25,10 @@ const ProductShowcase = () => {
       return data || [];
     },
   });
+
+  const handleProductClick = (productId: number) => {
+    navigate(`/product/${productId}`);
+  };
 
   return (
     <section className="py-16 bg-gray-50">
@@ -45,14 +51,17 @@ const ProductShowcase = () => {
           <CarouselContent>
             {products.map((product) => (
               <CarouselItem key={product.id} className="md:basis-1/2">
-                <Link to={`/product/${product.id}`}>
+                <div 
+                  onClick={() => handleProductClick(product.id)}
+                  className="cursor-pointer transition-transform duration-300 hover:scale-105"
+                >
                   <Card className="bg-gray-100 border-gray-200 hover:shadow-lg transition-shadow">
                     {product.photo_url && (
                       <div className="relative h-72 w-full overflow-hidden rounded-t-lg">
                         <img
                           src={product.photo_url}
                           alt={product.name}
-                          className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
+                          className="object-cover w-full h-full"
                         />
                       </div>
                     )}
@@ -62,7 +71,7 @@ const ProductShowcase = () => {
                       </h3>
                     </CardContent>
                   </Card>
-                </Link>
+                </div>
               </CarouselItem>
             ))}
           </CarouselContent>
