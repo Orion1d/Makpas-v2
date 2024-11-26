@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import Autoplay from "embla-carousel-autoplay";
+import { Link } from "react-router-dom";
 
 const ProductShowcase = () => {
   const { data: products = [] } = useQuery({
@@ -44,22 +45,24 @@ const ProductShowcase = () => {
           <CarouselContent>
             {products.map((product) => (
               <CarouselItem key={product.id} className="md:basis-1/2">
-                <Card className="bg-gray-100 border-gray-200">
-                  {product.photo_url && (
-                    <div className="relative h-72 w-full overflow-hidden rounded-t-lg">
-                      <img
-                        src={product.photo_url}
-                        alt={product.name}
-                        className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  )}
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-xl text-primary text-center">
-                      {product.name}
-                    </h3>
-                  </CardContent>
-                </Card>
+                <Link to={`/product/${product.id}`}>
+                  <Card className="bg-gray-100 border-gray-200 hover:shadow-lg transition-shadow">
+                    {product.photo_url && (
+                      <div className="relative h-72 w-full overflow-hidden rounded-t-lg">
+                        <img
+                          src={product.photo_url}
+                          alt={product.name}
+                          className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    )}
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold text-xl text-primary text-center">
+                        {product.name}
+                      </h3>
+                    </CardContent>
+                  </Card>
+                </Link>
               </CarouselItem>
             ))}
           </CarouselContent>
