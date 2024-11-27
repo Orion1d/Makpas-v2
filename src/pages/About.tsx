@@ -21,17 +21,21 @@ const About = () => {
       if (language === 'en') {
         const { data, error } = await supabase
           .from('about_en')
-          .select('*');
+          .select('*')
+          .eq('id', 2)
+          .single();
         
         if (error) throw error;
-        return (data?.[0] || { about_text_en: '', id: 0 }) as AboutTextEN;
+        return data as AboutTextEN;
       } else {
         const { data, error } = await supabase
           .from('about_tr')
-          .select('*');
+          .select('*')
+          .eq('id', 2)
+          .single();
         
         if (error) throw error;
-        return (data?.[0] || { about_text_tr: '', id: 0 }) as AboutTextTR;
+        return data as AboutTextTR;
       }
     },
   });
