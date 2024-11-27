@@ -9,6 +9,36 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      about_en: {
+        Row: {
+          about_text_en: string | null
+          id: number
+        }
+        Insert: {
+          about_text_en?: string | null
+          id?: number
+        }
+        Update: {
+          about_text_en?: string | null
+          id?: number
+        }
+        Relationships: []
+      }
+      about_tr: {
+        Row: {
+          about_text_tr: string | null
+          id: number
+        }
+        Insert: {
+          about_text_tr?: string | null
+          id?: number
+        }
+        Update: {
+          about_text_tr?: string | null
+          id?: number
+        }
+        Relationships: []
+      }
       icons: {
         Row: {
           id: number
