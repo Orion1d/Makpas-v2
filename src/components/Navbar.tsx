@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Mail, Package } from "lucide-react";
+import { Home, Mail, Package, Info } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -45,6 +45,10 @@ const Navbar = () => {
             <Link to="/" className={`flex items-center space-x-1 ${isActive("/")}`}>
               <Home size={20} />
               <span>{t('nav_home')}</span>
+            </Link>
+            <Link to="/about" className={`flex items-center space-x-1 ${isActive("/about")}`}>
+              <Info size={20} />
+              <span>{t('nav_about')}</span>
             </Link>
             <Link to="/products" className={`flex items-center space-x-1 ${isActive("/products")}`}>
               <Package size={20} />
