@@ -21,19 +21,17 @@ const About = () => {
       if (language === 'en') {
         const { data, error } = await supabase
           .from('about_en')
-          .select('*')
-          .single();
+          .select('*');
         
         if (error) throw error;
-        return data as AboutTextEN;
+        return (data?.[0] || { about_text_en: '', id: 0 }) as AboutTextEN;
       } else {
         const { data, error } = await supabase
           .from('about_tr')
-          .select('*')
-          .single();
+          .select('*');
         
         if (error) throw error;
-        return data as AboutTextTR;
+        return (data?.[0] || { about_text_tr: '', id: 0 }) as AboutTextTR;
       }
     },
   });
