@@ -54,9 +54,11 @@ const About = () => {
 
   const getAboutText = () => {
     if (!aboutText) return '';
-    return language === 'en' 
-      ? (aboutText as AboutTextEN).about_text_en 
-      : (aboutText as AboutTextTR).about_text_tr;
+    if (language === 'en') {
+      return (aboutText as AboutTextEN).about_text_en;
+    } else {
+      return (aboutText as AboutTextTR).about_text_tr;
+    }
   };
 
   return (
@@ -64,9 +66,9 @@ const About = () => {
       <div className="grid md:grid-cols-2 gap-8 mb-12">
         <div className="space-y-4">
           <h1 className="text-3xl font-bold text-primary mb-6">About Us</h1>
-          <p className="text-gray-700 leading-relaxed">
+          <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">
             {getAboutText()}
-          </p>
+          </div>
         </div>
         {companyBuilding?.photo_url && (
           <div className="relative h-[400px]">
@@ -82,7 +84,7 @@ const About = () => {
       <div className="mt-16">
         <h2 className="text-2xl font-bold text-primary mb-8">Certificates</h2>
         {isoCertificate?.photo_url && (
-          <div className="max-w-lg mx-auto">
+          <div className="max-w-md mx-auto">
             <img
               src={isoCertificate.photo_url}
               alt="ISO Certificate"
