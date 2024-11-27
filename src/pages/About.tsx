@@ -2,19 +2,39 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+interface AboutTextEN {
+  about_text_en: string;
+  id: number;
+}
+
+interface AboutTextTR {
+  about_text_tr: string;
+  id: number;
+}
+
 const About = () => {
   const { language } = useLanguage();
   
   const { data: aboutText } = useQuery({
     queryKey: ['about', language],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from(language === 'en' ? 'about_en' : 'about_tr')
-        .select('*')
-        .single();
-      
-      if (error) throw error;
-      return data;
+      if (language === 'en') {
+        const { data, error } = await supabase
+          .from('about_en')
+          .select('*')
+          .single();
+        
+        if (error) throw error;
+        return data as AboutTextEN;
+      } else {
+        const { data, error } = await supabase
+          .from('about_tr')
+          .select('*')
+          .single();
+        
+        if (error) throw error;
+        return data as AboutTextTR;
+      }
     },
   });
 
@@ -34,13 +54,20 @@ const About = () => {
   const companyBuilding = images?.find(img => img.name === 'company_building');
   const isoCertificate = images?.find(img => img.name === 'iso_certificate');
 
+  const getAboutText = () => {
+    if (!aboutText) return '';
+    return language === 'en' 
+      ? (aboutText as AboutTextEN).about_text_en 
+      : (aboutText as AboutTextTR).about_text_tr;
+  };
+
   return (
     <div className="container mx-auto px-4 py-24">
       <div className="grid md:grid-cols-2 gap-8 mb-12">
         <div className="space-y-4">
           <h1 className="text-3xl font-bold text-primary mb-6">About Us</h1>
           <p className="text-gray-700 leading-relaxed">
-            {language === 'en' ? aboutText?.about_text_en : aboutText?.about_text_tr}
+            {getAboutText()}
           </p>
         </div>
         {companyBuilding?.photo_url && (
