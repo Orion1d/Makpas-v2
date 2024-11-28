@@ -44,7 +44,7 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Failed to store contact submission");
     }
 
-    // Send email
+    // Send email using Resend
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
