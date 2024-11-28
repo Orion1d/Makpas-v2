@@ -48,7 +48,7 @@ const Navbar = () => {
             </Link>
             <Link to="/about" className={`flex items-center space-x-1 ${isActive("/about")}`}>
               <Info size={20} />
-              <span>{t('nav_about')}</span>
+              <span>About Us</span>
             </Link>
             <Link to="/products" className={`flex items-center space-x-1 ${isActive("/products")}`}>
               <Package size={20} />
