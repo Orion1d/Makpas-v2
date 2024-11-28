@@ -2,41 +2,20 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-interface AboutTextEN {
-  about_text_en: string;
-  id: number;
-}
-
-interface AboutTextTR {
-  about_text_tr: string;
-  id: number;
-}
-
 const About = () => {
   const { language } = useLanguage();
   
   const { data: aboutText } = useQuery({
-    queryKey: ['about', language],
+    queryKey: ['about-text', language],
     queryFn: async () => {
-      if (language === 'en') {
-        const { data, error } = await supabase
-          .from('about_en')
-          .select('*')
-          .eq('id', 2)
-          .single();
-        
-        if (error) throw error;
-        return data as AboutTextEN;
-      } else {
-        const { data, error } = await supabase
-          .from('about_tr')
-          .select('*')
-          .eq('id', 2)
-          .single();
-        
-        if (error) throw error;
-        return data as AboutTextTR;
-      }
+      const { data, error } = await supabase
+        .from('translations')
+        .select('*')
+        .eq('key', 'about_text')
+        .single();
+      
+      if (error) throw error;
+      return data;
     },
   });
 
@@ -58,11 +37,7 @@ const About = () => {
 
   const getAboutText = () => {
     if (!aboutText) return '';
-    if (language === 'en') {
-      return (aboutText as AboutTextEN).about_text_en;
-    } else {
-      return (aboutText as AboutTextTR).about_text_tr;
-    }
+    return language === 'en' ? aboutText.en : aboutText.tr;
   };
 
   return (
