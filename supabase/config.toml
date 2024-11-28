@@ -10,7 +10,5 @@ host = "db.esbovmwrbjoryndhgvvh.supabase.co"
 port = 6543
 
 [functions]
-enabled = true
-
-[[functions.paths]]
-name = "send-contact-email"
+[functions.send-contact-email]
+verify_jwt = false
