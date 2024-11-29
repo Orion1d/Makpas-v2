@@ -2,7 +2,7 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-const RECEIVER_EMAIL = "orion1d.dev@gmail.com";
+const RECEIVER_EMAIL = "emre16ysl@gmail.com";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -52,7 +52,7 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Failed to store contact submission");
     }
 
-    // Send email using Resend
+    // During testing/development, send all emails to the verified email
     const emailResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -60,7 +60,7 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Contact Form <onboarding@resend.dev>",
+        from: "Contact Form <emre16ysl@gmail.com>",
         to: [RECEIVER_EMAIL],
         subject: `New Contact Form Submission from ${contactRequest.name || 'Anonymous'}`,
         html: `
