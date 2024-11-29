@@ -60,7 +60,7 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Contact Form <emre16ysl@gmail.com>",
+        from: "Contact Form <sandbox.smtp.mailtrap.io>",
         to: [RECEIVER_EMAIL],
         subject: `New Contact Form Submission from ${contactRequest.name || 'Anonymous'}`,
         html: `
