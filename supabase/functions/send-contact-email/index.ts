@@ -23,12 +23,20 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Log the RESEND_API_KEY presence (not the actual value)
+    console.log("RESEND_API_KEY present:", !!RESEND_API_KEY);
+
+    if (!RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY is not configured");
+    }
+
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
     const contactRequest: ContactRequest = await req.json();
+    console.log("Received contact request:", contactRequest);
     
     // Store in database
     const { error: dbError } = await supabase
@@ -45,7 +53,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Send email using Resend
-    const res = await fetch("https://api.resend.com/emails", {
+    const emailResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,10 +73,16 @@ const handler = async (req: Request): Promise<Response> => {
       }),
     });
 
-    if (!res.ok) {
-      const error = await res.text();
-      throw new Error(`Failed to send email: ${error}`);
+    console.log("Resend API response status:", emailResponse.status);
+
+    if (!emailResponse.ok) {
+      const errorText = await emailResponse.text();
+      console.error("Resend API error:", errorText);
+      throw new Error(`Failed to send email: ${errorText}`);
     }
+
+    const emailData = await emailResponse.json();
+    console.log("Email sent successfully:", emailData);
 
     return new Response(JSON.stringify({ success: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
