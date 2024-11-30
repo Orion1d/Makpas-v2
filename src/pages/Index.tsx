@@ -18,19 +18,19 @@ const Index = () => {
       >
         <div className="absolute inset-0 bg-primary/70"></div>
         <div className="relative z-10 text-center text-white px-4">
-          <h1 className="text-5xl font-bold mb-6">Welcome to Makpaş</h1>
+          <h1 className="text-5xl font-bold mb-6">{t('home_welcome')}</h1>
           <p className="text-xl mb-4">
-            Since our establishment in 2000, our company has been a trusted provider of packaging and industrial materials.
+            {t('home_description')}
           </p>
           <p className="text-lg mb-8">
-            Serving Türkiye, America, Europe and Asia
+            {t('home_serving')}
           </p>
           <div className="flex gap-4 justify-center">
             <Button asChild className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
-              <Link to="/products">Our Products</Link>
+              <Link to="/products">{t('nav_products')}</Link>
             </Button>
             <Button asChild variant="outline" className="bg-transparent border-white text-white hover:bg-white/10">
-              <Link to="/contact">Contact Us</Link>
+              <Link to="/contact">{t('nav_contact')}</Link>
             </Button>
           </div>
         </div>
