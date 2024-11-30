@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
+import { TR, GB } from 'country-flag-icons/react/3x2';
 
 const Navbar = () => {
   const location = useLocation();
@@ -48,7 +49,7 @@ const Navbar = () => {
             </Link>
             <Link to="/about" className={`flex items-center space-x-1 ${isActive("/about")}`}>
               <Info size={20} />
-              <span>About Us</span>
+              <span>{t('nav_about')}</span>
             </Link>
             <Link to="/products" className={`flex items-center space-x-1 ${isActive("/products")}`}>
               <Package size={20} />
@@ -62,9 +63,14 @@ const Navbar = () => {
               variant="outline"
               size="sm"
               onClick={toggleLanguage}
-              className="ml-4"
+              className="ml-4 flex items-center gap-2"
             >
-              {language.toUpperCase()}
+              {language === 'en' ? (
+                <GB className="h-4 w-auto" />
+              ) : (
+                <TR className="h-4 w-auto" />
+              )}
+              <span>{language.toUpperCase()}</span>
             </Button>
           </div>
         </div>

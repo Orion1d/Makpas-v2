@@ -9,15 +9,20 @@ interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  isLoading: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguageState] = useState<Language>(() => {
+    const saved = localStorage.getItem('preferred-language');
+    return (saved as Language) || 'en';
+  });
+  
   const [translations, setTranslations] = useState<TranslationsType>({});
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['translations'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -42,12 +47,22 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
     }
   }, [data]);
 
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('preferred-language', lang);
+    document.documentElement.lang = lang;
+  };
+
   const t = (key: string): string => {
+    if (!translations[key]) {
+      console.warn(`Translation missing for key: ${key}`);
+      return key;
+    }
     return translations[key]?.[language] || key;
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, isLoading }}>
       {children}
     </LanguageContext.Provider>
   );
