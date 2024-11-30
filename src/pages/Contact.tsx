@@ -62,16 +62,16 @@ const Contact = () => {
       if (error) throw error;
 
       toast({
-        title: "Message sent successfully!",
-        description: "We'll get back to you soon.",
+        title: t('message_sent_success'),
+        description: t('message_sent_description'),
       });
 
       form.reset();
     } catch (error) {
       console.error("Error sending message:", error);
       toast({
-        title: "Error sending message",
-        description: "Please try again later.",
+        title: t('message_sent_error'),
+        description: t('message_sent_error_description'),
         variant: "destructive",
       });
     }
@@ -80,7 +80,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen pt-20 px-4">
       <div className="container mx-auto max-w-7xl">
-        {/* Google Maps - Moved to top */}
+        {/* Google Maps */}
         <div className="bg-white p-8 rounded-lg shadow-md mb-8">
           <h2 className="text-2xl font-bold text-primary mb-6">{t('location_title')}</h2>
           <div className="w-full">
@@ -110,7 +110,7 @@ const Contact = () => {
                     <FormItem>
                       <FormLabel>{t('name_label')}</FormLabel>
                       <FormControl>
-                        <Input placeholder={t('name_label')} {...field} />
+                        <Input placeholder={t('name_placeholder')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -123,7 +123,7 @@ const Contact = () => {
                     <FormItem>
                       <FormLabel>{t('email_label')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="your.email@example.com" type="email" required {...field} />
+                        <Input placeholder={t('email_placeholder')} type="email" required {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -137,7 +137,7 @@ const Contact = () => {
                       <FormLabel>{t('message_label')}</FormLabel>
                       <FormControl>
                         <Textarea 
-                          placeholder={t('message_label')}
+                          placeholder={t('message_placeholder')}
                           required
                           {...field} 
                         />
@@ -159,19 +159,19 @@ const Contact = () => {
             <div className="space-y-4">
               <div className="flex items-start gap-3">
                 <MapPin className="text-primary mt-1" />
-                <p>Organize Sanayi Bölgesi Minareliçavuş Mah. Milas Sokak No:18/1 Nilüfer/Bursa/ TÜRKİYE</p>
+                <p>{t('company_address')}</p>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="text-primary" />
-                <p>+90 224 443 68 36</p>
+                <p>{t('company_phone')}</p>
               </div>
               <div className="flex items-center gap-3">
                 <Printer className="text-primary" />
-                <p>+90 224 443 68 40</p>
+                <p>{t('company_fax')}</p>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="text-primary" />
-                <a href="mailto:makpas@makpas.com" className="hover:text-primary">makpas@makpas.com</a>
+                <a href="mailto:makpas@makpas.com" className="hover:text-primary">{t('company_email')}</a>
               </div>
             </div>
           </div>
