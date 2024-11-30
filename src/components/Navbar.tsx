@@ -38,7 +38,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center space-x-2">
             {logo?.photo_url && (
-              <img src={logo.photo_url} alt="Makpas Logo" className="h-10" />
+              <img src={logo.photo_url} alt="Logo" className="h-10" />
             )}
           </Link>
           

@@ -20,10 +20,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const formSchema = z.object({
   name: z.string().optional(),
-  email: z.string().email("Please enter a valid email address"),
-  message: z.string()
-    .min(1, "Message is required")
-    .max(1000, "Message must be less than 1000 characters"),
+  email: z.string().email(),
+  message: z.string().min(1).max(1000),
 });
 
 const Contact = () => {
@@ -49,7 +47,7 @@ const Contact = () => {
 
       toast({
         title: t('message_sent_success'),
-        description: t('message_sent_success'),
+        description: t('message_sent_description'),
       });
 
       form.reset();
@@ -57,7 +55,7 @@ const Contact = () => {
       console.error("Error sending message:", error);
       toast({
         title: t('message_sent_error'),
-        description: t('message_sent_error'),
+        description: t('message_sent_error_description'),
         variant: "destructive",
       });
     }
@@ -66,7 +64,6 @@ const Contact = () => {
   return (
     <div className="min-h-screen pt-20 px-4">
       <div className="container mx-auto max-w-7xl">
-        {/* Google Maps */}
         <div className="bg-white p-8 rounded-lg shadow-md mb-8">
           <h2 className="text-2xl font-bold text-primary mb-6">{t('contact_our_location')}</h2>
           <div className="w-full">
@@ -84,7 +81,6 @@ const Contact = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-8">
-          {/* Contact Form */}
           <div className="bg-white p-8 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold text-primary mb-6">{t('contact_form_title')}</h2>
             <Form {...form}>
@@ -96,7 +92,7 @@ const Contact = () => {
                     <FormItem>
                       <FormLabel>{t('contact_name_label')}</FormLabel>
                       <FormControl>
-                        <Input placeholder={t('contact_name_label')} {...field} />
+                        <Input placeholder={t('contact_name_placeholder')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -109,7 +105,7 @@ const Contact = () => {
                     <FormItem>
                       <FormLabel>{t('contact_email_label')}</FormLabel>
                       <FormControl>
-                        <Input placeholder={t('contact_email_label')} type="email" required {...field} />
+                        <Input placeholder={t('contact_email_placeholder')} type="email" required {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -123,7 +119,7 @@ const Contact = () => {
                       <FormLabel>{t('contact_message_label')}</FormLabel>
                       <FormControl>
                         <Textarea 
-                          placeholder={t('contact_message_label')}
+                          placeholder={t('contact_message_placeholder')}
                           required
                           {...field} 
                         />
@@ -139,25 +135,24 @@ const Contact = () => {
             </Form>
           </div>
 
-          {/* Company Information */}
           <div className="bg-white p-8 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold text-primary mb-6">{t('contact_company_info')}</h2>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
                 <MapPin className="text-primary mt-1" />
-                <p>Organize Sanayi Bölgesi Minareliçavuş Mah. Milas Sokak No:18/1 Nilüfer/Bursa/ TÜRKİYE</p>
+                <p>{t('contact_address')}</p>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="text-primary" />
-                <p>+90 224 443 68 36</p>
+                <p>{t('contact_phone')}</p>
               </div>
               <div className="flex items-center gap-3">
                 <Printer className="text-primary" />
-                <p>+90 224 443 68 40</p>
+                <p>{t('contact_fax')}</p>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="text-primary" />
-                <a href="mailto:makpas@makpas.com" className="hover:text-primary">makpas@makpas.com</a>
+                <a href="mailto:makpas@makpas.com" className="hover:text-primary">{t('contact_email')}</a>
               </div>
             </div>
           </div>
