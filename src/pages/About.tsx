@@ -38,10 +38,13 @@ const About = () => {
   const isoCertificate = images?.find(img => img.name === 'iso_certificate');
 
   const getAboutText = (): string[] => {
-    if (!aboutText) return [];
+    if (!aboutText?.en && !aboutText?.tr) return [];
     const text = language === 'en' ? aboutText.en : aboutText.tr;
-    return text.split('\n\n').filter(Boolean);
+    if (!text) return [];
+    return text.split('\n\n').filter((paragraph): paragraph is string => Boolean(paragraph));
   };
+
+  const paragraphs = getAboutText();
 
   return (
     <div className="container mx-auto px-4 py-24">
@@ -51,13 +54,19 @@ const About = () => {
             {t('about_title')}
           </h1>
           <div className="space-y-4">
-            {getAboutText().map((paragraph, index) => (
-              <Card key={index} className="p-6 bg-white/50 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300">
-                <p className="text-gray-700 leading-relaxed font-medium">
-                  {paragraph}
-                </p>
+            {paragraphs.length > 0 ? (
+              paragraphs.map((paragraph, index) => (
+                <Card key={index} className="p-6 bg-white/50 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300">
+                  <p className="text-gray-700 leading-relaxed font-medium">
+                    {paragraph}
+                  </p>
+                </Card>
+              ))
+            ) : (
+              <Card className="p-6 bg-white/50">
+                <p className="text-gray-700">Loading content...</p>
               </Card>
-            ))}
+            )}
           </div>
         </div>
         {companyBuilding?.photo_url && (
