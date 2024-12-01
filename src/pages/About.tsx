@@ -37,10 +37,10 @@ const About = () => {
   const companyBuilding = images?.find(img => img.name === 'company_building');
   const isoCertificate = images?.find(img => img.name === 'iso_certificate');
 
-  const getAboutText = () => {
-    if (!aboutText) return '';
+  const getAboutText = (): string[] => {
+    if (!aboutText) return [];
     const text = language === 'en' ? aboutText.en : aboutText.tr;
-    return text.split('\n\n').filter(Boolean); // Split text into paragraphs
+    return text.split('\n\n').filter(Boolean);
   };
 
   return (
