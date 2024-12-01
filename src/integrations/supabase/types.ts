@@ -61,7 +61,6 @@ export type Database = {
           id: number
           name: string
           photo_url: string | null
-          product_group: string | null
           Product_Group: string | null
           updated_at: string | null
         }
@@ -71,7 +70,6 @@ export type Database = {
           id?: never
           name: string
           photo_url?: string | null
-          product_group?: string | null
           Product_Group?: string | null
           updated_at?: string | null
         }
@@ -81,7 +79,6 @@ export type Database = {
           id?: never
           name?: string
           photo_url?: string | null
-          product_group?: string | null
           Product_Group?: string | null
           updated_at?: string | null
         }
