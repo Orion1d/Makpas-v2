@@ -6,10 +6,12 @@ import { Search } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Products = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ['products'],
@@ -67,7 +69,7 @@ const Products = () => {
     <div className="min-h-screen pt-20 px-4">
       <div className="container mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-4xl font-bold text-primary">Our Products</h1>
+          <h1 className="text-4xl font-bold text-primary">{t('products_page_title')}</h1>
         </div>
 
         <div className="relative mb-8">

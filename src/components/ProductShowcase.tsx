@@ -10,9 +10,11 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import Autoplay from "embla-carousel-autoplay";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ProductShowcase = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const { data: products = [] } = useQuery({
     queryKey: ['products'],
@@ -34,7 +36,7 @@ const ProductShowcase = () => {
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-primary text-center mb-8">
-          Our Products
+          {t('products_showcase_title')}
         </h2>
         <Carousel
           opts={{
