@@ -34,7 +34,7 @@ const ProductShowcase = () => {
 
   return (
     <section className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6">
         <h2 className="text-3xl font-bold text-primary text-center mb-8">
           {t('products_showcase_title')}
         </h2>
@@ -48,18 +48,18 @@ const ProductShowcase = () => {
               delay: 3000,
             }),
           ]}
-          className="w-full max-w-6xl mx-auto"
+          className="w-full max-w-5xl mx-auto"
         >
           <CarouselContent>
             {products.map((product) => (
-              <CarouselItem key={product.id} className="md:basis-1/2">
+              <CarouselItem key={product.id} className="md:basis-1/2 sm:basis-full px-2">
                 <div 
                   onClick={() => handleProductClick(product.id)}
                   className="cursor-pointer transition-transform duration-300 hover:scale-105"
                 >
                   <Card className="bg-gray-100 border-gray-200 hover:shadow-lg transition-shadow">
                     {product.photo_url && (
-                      <div className="relative h-72 w-full overflow-hidden rounded-t-lg">
+                      <div className="relative h-56 sm:h-64 md:h-72 w-full overflow-hidden rounded-t-lg">
                         <img
                           src={product.photo_url}
                           alt={product.name}
@@ -77,8 +77,10 @@ const ProductShowcase = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <div className="hidden sm:block">
+            <CarouselPrevious className="-left-4 sm:-left-6" />
+            <CarouselNext className="-right-4 sm:-right-6" />
+          </div>
         </Carousel>
       </div>
     </section>

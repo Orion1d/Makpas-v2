@@ -47,7 +47,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm shadow-sm z-50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center space-x-2">
             {logo?.photo_url && (
@@ -55,7 +55,6 @@ const Navbar = () => {
             )}
           </Link>
 
-          {/* Mobile menu button */}
           <button
             onClick={toggleMenu}
             className="md:hidden p-2 text-primary hover:text-secondary"
@@ -64,7 +63,6 @@ const Navbar = () => {
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
           
-          {/* Desktop navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link
@@ -92,13 +90,12 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile navigation */}
         <div
           className={`md:hidden ${
             isMenuOpen ? "block" : "hidden"
           } pb-4 transition-all duration-300 ease-in-out`}
         >
-          <div className="flex flex-col space-y-4">
+          <div className="flex flex-col space-y-4 px-2">
             {navItems.map((item) => (
               <Link
                 key={item.path}
