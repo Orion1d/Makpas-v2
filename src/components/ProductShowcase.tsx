@@ -38,50 +38,52 @@ const ProductShowcase = () => {
         <h2 className="text-3xl font-bold text-primary text-center mb-8">
           {t('products_showcase_title')}
         </h2>
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          plugins={[
-            Autoplay({
-              delay: 3000,
-            }),
-          ]}
-          className="w-full max-w-5xl mx-auto"
-        >
-          <CarouselContent>
-            {products.map((product) => (
-              <CarouselItem key={product.id} className="md:basis-1/2 sm:basis-full px-2">
-                <div 
-                  onClick={() => handleProductClick(product.id)}
-                  className="cursor-pointer transition-transform duration-300 hover:scale-105"
-                >
-                  <Card className="bg-gray-100 border-gray-200 hover:shadow-lg transition-shadow">
-                    {product.photo_url && (
-                      <div className="relative h-56 sm:h-64 md:h-72 w-full overflow-hidden rounded-t-lg">
-                        <img
-                          src={product.photo_url}
-                          alt={product.name}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                    )}
-                    <CardContent className="p-4">
-                      <h3 className="font-semibold text-xl text-primary text-center">
-                        {product.name}
-                      </h3>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <div className="hidden sm:block">
-            <CarouselPrevious className="-left-4 sm:-left-6" />
-            <CarouselNext className="-right-4 sm:-right-6" />
-          </div>
-        </Carousel>
+        <div className="relative">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            plugins={[
+              Autoplay({
+                delay: 3000,
+              }),
+            ]}
+            className="w-full max-w-5xl mx-auto"
+          >
+            <CarouselContent>
+              {products.map((product) => (
+                <CarouselItem key={product.id} className="md:basis-1/2 sm:basis-full px-2">
+                  <div 
+                    onClick={() => handleProductClick(product.id)}
+                    className="cursor-pointer group"
+                  >
+                    <Card className="bg-gray-100 border-gray-200 hover:shadow-lg transition-shadow">
+                      {product.photo_url && (
+                        <div className="relative h-56 sm:h-64 md:h-72 w-full overflow-hidden rounded-t-lg">
+                          <img
+                            src={product.photo_url}
+                            alt={product.name}
+                            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                          />
+                        </div>
+                      )}
+                      <CardContent className="p-4">
+                        <h3 className="font-semibold text-xl text-primary text-center">
+                          {product.name}
+                        </h3>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="hidden sm:block">
+              <CarouselPrevious className="absolute -left-12 top-1/2 -translate-y-1/2" />
+              <CarouselNext className="absolute -right-12 top-1/2 -translate-y-1/2" />
+            </div>
+          </Carousel>
+        </div>
       </div>
     </section>
   );
