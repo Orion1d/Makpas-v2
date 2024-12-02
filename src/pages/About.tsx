@@ -41,10 +41,14 @@ const About = () => {
     if (!aboutText?.en && !aboutText?.tr) return [];
     const text = language === 'en' ? aboutText.en : aboutText.tr;
     if (!text) return [];
-    return text.split('\n\n').filter((paragraph): paragraph is string => Boolean(paragraph));
+    // Split by periods and filter out empty strings and contact info paragraph
+    return text.split('.')
+      .filter(sentence => sentence.trim())
+      .filter(sentence => !sentence.toLowerCase().includes('contact'))
+      .map(sentence => sentence.trim() + '.');
   };
 
-  const paragraphs = getAboutText();
+  const sentences = getAboutText();
 
   return (
     <div className="container mx-auto px-4 py-24">
@@ -54,14 +58,19 @@ const About = () => {
             {t('about_title')}
           </h1>
           <div className="space-y-4">
-            {paragraphs.length > 0 ? (
-              paragraphs.map((paragraph, index) => (
-                <Card key={index} className="p-6 bg-white/50 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300">
-                  <p className="text-gray-700 leading-relaxed font-medium">
-                    {paragraph}
-                  </p>
-                </Card>
-              ))
+            {sentences.length > 0 ? (
+              <Card className="p-6 bg-white/50 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300">
+                <ul className="space-y-4">
+                  {sentences.map((sentence, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <span className="mt-2 block w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                      <p className="text-gray-700 leading-relaxed font-medium">
+                        {sentence}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
             ) : (
               <Card className="p-6 bg-white/50">
                 <p className="text-gray-700">Loading content...</p>
@@ -70,7 +79,7 @@ const About = () => {
           </div>
         </div>
         {companyBuilding?.photo_url && (
-          <div className="relative h-[400px]">
+          <div className="relative h-[400px] md:sticky md:top-24">
             <Card className="w-full h-full overflow-hidden">
               <img
                 src={companyBuilding.photo_url}
