@@ -4,11 +4,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Navbar from "./components/Navbar";
 import TopHeader from "./components/TopHeader";
 import Footer from "./components/Footer";
-import LoadingScreen from "./components/LoadingScreen";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
 import Contact from "./pages/Contact";
@@ -36,23 +35,11 @@ const ScrollToTop = () => {
 };
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate initial loading
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000); // Show loading screen for 3 seconds
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <TooltipProvider>
           <div className="min-h-screen flex flex-col bg-gray-50">
-            {isLoading && <LoadingScreen />}
             <Toaster />
             <Sonner />
             <BrowserRouter>
