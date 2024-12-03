@@ -13,20 +13,20 @@ const LoadingScreen = () => {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-primary transition-opacity duration-1000 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center transition-all duration-1000 ease-in-out ${
         fadeOut ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
+      style={{
+        background: `linear-gradient(rgba(26, 43, 109, 0.85), rgba(26, 43, 109, 0.85)), url('/lovable-uploads/bfc59d3b-fe89-4a98-9a42-7188b454d33c.png')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
     >
       <div className="text-center">
-        <div className="w-64 h-64 mb-8 mx-auto">
-          <img
-            src="/lovable-uploads/bfc59d3b-fe89-4a98-9a42-7188b454d33c.png"
-            alt="Company Building"
-            className="w-full h-full object-cover rounded-lg animate-pulse"
-          />
-        </div>
-        <div className="text-white text-xl font-semibold">
-          <div className="animate-bounce">Loading...</div>
+        <div className="w-screen h-screen absolute inset-0 flex items-center justify-center">
+          <div className="text-white text-2xl font-semibold">
+            <div className="animate-pulse">Loading...</div>
+          </div>
         </div>
       </div>
     </div>
