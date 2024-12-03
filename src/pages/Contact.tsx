@@ -1,65 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { Mail, Phone, MapPin, Printer } from "lucide-react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const formSchema = z.object({
-  name: z.string().optional(),
-  email: z.string().email(),
-  message: z.string().min(1).max(1000),
-});
-
 const Contact = () => {
-  const { toast } = useToast();
   const { t } = useLanguage();
-  
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      message: "",
-    },
-  });
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const { error } = await supabase.functions.invoke("send-contact-email", {
-        body: values,
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: t('message_sent_success'),
-        description: t('message_sent_description'),
-      });
-
-      form.reset();
-    } catch (error) {
-      console.error("Error sending message:", error);
-      toast({
-        title: t('message_sent_error'),
-        description: t('message_sent_error_description'),
-        variant: "destructive",
-      });
-    }
-  }
 
   return (
     <div className="min-h-screen pt-20 px-4">
@@ -80,62 +23,8 @@ const Contact = () => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-8">
-          <div className="bg-white p-8 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold text-primary mb-6">{t('contact_form_title')}</h2>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('contact_name_label')}</FormLabel>
-                      <FormControl>
-                        <Input placeholder={t('contact_name_placeholder')} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('contact_email_label')}</FormLabel>
-                      <FormControl>
-                        <Input placeholder={t('contact_email_placeholder')} type="email" required {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('contact_message_label')}</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder={t('contact_message_placeholder')}
-                          required
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" className="w-full">
-                  {t('contact_submit_button')}
-                </Button>
-              </form>
-            </Form>
-          </div>
-
-          <div className="bg-white p-8 rounded-lg shadow-md">
+        <div className="flex justify-center">
+          <div className="bg-white p-8 rounded-lg shadow-md max-w-xl w-full">
             <h2 className="text-2xl font-bold text-primary mb-6">{t('contact_company_info')}</h2>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
