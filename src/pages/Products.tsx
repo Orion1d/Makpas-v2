@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { ProductSidebar } from "@/components/ProductSidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const Products = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeGroup, setActiveGroup] = useState("all");
   const navigate = useNavigate();
   const { t } = useLanguage();
 
@@ -25,33 +25,25 @@ const Products = () => {
     },
   });
 
-  const groupProducts = (products: any[]) => {
-    return products.reduce((acc: any, product) => {
-      const group = product.Product_Group?.toLowerCase() || 'other';
-      if (!acc[group]) {
-        acc[group] = [];
-      }
-      acc[group].push(product);
-      return acc;
-    }, {});
-  };
+  const productGroups = Array.from(
+    new Set(products.map((product) => product.Product_Group || "other"))
+  );
 
-  const filterProducts = (products: any[], query: string) => {
-    if (!query) return products;
-    
-    return products.filter((product) =>
-      product.name.toLowerCase().includes(query.toLowerCase()) ||
-      product.description?.toLowerCase().includes(query.toLowerCase())
-    );
-  };
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.description?.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesGroup =
+      activeGroup === "all" ||
+      (product.Product_Group || "other").toLowerCase() === activeGroup.toLowerCase();
+
+    return matchesSearch && matchesGroup;
+  });
 
   const handleProductClick = (productId: number) => {
     navigate(`/product/${productId}`);
   };
-
-  const filteredProducts = filterProducts(products, searchQuery);
-  const groupedProducts = groupProducts(filteredProducts);
-  const productGroups = Object.keys(groupedProducts);
 
   if (isLoading) {
     return (
@@ -66,42 +58,28 @@ const Products = () => {
   }
 
   return (
-    <div className="min-h-screen pt-20 px-4">
-      <div className="container mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-4xl font-bold text-primary">{t('products_page_title')}</h1>
-        </div>
-
-        <div className="relative mb-8">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <Input
-            type="search"
-            placeholder="Search products..."
-            className="pl-10"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+    <div className="min-h-screen pt-20">
+      <SidebarProvider>
+        <div className="flex w-full">
+          <ProductSidebar
+            groups={productGroups}
+            activeGroup={activeGroup}
+            onGroupChange={setActiveGroup}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
           />
-        </div>
-        
-        <Tabs defaultValue={productGroups[0]} className="w-full">
-          <TabsList className="inline-flex p-1 bg-gray-100 rounded-xl mb-8 overflow-x-auto max-w-full">
-            {productGroups.map((group) => (
-              <TabsTrigger 
-                key={group} 
-                value={group} 
-                className="capitalize px-6 py-2.5 rounded-lg font-medium transition-colors data-[state=active]:bg-white data-[state=active]:shadow-sm hover:bg-gray-50"
-              >
-                {group}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-          
-          {productGroups.map((group) => (
-            <TabsContent key={group} value={group} className="space-y-8">
+          <main className="flex-1 px-4 pb-8">
+            <div className="container mx-auto">
+              <div className="flex items-center justify-between mb-8">
+                <h1 className="text-4xl font-bold text-primary">
+                  {t('products_page_title')}
+                </h1>
+              </div>
+
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {groupedProducts[group].map((product: any) => (
-                  <Card 
-                    key={product.id} 
+                {filteredProducts.map((product) => (
+                  <Card
+                    key={product.id}
                     className="cursor-pointer transition-transform duration-300 hover:scale-105"
                     onClick={() => handleProductClick(product.id)}
                   >
@@ -115,18 +93,22 @@ const Products = () => {
                       </div>
                     )}
                     <CardHeader>
-                      <CardTitle className="text-xl text-primary">{product.name}</CardTitle>
+                      <CardTitle className="text-xl text-primary">
+                        {product.name}
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-600 mb-4">{product.description}</p>
+                      <p className="text-gray-600 line-clamp-3">
+                        {product.description}
+                      </p>
                     </CardContent>
                   </Card>
                 ))}
               </div>
-            </TabsContent>
-          ))}
-        </Tabs>
-      </div>
+            </div>
+          </main>
+        </div>
+      </SidebarProvider>
     </div>
   );
 };
