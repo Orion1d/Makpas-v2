@@ -41,11 +41,14 @@ const About = () => {
     if (!aboutText?.en && !aboutText?.tr) return [];
     const text = language === 'en' ? aboutText.en : aboutText.tr;
     if (!text) return [];
-    // Split by periods and filter out empty strings and contact info paragraph
-    return text.split('.')
-      .filter(sentence => sentence.trim())
-      .filter(sentence => !sentence.toLowerCase().includes('contact'))
-      .map(sentence => sentence.trim() + '.');
+    
+    // Split by periods but preserve dates and email addresses
+    const sentences = text.split(/(?<!\d)\.(?!\d|\w)(?!\s*[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g)
+      .map(sentence => sentence.trim())
+      .filter(sentence => sentence && !sentence.toLowerCase().includes('contact'))
+      .map(sentence => sentence.endsWith('.') ? sentence : sentence + '.');
+
+    return sentences;
   };
 
   const sentences = getAboutText();
