@@ -2,8 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const WelcomeSection = () => {
+  const { t } = useLanguage();
+  
   const { data: welcomeImage } = useQuery({
     queryKey: ['welcome-bg'],
     queryFn: async () => {
@@ -33,18 +36,18 @@ const WelcomeSection = () => {
       <div className="relative h-full flex items-center justify-center text-center">
         <div className="container mx-auto px-4">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in">
-            Welcome to Our Factory
+            {t('welcome.title')}
           </h1>
           <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-12 animate-fade-in">
-            Discover our innovative solutions and quality products
+            {t('welcome.subtitle')}
           </p>
           
           <div className="flex justify-center gap-6 mb-16">
             <Button asChild variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white">
-              <Link to="/products">View Products</Link>
+              <Link to="/products">{t('nav.view_products')}</Link>
             </Button>
             <Button asChild variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white">
-              <Link to="/contact">Contact Us</Link>
+              <Link to="/contact">{t('nav.contact_us')}</Link>
             </Button>
           </div>
 

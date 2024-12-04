@@ -4,9 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ServicesShowcase = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { t } = useLanguage();
 
   const { data: services = [], isLoading } = useQuery({
     queryKey: ['services'],
@@ -42,7 +44,7 @@ const ServicesShowcase = () => {
   return (
     <section className="w-full py-20 bg-gray-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-16 text-primary">Our Services</h2>
+        <h2 className="text-4xl font-bold text-center mb-16 text-primary">{t('services.title')}</h2>
         
         <div className="relative">
           <div className="flex items-center justify-between">
