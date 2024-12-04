@@ -8,7 +8,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const ServicesShowcase = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const { data: services = [], isLoading } = useQuery({
     queryKey: ['services'],
@@ -40,6 +40,8 @@ const ServicesShowcase = () => {
   }
 
   const currentService = services[currentIndex];
+  const serviceTitle = language === 'tr' && currentService.title_tr ? currentService.title_tr : currentService.title;
+  const serviceDescription = language === 'tr' && currentService.description_tr ? currentService.description_tr : currentService.description;
 
   return (
     <section className="w-full py-20 bg-gray-50">
@@ -78,10 +80,10 @@ const ServicesShowcase = () => {
                     )}
                   >
                     <h3 className="text-3xl font-bold mb-4 text-primary">
-                      {currentService.title}
+                      {serviceTitle}
                     </h3>
                     <p className="text-lg text-gray-600 leading-relaxed">
-                      {currentService.description}
+                      {serviceDescription}
                     </p>
                   </div>
                 </div>
