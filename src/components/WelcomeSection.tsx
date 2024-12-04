@@ -1,10 +1,29 @@
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Link } from "react-router-dom";
+import { Button } from "./ui/button";
+
 const WelcomeSection = () => {
+  const { data: welcomeImage } = useQuery({
+    queryKey: ['welcome-bg'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('icons')
+        .select('photo_url')
+        .eq('name', 'welcome_bg')
+        .single();
+      
+      if (error) throw error;
+      return data?.photo_url;
+    },
+  });
+
   return (
     <section className="relative h-screen w-full">
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/lovable-uploads/f0a5c15e-55bd-4add-8fd4-ec202e3bbbe1.png')",
+          backgroundImage: `url(${welcomeImage})`,
           backgroundAttachment: "fixed"
         }}
       >
@@ -16,10 +35,20 @@ const WelcomeSection = () => {
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in">
             Welcome to Our Factory
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-8 animate-fade-in">
+          <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-12 animate-fade-in">
             Discover our innovative solutions and quality products
           </p>
-          <div className="animate-bounce mt-12">
+          
+          <div className="flex justify-center gap-6 mb-16">
+            <Button asChild variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white">
+              <Link to="/products">View Products</Link>
+            </Button>
+            <Button asChild variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white">
+              <Link to="/contact">Contact Us</Link>
+            </Button>
+          </div>
+
+          <div className="animate-bounce">
             <svg 
               className="w-8 h-8 mx-auto text-white"
               fill="none" 
