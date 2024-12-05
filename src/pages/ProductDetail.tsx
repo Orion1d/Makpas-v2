@@ -4,10 +4,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const { toast } = useToast();
+  const { language, t } = useLanguage();
 
   const { data: product, isLoading, error } = useQuery({
     queryKey: ['product', id],
@@ -76,7 +78,7 @@ const ProductDetail = () => {
         >
           <Link to="/products" className="flex items-center gap-2">
             <ArrowLeft size={20} />
-            Back to Products
+            {t('back.to.products')}
           </Link>
         </Button>
 
@@ -86,25 +88,31 @@ const ProductDetail = () => {
               {product.photo_url && (
                 <img
                   src={product.photo_url}
-                  alt={product.name}
+                  alt={language === 'tr' ? product.name_tr || product.name : product.name}
                   className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
                 />
               )}
             </div>
             
             <div className="space-y-6">
-              <h1 className="text-3xl font-bold text-primary">{product.name}</h1>
+              <h1 className="text-3xl font-bold text-primary">
+                {language === 'tr' ? product.name_tr || product.name : product.name}
+              </h1>
               
-              {product.description && (
+              {(language === 'tr' ? product.description_tr || product.description : product.description) && (
                 <div className="prose max-w-none">
-                  <p className="text-gray-600">{product.description}</p>
+                  <p className="text-gray-600">
+                    {language === 'tr' ? product.description_tr || product.description : product.description}
+                  </p>
                 </div>
               )}
               
-              {product.Product_Group && (
+              {(language === 'tr' ? product.Product_Group_tr || product.Product_Group : product.Product_Group) && (
                 <div className="pt-4">
-                  <span className="text-sm font-medium text-gray-500">Category:</span>
-                  <span className="ml-2 text-sm text-gray-900">{product.Product_Group}</span>
+                  <span className="text-sm font-medium text-gray-500">{t('product.category')}:</span>
+                  <span className="ml-2 text-sm text-gray-900">
+                    {language === 'tr' ? product.Product_Group_tr || product.Product_Group : product.Product_Group}
+                  </span>
                 </div>
               )}
             </div>
