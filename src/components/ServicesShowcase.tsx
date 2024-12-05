@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ServicesShowcase = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -31,12 +32,31 @@ const ServicesShowcase = () => {
     setCurrentIndex((prev) => (prev - 1 + services.length) % services.length);
   };
 
-  if (isLoading || services.length === 0) {
+  if (isLoading) {
     return (
-      <div className="w-full h-96 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
+      <section className="w-full py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <Skeleton className="h-12 w-64 mx-auto mb-16" />
+          <div className="relative">
+            <div className="w-full px-16">
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                <Skeleton className="h-[400px] rounded-xl" />
+                <div className="space-y-6">
+                  <Skeleton className="h-8 w-3/4" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-5/6" />
+                  <Skeleton className="h-4 w-4/6" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     );
+  }
+
+  if (services.length === 0) {
+    return null;
   }
 
   const currentService = services[currentIndex];

@@ -3,11 +3,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const WelcomeSection = () => {
   const { t } = useLanguage();
   
-  const { data: welcomeImage } = useQuery({
+  const { data: welcomeImage, isLoading } = useQuery({
     queryKey: ['welcome-bg'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -20,6 +21,26 @@ const WelcomeSection = () => {
       return data?.photo_url;
     },
   });
+
+  if (isLoading) {
+    return (
+      <section className="relative h-screen w-full bg-gray-900">
+        <div className="relative h-full flex items-center justify-center text-center">
+          <div className="container mx-auto px-4">
+            <Skeleton className="h-16 w-3/4 md:w-1/2 mx-auto mb-6 bg-gray-800" />
+            <Skeleton className="h-8 w-2/3 md:w-1/3 mx-auto mb-12 bg-gray-800" />
+            
+            <div className="flex justify-center gap-6 mb-16">
+              <Skeleton className="h-10 w-32 bg-gray-800" />
+              <Skeleton className="h-10 w-32 bg-gray-800" />
+            </div>
+
+            <Skeleton className="h-8 w-8 mx-auto bg-gray-800" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative h-screen w-full">

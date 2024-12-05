@@ -11,12 +11,13 @@ import { supabase } from "@/integrations/supabase/client";
 import Autoplay from "embla-carousel-autoplay";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ProductShowcase = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
 
-  const { data: products = [] } = useQuery({
+  const { data: products = [], isLoading } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -31,6 +32,32 @@ const ProductShowcase = () => {
   const handleProductClick = (productId: number) => {
     navigate(`/product/${productId}`);
   };
+
+  if (isLoading) {
+    return (
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <Skeleton className="h-10 w-64 mx-auto mb-8" />
+          <div className="relative">
+            <Carousel className="w-full max-w-5xl mx-auto">
+              <CarouselContent>
+                {[1, 2].map((index) => (
+                  <CarouselItem key={index} className="md:basis-1/2 sm:basis-full px-2">
+                    <Card className="bg-gray-100 border-gray-200">
+                      <Skeleton className="h-72 w-full rounded-t-lg" />
+                      <CardContent className="p-4">
+                        <Skeleton className="h-6 w-3/4 mx-auto" />
+                      </CardContent>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 bg-gray-50">
