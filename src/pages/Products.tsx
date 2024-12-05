@@ -11,7 +11,7 @@ const Products = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeGroup, setActiveGroup] = useState("all");
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ['products'],
@@ -26,17 +26,26 @@ const Products = () => {
   });
 
   const productGroups = Array.from(
-    new Set(products.map((product) => product.Product_Group || "other"))
+    new Set(products.map((product) => {
+      if (language === 'tr') {
+        return product.Product_Group_tr || product.Product_Group || "other";
+      }
+      return product.Product_Group || "other";
+    }))
   );
 
   const filteredProducts = products.filter((product) => {
+    const productName = language === 'tr' ? (product.name_tr || product.name) : product.name;
+    const productDescription = language === 'tr' ? (product.description_tr || product.description) : product.description;
+    const productGroup = language === 'tr' ? (product.Product_Group_tr || product.Product_Group || "other") : (product.Product_Group || "other");
+
     const matchesSearch =
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.description?.toLowerCase().includes(searchQuery.toLowerCase());
+      productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (productDescription?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false);
 
     const matchesGroup =
       activeGroup === "all" ||
-      (product.Product_Group || "other").toLowerCase() === activeGroup.toLowerCase();
+      productGroup.toLowerCase() === activeGroup.toLowerCase();
 
     return matchesSearch && matchesGroup;
   });
@@ -87,19 +96,19 @@ const Products = () => {
                       <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
                         <img
                           src={product.photo_url}
-                          alt={product.name}
+                          alt={language === 'tr' ? (product.name_tr || product.name) : product.name}
                           className="object-cover w-full h-full"
                         />
                       </div>
                     )}
                     <CardHeader>
                       <CardTitle className="text-xl text-primary">
-                        {product.name}
+                        {language === 'tr' ? (product.name_tr || product.name) : product.name}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <p className="text-gray-600 line-clamp-3">
-                        {product.description}
+                        {language === 'tr' ? (product.description_tr || product.description) : product.description}
                       </p>
                     </CardContent>
                   </Card>

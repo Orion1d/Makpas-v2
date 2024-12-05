@@ -58,28 +58,37 @@ export type Database = {
         Row: {
           created_at: string | null
           description: string | null
+          description_tr: string | null
           id: number
           name: string
+          name_tr: string | null
           photo_url: string | null
           Product_Group: string | null
+          Product_Group_tr: string | null
           updated_at: string | null
         }
         Insert: {
           created_at?: string | null
           description?: string | null
+          description_tr?: string | null
           id?: never
           name: string
+          name_tr?: string | null
           photo_url?: string | null
           Product_Group?: string | null
+          Product_Group_tr?: string | null
           updated_at?: string | null
         }
         Update: {
           created_at?: string | null
           description?: string | null
+          description_tr?: string | null
           id?: never
           name?: string
+          name_tr?: string | null
           photo_url?: string | null
           Product_Group?: string | null
+          Product_Group_tr?: string | null
           updated_at?: string | null
         }
         Relationships: []

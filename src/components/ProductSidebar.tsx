@@ -10,6 +10,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ProductSidebarProps {
   groups: string[];
@@ -26,18 +27,19 @@ export function ProductSidebar({
   searchQuery,
   onSearchChange,
 }: ProductSidebarProps) {
+  const { t } = useLanguage();
   const allGroups = ["all", ...groups];
 
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Search Products</SidebarGroupLabel>
+          <SidebarGroupLabel>{t('search_products')}</SidebarGroupLabel>
           <SidebarGroupContent className="px-2">
             <div className="relative">
               <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search..."
+                placeholder={t('search_placeholder')}
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
                 className="pl-8"
@@ -46,7 +48,7 @@ export function ProductSidebar({
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>Product Groups</SidebarGroupLabel>
+          <SidebarGroupLabel>{t('product_groups')}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {allGroups.map((group) => (
