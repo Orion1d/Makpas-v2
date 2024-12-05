@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Skeleton } from "@/components/ui/skeleton";
+import ServicesSkeleton from "./services/ServicesSkeleton";
+import ServiceCard from "./services/ServiceCard";
+import ServicesPagination from "./services/ServicesPagination";
 
 const ServicesShowcase = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -33,108 +32,32 @@ const ServicesShowcase = () => {
   };
 
   if (isLoading) {
-    return (
-      <section className="w-full py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <Skeleton className="h-12 w-64 mx-auto mb-16" />
-          <div className="relative">
-            <div className="w-full px-16">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <Skeleton className="h-[400px] rounded-xl" />
-                <div className="space-y-6">
-                  <Skeleton className="h-8 w-3/4" />
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-5/6" />
-                  <Skeleton className="h-4 w-4/6" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
+    return <ServicesSkeleton />;
   }
 
   if (services.length === 0) {
     return null;
   }
 
-  const currentService = services[currentIndex];
-  const serviceTitle = language === 'tr' && currentService.title_tr ? currentService.title_tr : currentService.title;
-  const serviceDescription = language === 'tr' && currentService.description_tr ? currentService.description_tr : currentService.description;
-
   return (
     <section className="w-full py-20 bg-gray-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-16 text-primary">{t('services.title')}</h2>
+        <h2 className="text-4xl font-bold text-center mb-16 text-primary">
+          {t('services.title')}
+        </h2>
         
-        <div className="relative">
-          <div className="flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10"
-              onClick={prevService}
-            >
-              <ChevronLeft className="h-8 w-8" />
-            </Button>
+        <ServiceCard
+          service={services[currentIndex]}
+          language={language}
+          onNext={nextService}
+          onPrev={prevService}
+        />
 
-            <div className="w-full px-16">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div 
-                  className="relative h-[400px] overflow-hidden rounded-xl"
-                  style={{
-                    backgroundImage: `url(${currentService.photo_url})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  }}
-                >
-                  <div className="absolute inset-0 bg-black/30"></div>
-                </div>
-                
-                <div className="space-y-6">
-                  <div 
-                    className={cn(
-                      "transition-opacity duration-500",
-                      currentService ? "opacity-100" : "opacity-0"
-                    )}
-                  >
-                    <h3 className="text-3xl font-bold mb-4 text-primary">
-                      {serviceTitle}
-                    </h3>
-                    <p className="text-lg text-gray-600 leading-relaxed">
-                      {serviceDescription}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10"
-              onClick={nextService}
-            >
-              <ChevronRight className="h-8 w-8" />
-            </Button>
-          </div>
-
-          <div className="flex justify-center mt-8 gap-2">
-            {services.map((_, index) => (
-              <button
-                key={index}
-                className={cn(
-                  "w-3 h-3 rounded-full transition-all duration-300",
-                  index === currentIndex
-                    ? "bg-primary scale-125"
-                    : "bg-gray-300 hover:bg-gray-400"
-                )}
-                onClick={() => setCurrentIndex(index)}
-              />
-            ))}
-          </div>
-        </div>
+        <ServicesPagination
+          totalServices={services.length}
+          currentIndex={currentIndex}
+          onPageChange={setCurrentIndex}
+        />
       </div>
     </section>
   );

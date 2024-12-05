@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ProductSidebar } from "@/components/ProductSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import ProductGrid from "@/components/products/ProductGrid";
 
 const Products = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeGroup, setActiveGroup] = useState("all");
-  const navigate = useNavigate();
   const { t, language } = useLanguage();
 
   const { data: products = [], isLoading } = useQuery({
@@ -50,10 +48,6 @@ const Products = () => {
     return matchesSearch && matchesGroup;
   });
 
-  const handleProductClick = (productId: number) => {
-    navigate(`/product/${productId}`);
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen pt-20 px-4">
@@ -85,35 +79,7 @@ const Products = () => {
                 </h1>
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredProducts.map((product) => (
-                  <Card
-                    key={product.id}
-                    className="cursor-pointer transition-transform duration-300 hover:scale-105"
-                    onClick={() => handleProductClick(product.id)}
-                  >
-                    {product.photo_url && (
-                      <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
-                        <img
-                          src={product.photo_url}
-                          alt={language === 'tr' ? (product.name_tr || product.name) : product.name}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                    )}
-                    <CardHeader>
-                      <CardTitle className="text-xl text-primary">
-                        {language === 'tr' ? (product.name_tr || product.name) : product.name}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600 line-clamp-3">
-                        {language === 'tr' ? (product.description_tr || product.description) : product.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <ProductGrid products={filteredProducts} language={language} />
             </div>
           </main>
         </div>
