@@ -58,9 +58,9 @@ const ProductDetail = () => {
     return (
       <div className="min-h-screen pt-24 px-4">
         <div className="container mx-auto max-w-4xl text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('product.not.found')}</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h1>
           <Button asChild>
-            <Link to="/products">{t('back.to.products')}</Link>
+            <Link to="/products">Back to Products</Link>
           </Button>
         </div>
       </div>

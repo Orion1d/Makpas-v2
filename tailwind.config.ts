@@ -27,16 +27,10 @@ export default {
         primary: {
           DEFAULT: "#1a2b6d", // Makpas navy blue
           foreground: "#ffffff",
-          hover: "#243782",
         },
         secondary: {
           DEFAULT: "#e31837", // Makpas red
           foreground: "#ffffff",
-          hover: "#f42844",
-        },
-        accent: {
-          DEFAULT: "#F6F8FD",
-          foreground: "#1a2b6d",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -45,6 +39,10 @@ export default {
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -69,24 +67,10 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "fade-in": {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        "fade-in-up": {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.5s ease-out",
-        "fade-in-up": "fade-in-up 0.7s ease-out",
-      },
-      boxShadow: {
-        'elegant': '0 4px 20px -2px rgba(26, 43, 109, 0.12)',
-        'elegant-hover': '0 8px 30px -4px rgba(26, 43, 109, 0.18)',
       },
     },
   },

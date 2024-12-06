@@ -40,9 +40,9 @@ const ServicesShowcase = () => {
   }
 
   return (
-    <section className="w-full py-14 bg-white relative">
+    <section className="w-full py-20 bg-gray-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-12 text-primary animate-fade-in">
+        <h2 className="text-4xl font-bold text-center mb-16 text-primary">
           {t('services.title')}
         </h2>
         
@@ -59,7 +59,6 @@ const ServicesShowcase = () => {
           onPageChange={setCurrentIndex}
         />
       </div>
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent"></div>
     </section>
   );
 };
