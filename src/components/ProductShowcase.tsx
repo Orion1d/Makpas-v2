@@ -35,7 +35,7 @@ const ProductShowcase = () => {
 
   if (isLoading) {
     return (
-      <section className="py-16 bg-gray-50">
+      <section className="py-12 bg-accent">
         <div className="container mx-auto px-6">
           <Skeleton className="h-10 w-64 mx-auto mb-8" />
           <div className="relative">
@@ -60,9 +60,9 @@ const ProductShowcase = () => {
   }
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-12 bg-accent relative">
       <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold text-primary text-center mb-8">
+        <h2 className="text-3xl font-bold text-primary text-center mb-8 animate-fade-in">
           {t('products_showcase_title')}
         </h2>
         <div className="relative">
@@ -112,6 +112,7 @@ const ProductShowcase = () => {
           </Carousel>
         </div>
       </div>
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent"></div>
     </section>
   );
 };
