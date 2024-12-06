@@ -42,7 +42,6 @@ const About = () => {
     const text = language === 'en' ? aboutText.en : aboutText.tr;
     if (!text) return [];
     
-    // Split by periods but preserve dates and email addresses
     const sentences = text.split(/(?<!\d)\.(?!\d|\w)(?!\s*[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g)
       .map(sentence => sentence.trim())
       .filter(sentence => sentence && !sentence.toLowerCase().includes('contact'))
@@ -54,61 +53,87 @@ const About = () => {
   const sentences = getAboutText();
 
   return (
-    <div className="container mx-auto px-4 py-24">
-      <div className="grid md:grid-cols-2 gap-8 mb-12">
-        <div className="space-y-6">
-          <h1 className="text-3xl font-bold text-primary mb-6">
-            {t('about_title')}
-          </h1>
-          <div className="space-y-4">
-            {sentences.length > 0 ? (
-              <Card className="p-6 bg-white/50 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300">
-                <ul className="space-y-4">
-                  {sentences.map((sentence, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <span className="mt-2 block w-2 h-2 rounded-full bg-primary flex-shrink-0" />
-                      <p className="text-gray-700 leading-relaxed font-medium">
-                        {sentence}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            ) : (
-              <Card className="p-6 bg-white/50">
-                <p className="text-gray-700">Loading content...</p>
-              </Card>
-            )}
+    <div className="relative min-h-screen">
+      {/* Fixed Background Image */}
+      {companyBuilding?.photo_url && (
+        <div 
+          className="fixed inset-0 w-full h-full"
+          style={{
+            backgroundImage: `url(${companyBuilding.photo_url})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+            filter: 'brightness(0.8) saturate(0.8) blur(8px)',
+            opacity: '0.15',
+          }}
+        />
+      )}
+
+      {/* Content */}
+      <div className="relative z-10">
+        <div className="container mx-auto px-4 py-20">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-4xl font-bold text-primary mb-12 text-center">
+              {t('about_title')}
+            </h1>
+            
+            <div className="space-y-6 mb-20">
+              {sentences.length > 0 ? (
+                <Card className="p-8 bg-white/95 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                  <ul className="space-y-6">
+                    {sentences.map((sentence, index) => (
+                      <li key={index} className="flex items-start gap-4">
+                        <span className="mt-2.5 block w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                        <p className="text-gray-800 leading-relaxed text-lg font-medium tracking-wide">
+                          {sentence}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              ) : (
+                <Card className="p-6 bg-white/95">
+                  <p className="text-gray-700">Loading content...</p>
+                </Card>
+              )}
+            </div>
+
+            {/* Certificates Section */}
+            <div className="mt-20">
+              <h2 className="text-2xl font-bold text-primary mb-8 text-center">
+                {t('certificates_title')}
+              </h2>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Current Certificate */}
+                {isoCertificate?.photo_url && (
+                  <Card className="group p-4 bg-white/95 backdrop-blur-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div className="aspect-square relative overflow-hidden rounded-lg">
+                      <img
+                        src={isoCertificate.photo_url}
+                        alt="ISO Certificate"
+                        className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  </Card>
+                )}
+                
+                {/* Placeholder for Future Certificates */}
+                <Card className="p-4 bg-white/80 backdrop-blur-sm border-dashed border-2 border-gray-300 flex items-center justify-center aspect-square">
+                  <p className="text-gray-500 text-center">
+                    Future Certificate
+                  </p>
+                </Card>
+                
+                <Card className="p-4 bg-white/80 backdrop-blur-sm border-dashed border-2 border-gray-300 flex items-center justify-center aspect-square">
+                  <p className="text-gray-500 text-center">
+                    Future Certificate
+                  </p>
+                </Card>
+              </div>
+            </div>
           </div>
         </div>
-        {companyBuilding?.photo_url && (
-          <div className="relative h-[400px] md:sticky md:top-24">
-            <Card className="w-full h-full overflow-hidden">
-              <img
-                src={companyBuilding.photo_url}
-                alt="Company Building"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </Card>
-          </div>
-        )}
-      </div>
-
-      <Separator className="my-12" />
-
-      <div className="mt-16">
-        <h2 className="text-2xl font-bold text-primary mb-8">
-          {t('certificates_title')}
-        </h2>
-        {isoCertificate?.photo_url && (
-          <Card className="max-w-md mx-auto p-4 bg-white/50 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300">
-            <img
-              src={isoCertificate.photo_url}
-              alt="ISO Certificate"
-              className="w-full rounded-lg"
-            />
-          </Card>
-        )}
       </div>
     </div>
   );
