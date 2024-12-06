@@ -63,8 +63,8 @@ const About = () => {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed',
-            filter: 'brightness(0.8) saturate(0.8) blur(8px)',
-            opacity: '0.15',
+            filter: 'brightness(0.85) saturate(0.9) blur(2px)',
+            opacity: '0.25',
           }}
         />
       )}
@@ -104,29 +104,32 @@ const About = () => {
                 {t('certificates_title')}
               </h2>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {/* Current Certificate */}
                 {isoCertificate?.photo_url && (
-                  <Card className="group p-4 bg-white/95 backdrop-blur-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                    <div className="aspect-square relative overflow-hidden rounded-lg">
+                  <Card className="group p-6 bg-white/95 backdrop-blur-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div className="aspect-[4/3] relative overflow-hidden rounded-lg">
                       <img
                         src={isoCertificate.photo_url}
                         alt="ISO Certificate"
-                        className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                        className="absolute inset-0 w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
+                    <p className="mt-4 text-center text-gray-700 font-medium">ISO Certificate</p>
                   </Card>
                 )}
                 
                 {/* Placeholder for Future Certificates */}
-                <Card className="p-4 bg-white/80 backdrop-blur-sm border-dashed border-2 border-gray-300 flex items-center justify-center aspect-square">
-                  <p className="text-gray-500 text-center">
+                <Card className="p-6 bg-white/80 backdrop-blur-sm border-dashed border-2 border-gray-300 flex flex-col items-center justify-center aspect-[4/3]">
+                  <div className="text-4xl text-gray-400 mb-4">+</div>
+                  <p className="text-gray-500 text-center font-medium">
                     Future Certificate
                   </p>
                 </Card>
                 
-                <Card className="p-4 bg-white/80 backdrop-blur-sm border-dashed border-2 border-gray-300 flex items-center justify-center aspect-square">
-                  <p className="text-gray-500 text-center">
+                <Card className="p-6 bg-white/80 backdrop-blur-sm border-dashed border-2 border-gray-300 flex flex-col items-center justify-center aspect-[4/3]">
+                  <div className="text-4xl text-gray-400 mb-4">+</div>
+                  <p className="text-gray-500 text-center font-medium">
                     Future Certificate
                   </p>
                 </Card>
