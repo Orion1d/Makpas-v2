@@ -15,8 +15,7 @@ const ProductShowcase = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('products')
-        .select('*')
-        .order('order_index', { ascending: true });
+        .select('*');
       
       if (error) throw error;
       return data || [];
