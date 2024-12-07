@@ -5,9 +5,9 @@ const Contact = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="min-h-screen pt-20 px-4">
-      <div className="container mx-auto max-w-7xl">
-        <div className="bg-white p-8 rounded-lg shadow-md mb-8">
+    <div className="min-h-screen pt-24 pb-16 px-4">
+      <div className="container mx-auto max-w-7xl space-y-12">
+        <div className="bg-white p-8 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold text-primary mb-6">{t('contact_our_location')}</h2>
           <div className="w-full">
             <iframe 
@@ -26,22 +26,24 @@ const Contact = () => {
         <div className="flex justify-center">
           <div className="bg-white p-8 rounded-lg shadow-md max-w-xl w-full">
             <h2 className="text-2xl font-bold text-primary mb-6">{t('contact_company_info')}</h2>
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <MapPin className="text-primary mt-1" />
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <MapPin className="text-primary mt-1 flex-shrink-0" />
                 <p>{t('contact_address')}</p>
               </div>
-              <div className="flex items-center gap-3">
-                <Phone className="text-primary" />
+              <div className="flex items-center gap-4">
+                <Phone className="text-primary flex-shrink-0" />
                 <p>{t('contact_phone')}</p>
               </div>
-              <div className="flex items-center gap-3">
-                <Printer className="text-primary" />
+              <div className="flex items-center gap-4">
+                <Printer className="text-primary flex-shrink-0" />
                 <p>{t('contact_fax')}</p>
               </div>
-              <div className="flex items-center gap-3">
-                <Mail className="text-primary" />
-                <a href="mailto:makpas@makpas.com" className="hover:text-primary">{t('contact_email')}</a>
+              <div className="flex items-center gap-4">
+                <Mail className="text-primary flex-shrink-0" />
+                <a href="mailto:makpas@makpas.com" className="hover:text-primary transition-colors">
+                  {t('contact_email')}
+                </a>
               </div>
             </div>
           </div>
