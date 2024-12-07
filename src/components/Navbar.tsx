@@ -1,8 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Mail, Package, Info, Menu, X } from "lucide-react";
+import { Home, Mail, Package, Info, Menu, X, Moon, Sun } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { Button } from "@/components/ui/button";
 import { TR, GB } from 'country-flag-icons/react/3x2';
 import { useState } from "react";
@@ -10,6 +11,7 @@ import { useState } from "react";
 const Navbar = () => {
   const location = useLocation();
   const { language, setLanguage, t } = useLanguage();
+  const { isDarkMode, toggleDarkMode } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const { data: logo } = useQuery({
@@ -46,7 +48,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm shadow-sm z-50">
+    <nav className="fixed top-0 left-0 right-0 bg-background/90 backdrop-blur-sm shadow-sm z-50">
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center space-x-2">
@@ -63,7 +65,7 @@ const Navbar = () => {
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
           
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-4">
             {navItems.map((item) => (
               <Link
                 key={item.path}
@@ -75,10 +77,22 @@ const Navbar = () => {
               </Link>
             ))}
             <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleDarkMode}
+              className="mr-2"
+            >
+              {isDarkMode ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+            </Button>
+            <Button
               variant="outline"
               size="sm"
               onClick={toggleLanguage}
-              className="ml-4 flex items-center gap-2"
+              className="flex items-center gap-2"
             >
               {language === 'en' ? (
                 <GB className="h-4 w-auto" />
@@ -109,7 +123,19 @@ const Navbar = () => {
                 <span>{item.label}</span>
               </Link>
             ))}
-            <div className="px-4">
+            <div className="px-4 flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleDarkMode}
+                className="flex-shrink-0"
+              >
+                {isDarkMode ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
+              </Button>
               <Button
                 variant="outline"
                 size="sm"
