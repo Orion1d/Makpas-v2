@@ -40,9 +40,9 @@ const ServicesShowcase = () => {
   }
 
   return (
-    <section className="w-full py-20 bg-gray-50">
+    <section className="w-full py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-16 text-primary">
+        <h2 className="text-4xl font-bold text-center mb-16 text-primary dark:text-white">
           {t('services.title')}
         </h2>
         

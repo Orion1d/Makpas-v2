@@ -82,7 +82,7 @@ const ProductDetail = () => {
           </Link>
         </Button>
 
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="bg-white dark:bg-primary/90 rounded-lg shadow-lg overflow-hidden">
           <div className="grid md:grid-cols-2 gap-8 p-6">
             <div className="relative aspect-square overflow-hidden rounded-lg">
               {product.photo_url && (
@@ -95,13 +95,13 @@ const ProductDetail = () => {
             </div>
             
             <div className="space-y-6">
-              <h1 className="text-3xl font-bold text-primary">
+              <h1 className="text-3xl font-bold text-primary dark:text-white">
                 {language === 'tr' ? product.name_tr || product.name : product.name}
               </h1>
               
               {(language === 'tr' ? product.description_tr || product.description : product.description) && (
                 <div className="prose max-w-none">
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-100">
                     {language === 'tr' ? product.description_tr || product.description : product.description}
                   </p>
                 </div>
@@ -109,8 +109,8 @@ const ProductDetail = () => {
               
               {(language === 'tr' ? product.Product_Group_tr || product.Product_Group : product.Product_Group) && (
                 <div className="pt-4">
-                  <span className="text-sm font-medium text-gray-500">{t('product.category')}:</span>
-                  <span className="ml-2 text-sm text-gray-900">
+                  <span className="text-sm font-medium text-gray-500 dark:text-gray-300">{t('product.category')}:</span>
+                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-100">
                     {language === 'tr' ? product.Product_Group_tr || product.Product_Group : product.Product_Group}
                   </span>
                 </div>
