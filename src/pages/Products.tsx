@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ProductSidebar } from "@/components/ProductSidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import ProductGrid from "@/components/products/ProductGrid";
 
 const Products = () => {
