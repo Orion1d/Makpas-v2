@@ -1,9 +1,21 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ProductSidebar } from "@/components/ProductSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import ProductGrid from "@/components/products/ProductGrid";
+
+interface Product {
+  id: number;
+  name: string;
+  name_tr?: string;
+  description?: string;
+  description_tr?: string;
+  photo_url?: string;
+  Product_Group?: string;
+  Product_Group_tr?: string;
+}
 
 const Products = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,7 +30,7 @@ const Products = () => {
         .select('*');
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as Product[];
     },
   });
 
@@ -58,7 +70,7 @@ const Products = () => {
     }
     acc[group].push(product);
     return acc;
-  }, {} as Record<string, typeof products>);
+  }, {} as Record<string, Product[]>);
 
   // Sort groups alphabetically
   const sortedGroups = Object.keys(groupedProducts).sort();
