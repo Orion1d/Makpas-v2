@@ -77,7 +77,7 @@ const Products = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen pt-16 px-4">
+      <div className="min-h-screen pt-24 px-4">
         <div className="container mx-auto">
           <div className="flex items-center justify-center h-64">
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
@@ -88,7 +88,7 @@ const Products = () => {
   }
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen pt-24">
       <SidebarProvider>
         <div className="flex w-full">
           <ProductSidebar
@@ -98,7 +98,7 @@ const Products = () => {
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
           />
-          <main className="flex-1 px-4 pb-8">
+          <main className="flex-1 px-4 pb-8 pt-4">
             <div className="container mx-auto">
               <div className="flex items-center justify-between mb-8">
                 <h1 className="text-4xl font-bold text-primary capitalize">
@@ -107,7 +107,6 @@ const Products = () => {
               </div>
 
               {activeGroup === "all" ? (
-                // Display all products grouped by category
                 sortedGroups.map((group) => (
                   <div key={group} className="mb-12">
                     <h2 className="text-2xl font-semibold mb-6 text-primary capitalize">
@@ -117,7 +116,6 @@ const Products = () => {
                   </div>
                 ))
               ) : (
-                // Display only products from selected category
                 <ProductGrid products={filteredProducts} language={language} />
               )}
             </div>
