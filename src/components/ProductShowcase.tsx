@@ -66,7 +66,7 @@ const ProductShowcase = () => {
           }}
           plugins={[plugin]}
           setApi={setApi}
-          className="w-full max-w-5xl mx-auto"
+          className="w-full max-w-6xl mx-auto"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
             {products.map((product) => (
@@ -76,7 +76,7 @@ const ProductShowcase = () => {
                   onClick={() => handleProductClick(product.id)}
                 >
                   {product.photo_url && (
-                    <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
+                    <div className="relative h-72 w-full overflow-hidden rounded-t-lg">
                       <img
                         src={product.photo_url}
                         alt={language === 'tr' ? (product.name_tr || product.name) : product.name}
@@ -84,8 +84,8 @@ const ProductShowcase = () => {
                       />
                     </div>
                   )}
-                  <CardContent className="p-4">
-                    <h3 className="text-lg font-semibold text-primary dark:text-white text-center">
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-semibold text-primary dark:text-white text-center">
                       {language === 'tr' ? (product.name_tr || product.name) : product.name}
                     </h3>
                   </CardContent>

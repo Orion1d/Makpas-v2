@@ -65,12 +65,12 @@ const Navbar = () => {
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
           
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center space-x-1 ${isActive(item.path)}`}
+                className={`flex items-center space-x-2 px-2 ${isActive(item.path)}`}
               >
                 {item.icon}
                 <span>{item.label}</span>
