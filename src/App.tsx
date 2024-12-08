@@ -7,7 +7,6 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { useEffect } from "react";
 import Navbar from "./components/Navbar";
-import TopHeader from "./components/TopHeader";
 import Footer from "./components/Footer";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
@@ -46,7 +45,6 @@ const App = () => {
               <Sonner />
               <BrowserRouter>
                 <ScrollToTop />
-                <TopHeader />
                 <Navbar />
                 <main className="flex-grow">
                   <Routes>

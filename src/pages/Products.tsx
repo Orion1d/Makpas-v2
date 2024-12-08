@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ProductSidebar } from "@/components/ProductSidebar";
@@ -66,7 +65,7 @@ const Products = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen pt-20 px-4">
+      <div className="min-h-screen pt-16 px-4">
         <div className="container mx-auto">
           <div className="flex items-center justify-center h-64">
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
@@ -77,7 +76,7 @@ const Products = () => {
   }
 
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen pt-16">
       <SidebarProvider>
         <div className="flex w-full">
           <ProductSidebar
@@ -90,8 +89,8 @@ const Products = () => {
           <main className="flex-1 px-4 pb-8">
             <div className="container mx-auto">
               <div className="flex items-center justify-between mb-8">
-                <h1 className="text-4xl font-bold text-primary">
-                  {t('products_page_title')}
+                <h1 className="text-4xl font-bold text-primary capitalize">
+                  {activeGroup === "all" ? t('products_page_title') : activeGroup}
                 </h1>
               </div>
 
