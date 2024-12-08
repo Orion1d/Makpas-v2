@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ProductSidebar } from "@/components/ProductSidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import ProductGrid from "@/components/products/ProductGrid";
 
 const Products = () => {
@@ -48,6 +47,22 @@ const Products = () => {
     return matchesSearch && matchesGroup;
   });
 
+  // Group products by their category
+  const groupedProducts = filteredProducts.reduce((acc, product) => {
+    const group = language === 'tr' 
+      ? (product.Product_Group_tr || product.Product_Group || "other")
+      : (product.Product_Group || "other");
+    
+    if (!acc[group]) {
+      acc[group] = [];
+    }
+    acc[group].push(product);
+    return acc;
+  }, {} as Record<string, typeof products>);
+
+  // Sort groups alphabetically
+  const sortedGroups = Object.keys(groupedProducts).sort();
+
   if (isLoading) {
     return (
       <div className="min-h-screen pt-20 px-4">
@@ -79,7 +94,20 @@ const Products = () => {
                 </h1>
               </div>
 
-              <ProductGrid products={filteredProducts} language={language} />
+              {activeGroup === "all" ? (
+                // Display all products grouped by category
+                sortedGroups.map((group) => (
+                  <div key={group} className="mb-12">
+                    <h2 className="text-2xl font-semibold mb-6 text-primary capitalize">
+                      {group}
+                    </h2>
+                    <ProductGrid products={groupedProducts[group]} language={language} />
+                  </div>
+                ))
+              ) : (
+                // Display only products from selected category
+                <ProductGrid products={filteredProducts} language={language} />
+              )}
             </div>
           </main>
         </div>

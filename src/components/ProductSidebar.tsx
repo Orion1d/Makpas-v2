@@ -28,7 +28,7 @@ export function ProductSidebar({
   onSearchChange,
 }: ProductSidebarProps) {
   const { t } = useLanguage();
-  const allGroups = ["all", ...groups];
+  const sortedGroups = ["all", ...groups.sort()];
 
   return (
     <Sidebar>
@@ -51,13 +51,13 @@ export function ProductSidebar({
           <SidebarGroupLabel>{t('product_groups')}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {allGroups.map((group) => (
+              {sortedGroups.map((group) => (
                 <SidebarMenuItem key={group}>
                   <SidebarMenuButton
                     onClick={() => onGroupChange(group)}
                     className={`w-full capitalize ${
                       activeGroup === group
-                        ? "bg-accent text-accent-foreground"
+                        ? "bg-primary text-primary-foreground font-semibold"
                         : ""
                     }`}
                   >
