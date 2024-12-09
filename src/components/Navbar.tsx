@@ -11,7 +11,7 @@ import { LanguageToggle } from "./navbar/LanguageToggle";
 import { MobileMenu } from "./navbar/MobileMenu";
 
 const Navbar = () => {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const { isDarkMode, toggleDarkMode } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   

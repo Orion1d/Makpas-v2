@@ -23,7 +23,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Scroll to top component
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 

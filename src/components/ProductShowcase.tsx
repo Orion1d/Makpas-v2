@@ -37,7 +37,6 @@ const ProductShowcase = () => {
 
   useEffect(() => {
     if (api) {
-      // Reset to first slide when products change
       api.scrollTo(0);
     }
   }, [products, api]);
