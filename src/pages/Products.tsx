@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ProductSidebar } from "@/components/ProductSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { ProductGrid } from "@/components/products/ProductGrid";
+import ProductGrid from "@/components/products/ProductGrid";
 import { ProductHeader } from "@/components/products/ProductHeader";
 import { ProductGroupSection } from "@/components/products/ProductGroupSection";
 import type { Product } from "@/types/product";

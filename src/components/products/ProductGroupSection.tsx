@@ -1,4 +1,4 @@
-import { ProductGrid } from "./ProductGrid";
+import ProductGrid from "./ProductGrid";
 import type { Product } from "@/types/product";
 
 interface ProductGroupSectionProps {
