@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { shouldUseDarkMode } from "@/utils/autoPreferences";
 
 type ThemeContextType = {
   isDarkMode: boolean;
@@ -11,7 +12,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("darkMode");
-      return saved ? JSON.parse(saved) : false;
+      return saved ? JSON.parse(saved) : shouldUseDarkMode();
     }
     return false;
   });
@@ -28,6 +29,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
+
+  // Check time every minute to update dark mode
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const shouldBeDark = shouldUseDarkMode();
+      if (!localStorage.getItem("darkMode")) {
+        setIsDarkMode(shouldBeDark);
+      }
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>

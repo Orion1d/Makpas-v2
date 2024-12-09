@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { getLocationBasedLanguage } from '@/utils/autoPreferences';
 
 type Language = 'en' | 'tr';
 type TranslationsType = Record<string, { en: string; tr: string }>;
@@ -33,6 +34,20 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
       return data || [];
     },
   });
+
+  // Set initial language based on IP location
+  useEffect(() => {
+    const initLanguage = async () => {
+      if (!localStorage.getItem('preferred-language')) {
+        const detectedLanguage = await getLocationBasedLanguage();
+        setLanguageState(detectedLanguage);
+        localStorage.setItem('preferred-language', detectedLanguage);
+        document.documentElement.lang = detectedLanguage;
+      }
+    };
+    
+    initLanguage();
+  }, []);
 
   useEffect(() => {
     if (data) {
