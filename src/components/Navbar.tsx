@@ -1,15 +1,16 @@
-import { Link, useLocation } from "react-router-dom";
-import { Home, Mail, Package, Info, Menu, X, Moon, Sun } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { Button } from "@/components/ui/button";
-import { TR, GB } from 'country-flag-icons/react/3x2';
 import { useState } from "react";
+import { NavLinks } from "./navbar/NavLinks";
+import { ThemeToggle } from "./navbar/ThemeToggle";
+import { LanguageToggle } from "./navbar/LanguageToggle";
+import { MobileMenu } from "./navbar/MobileMenu";
 
 const Navbar = () => {
-  const location = useLocation();
   const { language, setLanguage, t } = useLanguage();
   const { isDarkMode, toggleDarkMode } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,10 +28,6 @@ const Navbar = () => {
       return data;
     },
   });
-  
-  const isActive = (path: string) => {
-    return location.pathname === path ? "text-secondary border-b-2 border-secondary" : "text-primary hover:text-secondary";
-  };
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'tr' : 'en');
@@ -40,12 +37,9 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const navItems = [
-    { path: "/", icon: <Home size={20} />, label: t('nav_home') },
-    { path: "/about", icon: <Info size={20} />, label: t('nav_about') },
-    { path: "/products", icon: <Package size={20} />, label: t('nav_products') },
-    { path: "/contact", icon: <Mail size={20} />, label: t('nav_contact') },
-  ];
+  const isActive = (path: string) => {
+    return location.pathname === path ? "text-secondary border-b-2 border-secondary" : "text-primary hover:text-secondary";
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-background/90 backdrop-blur-sm shadow-sm z-50">
@@ -66,92 +60,21 @@ const Navbar = () => {
           </button>
           
           <div className="hidden md:flex items-center space-x-6">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center space-x-2 px-2 ${isActive(item.path)}`}
-              >
-                {item.icon}
-                <span>{item.label}</span>
-              </Link>
-            ))}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleDarkMode}
-              className="mr-2"
-            >
-              {isDarkMode ? (
-                <Sun className="h-5 w-5" />
-              ) : (
-                <Moon className="h-5 w-5" />
-              )}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={toggleLanguage}
-              className="flex items-center gap-2"
-            >
-              {language === 'en' ? (
-                <GB className="h-4 w-auto" />
-              ) : (
-                <TR className="h-4 w-auto" />
-              )}
-              <span>{language.toUpperCase()}</span>
-            </Button>
+            <NavLinks />
+            <ThemeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+            <LanguageToggle language={language} toggleLanguage={toggleLanguage} />
           </div>
         </div>
 
-        <div
-          className={`md:hidden ${
-            isMenuOpen ? "block" : "hidden"
-          } pb-4 transition-all duration-300 ease-in-out`}
-        >
-          <div className="flex flex-col space-y-4 px-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-md ${isActive(
-                  item.path
-                )}`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item.icon}
-                <span>{item.label}</span>
-              </Link>
-            ))}
-            <div className="px-4 flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleDarkMode}
-                className="flex-shrink-0"
-              >
-                {isDarkMode ? (
-                  <Sun className="h-5 w-5" />
-                ) : (
-                  <Moon className="h-5 w-5" />
-                )}
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={toggleLanguage}
-                className="w-full flex items-center justify-center gap-2"
-              >
-                {language === 'en' ? (
-                  <GB className="h-4 w-auto" />
-                ) : (
-                  <TR className="h-4 w-auto" />
-                )}
-                <span>{language.toUpperCase()}</span>
-              </Button>
-            </div>
-          </div>
-        </div>
+        <MobileMenu
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+          isActive={isActive}
+          isDarkMode={isDarkMode}
+          toggleDarkMode={toggleDarkMode}
+          language={language}
+          toggleLanguage={toggleLanguage}
+        />
       </div>
     </nav>
   );

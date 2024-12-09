@@ -4,18 +4,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ProductSidebar } from "@/components/ProductSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import ProductGrid from "@/components/products/ProductGrid";
-
-interface Product {
-  id: number;
-  name: string;
-  name_tr?: string;
-  description?: string;
-  description_tr?: string;
-  photo_url?: string;
-  Product_Group?: string;
-  Product_Group_tr?: string;
-}
+import { ProductGrid } from "@/components/products/ProductGrid";
+import { ProductHeader } from "@/components/products/ProductHeader";
+import { ProductGroupSection } from "@/components/products/ProductGroupSection";
+import type { Product } from "@/types/product";
 
 const Products = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -59,7 +51,6 @@ const Products = () => {
     return matchesSearch && matchesGroup;
   });
 
-  // Group products by their category
   const groupedProducts = filteredProducts.reduce((acc, product) => {
     const group = language === 'tr' 
       ? (product.Product_Group_tr || product.Product_Group || "other")
@@ -72,7 +63,6 @@ const Products = () => {
     return acc;
   }, {} as Record<string, Product[]>);
 
-  // Sort groups alphabetically
   const sortedGroups = Object.keys(groupedProducts).sort();
 
   if (isLoading) {
@@ -100,20 +90,18 @@ const Products = () => {
           />
           <main className="flex-1 px-4 pb-8 pt-4">
             <div className="container mx-auto">
-              <div className="flex items-center justify-between mb-8">
-                <h1 className="text-4xl font-bold text-primary capitalize">
-                  {activeGroup === "all" ? t('products_page_title') : activeGroup}
-                </h1>
-              </div>
+              <ProductHeader 
+                title={activeGroup === "all" ? t('products_page_title') : activeGroup} 
+              />
 
               {activeGroup === "all" ? (
                 sortedGroups.map((group) => (
-                  <div key={group} className="mb-12">
-                    <h2 className="text-2xl font-semibold mb-6 text-primary capitalize">
-                      {group}
-                    </h2>
-                    <ProductGrid products={groupedProducts[group]} language={language} />
-                  </div>
+                  <ProductGroupSection
+                    key={group}
+                    group={group}
+                    products={groupedProducts[group]}
+                    language={language}
+                  />
                 ))
               ) : (
                 <ProductGrid products={filteredProducts} language={language} />
