@@ -1,33 +1,77 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ServiceCardProps {
-  title: string;
-  description: string | null;
-  imageUrl: string | null;
+  service: {
+    photo_url: string;
+    title: string;
+    title_tr?: string;
+    description: string;
+    description_tr?: string;
+  };
+  language: string;
+  onNext: () => void;
+  onPrev: () => void;
 }
 
-const ServiceCard = ({ title, description, imageUrl }: ServiceCardProps) => {
+const ServiceCard = ({ service, language, onNext, onPrev }: ServiceCardProps) => {
+  const serviceTitle = language === 'tr' && service.title_tr ? service.title_tr : service.title;
+  const serviceDescription = language === 'tr' && service.description_tr ? service.description_tr : service.description;
+
   return (
-    <Card className="overflow-hidden group backdrop-blur-sm bg-white/90 dark:bg-gray-800/90 hover:shadow-2xl transition-all duration-500 border-0">
-      {imageUrl && (
-        <div className="relative h-56 w-full overflow-hidden">
-          <img
-            src={imageUrl}
-            alt={title}
-            className="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-700"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+    <div className="relative">
+      <div className="flex items-center justify-between">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10"
+          onClick={onPrev}
+        >
+          <ChevronLeft className="h-8 w-8" />
+        </Button>
+
+        <div className="w-full px-16">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div 
+              className="relative h-[400px] overflow-hidden rounded-xl"
+              style={{
+                backgroundImage: `url(${service.photo_url})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              <div className="absolute inset-0 bg-black/30"></div>
+            </div>
+            
+            <div className="space-y-6">
+              <div 
+                className={cn(
+                  "transition-opacity duration-500",
+                  service ? "opacity-100" : "opacity-0"
+                )}
+              >
+                <h3 className="text-3xl font-bold mb-4 text-primary">
+                  {serviceTitle}
+                </h3>
+                <p className="text-lg text-gray-600 leading-relaxed">
+                  {serviceDescription}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
-      <CardContent className="p-8 bg-gradient-to-b from-transparent to-white/5">
-        <h3 className="text-2xl font-bold mb-4 text-primary dark:text-white group-hover:text-secondary transition-colors duration-300">
-          {title}
-        </h3>
-        <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
-          {description}
-        </p>
-      </CardContent>
-    </Card>
+
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10"
+          onClick={onNext}
+        >
+          <ChevronRight className="h-8 w-8" />
+        </Button>
+      </div>
+    </div>
   );
 };
 
