@@ -16,6 +16,10 @@ interface ServiceCardProps {
 }
 
 const ServiceCard = ({ service, language, onNext, onPrev }: ServiceCardProps) => {
+  if (!service) {
+    return null;
+  }
+
   const serviceTitle = language === 'tr' && service.title_tr ? service.title_tr : service.title;
   const serviceDescription = language === 'tr' && service.description_tr ? service.description_tr : service.description;
 

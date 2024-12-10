@@ -35,7 +35,13 @@ const ServicesShowcase = () => {
     return <ServicesSkeleton />;
   }
 
-  if (services.length === 0) {
+  if (!services || services.length === 0) {
+    return null;
+  }
+
+  const currentService = services[currentIndex];
+
+  if (!currentService) {
     return null;
   }
 
@@ -47,7 +53,7 @@ const ServicesShowcase = () => {
         </h2>
         
         <ServiceCard
-          service={services[currentIndex]}
+          service={currentService}
           language={language}
           onNext={nextService}
           onPrev={prevService}
