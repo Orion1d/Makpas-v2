@@ -69,11 +69,11 @@ const Navbar = () => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="container mx-auto px-6 py-2">
+      <div className="container mx-auto px-6 py-1">
         <div className="flex items-center justify-between h-12">
           <Link to="/" className="flex items-center space-x-2">
             {logo?.photo_url && (
-              <img src={logo.photo_url} alt="Logo" className="h-10 py-2" />
+              <img src={logo.photo_url} alt="Logo" className="h-8" />
             )}
           </Link>
 
