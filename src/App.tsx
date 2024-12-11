@@ -7,6 +7,7 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { useEffect } from "react";
 import Navbar from "./components/Navbar";
+import BottomNav from "./components/BottomNav";
 import Footer from "./components/Footer";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
@@ -39,7 +40,7 @@ const App = () => {
       <ThemeProvider>
         <LanguageProvider>
           <TooltipProvider>
-            <div className="min-h-screen flex flex-col bg-background">
+            <div className="min-h-screen flex flex-col bg-background pb-16">
               <Toaster />
               <Sonner />
               <BrowserRouter>
@@ -54,6 +55,7 @@ const App = () => {
                     <Route path="/about" element={<About />} />
                   </Routes>
                 </main>
+                <BottomNav />
                 <Footer />
               </BrowserRouter>
             </div>
