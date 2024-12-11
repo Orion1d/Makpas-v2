@@ -14,8 +14,8 @@ const BottomNav = () => {
       const documentHeight = document.documentElement.scrollHeight;
       const scrollTop = window.scrollY;
       
-      // Show when near bottom (within 100px)
-      setIsVisible(scrollTop + windowHeight > documentHeight - 100);
+      // Show when scrolling down (after 100px)
+      setIsVisible(scrollTop > 100);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -35,7 +35,7 @@ const BottomNav = () => {
       }`}
     >
       <div className="container mx-auto px-4">
-        <div className="flex justify-around items-center h-16">
+        <div className="flex justify-around items-center h-12">
           <Link
             to="/"
             className={`flex flex-col items-center space-y-1 p-2 transition-colors ${
