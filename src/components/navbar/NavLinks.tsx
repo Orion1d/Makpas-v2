@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Mail, Package, Info } from "lucide-react";
+import { Home, Package, Info, Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const NavLinks = () => {
@@ -12,8 +12,8 @@ export const NavLinks = () => {
 
   const navItems = [
     { path: "/", icon: <Home size={20} />, label: t('nav_home') },
-    { path: "/about", icon: <Info size={20} />, label: t('nav_about') },
     { path: "/products", icon: <Package size={20} />, label: t('nav_products') },
+    { path: "/about", icon: <Info size={20} />, label: t('nav_about') },
     { path: "/contact", icon: <Mail size={20} />, label: t('nav_contact') },
   ];
 
