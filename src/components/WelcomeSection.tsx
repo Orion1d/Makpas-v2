@@ -24,7 +24,7 @@ const WelcomeSection = () => {
 
   if (isLoading) {
     return (
-      <section className="relative h-screen w-full bg-gray-900">
+      <section className="relative h-screen w-full bg-gradient-to-b from-gray-900 to-gray-800">
         <div className="relative h-full flex items-center justify-center text-center">
           <div className="container mx-auto px-4">
             <Skeleton className="h-16 w-3/4 md:w-1/2 mx-auto mb-6 bg-gray-800" />
@@ -43,38 +43,46 @@ const WelcomeSection = () => {
   }
 
   return (
-    <section className="relative h-screen w-full">
+    <section className="relative h-screen w-full overflow-hidden">
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat transform hover:scale-105 transition-transform duration-[2s]"
         style={{
           backgroundImage: `url(${welcomeImage})`,
           backgroundAttachment: "fixed"
         }}
       >
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50 backdrop-blur-sm"></div>
       </div>
       
       <div className="relative h-full flex items-center justify-center text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in">
+        <div className="container mx-auto px-4 animate-fade-in">
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg transform hover:scale-105 transition-transform duration-300">
             {t('welcome.title')}
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-12 animate-fade-in">
+          <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-12 leading-relaxed drop-shadow-md">
             {t('welcome.subtitle')}
           </p>
           
           <div className="flex justify-center gap-6 mb-16">
-            <Button asChild variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white">
+            <Button 
+              asChild 
+              variant="outline" 
+              className="bg-white/10 hover:bg-white/20 text-white border-white backdrop-blur-md transform hover:scale-105 transition-all duration-300 shadow-lg"
+            >
               <Link to="/products">{t('nav.view_products')}</Link>
             </Button>
-            <Button asChild variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white">
+            <Button 
+              asChild 
+              variant="outline" 
+              className="bg-white/10 hover:bg-white/20 text-white border-white backdrop-blur-md transform hover:scale-105 transition-all duration-300 shadow-lg"
+            >
               <Link to="/contact">{t('nav.contact_us')}</Link>
             </Button>
           </div>
 
-          <div className="animate-bounce">
+          <div className="animate-bounce transform hover:scale-110 transition-transform duration-300">
             <svg 
-              className="w-8 h-8 mx-auto text-white"
+              className="w-8 h-8 mx-auto text-white drop-shadow-lg"
               fill="none" 
               strokeLinecap="round" 
               strokeLinejoin="round" 

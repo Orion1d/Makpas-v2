@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { NavLinks } from "./navbar/NavLinks";
 import { ThemeToggle } from "./navbar/ThemeToggle";
 import { LanguageToggle } from "./navbar/LanguageToggle";
@@ -14,9 +14,6 @@ const Navbar = () => {
   const { language, setLanguage } = useLanguage();
   const { isDarkMode, toggleDarkMode } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
   
   const { data: logo } = useQuery({
     queryKey: ['logo'],
@@ -32,23 +29,6 @@ const Navbar = () => {
     },
   });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY < lastScrollY || currentScrollY < 50 || isHovered) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY, isHovered]);
-
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'tr' : 'en');
   };
@@ -62,18 +42,12 @@ const Navbar = () => {
   };
 
   return (
-    <nav 
-      className={`fixed top-0 left-0 right-0 bg-background/90 backdrop-blur-sm shadow-sm z-50 transition-transform duration-300 ease-in-out ${
-        isVisible ? 'translate-y-0' : '-translate-y-full'
-      }`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="container mx-auto px-6 py-1">
-        <div className="flex items-center justify-between h-12">
+    <nav className="fixed top-0 left-0 right-0 bg-background/90 backdrop-blur-sm shadow-sm z-50">
+      <div className="container mx-auto px-6 py-2">
+        <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center space-x-2">
             {logo?.photo_url && (
-              <img src={logo.photo_url} alt="Logo" className="h-8" />
+              <img src={logo.photo_url} alt="Logo" className="h-10" />
             )}
           </Link>
 

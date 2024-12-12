@@ -1,13 +1,10 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
-import ServicesSkeleton from "./services/ServicesSkeleton";
 import ServiceCard from "./services/ServiceCard";
-import ServicesPagination from "./services/ServicesPagination";
+import ServicesSkeleton from "./services/ServicesSkeleton";
 
 const ServicesShowcase = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const { t, language } = useLanguage();
 
   const { data: services = [], isLoading } = useQuery({
@@ -16,54 +13,41 @@ const ServicesShowcase = () => {
       const { data, error } = await supabase
         .from('services')
         .select('*')
-        .order('order_index', { ascending: true });
+        .order('order_index');
       
       if (error) throw error;
       return data || [];
     },
   });
 
-  const nextService = () => {
-    setCurrentIndex((prev) => (prev + 1) % services.length);
-  };
-
-  const prevService = () => {
-    setCurrentIndex((prev) => (prev - 1 + services.length) % services.length);
-  };
-
   if (isLoading) {
     return <ServicesSkeleton />;
   }
 
-  if (!services || services.length === 0) {
-    return null;
-  }
-
-  const currentService = services[currentIndex];
-
-  if (!currentService) {
-    return null;
-  }
-
   return (
-    <section className="w-full py-20 bg-gray-50 dark:bg-gray-900">
+    <section className="py-24 bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 transition-all duration-500">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-16 text-primary dark:text-white">
+        <h2 className="text-4xl font-bold text-center mb-16 text-primary dark:text-white transform hover:scale-105 transition-transform duration-300">
           {t('services.title')}
         </h2>
         
-        <ServiceCard
-          service={currentService}
-          language={language}
-          onNext={nextService}
-          onPrev={prevService}
-        />
-
-        <ServicesPagination
-          totalServices={services.length}
-          currentIndex={currentIndex}
-          onPageChange={setCurrentIndex}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          {services.map((service, index) => (
+            <div 
+              key={service.id}
+              className="transform hover:scale-105 transition-all duration-500"
+              style={{
+                animationDelay: `${index * 150}ms`,
+              }}
+            >
+              <ServiceCard
+                title={language === 'tr' ? service.title_tr || service.title : service.title}
+                description={language === 'tr' ? service.description_tr || service.description : service.description}
+                imageUrl={service.photo_url}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
