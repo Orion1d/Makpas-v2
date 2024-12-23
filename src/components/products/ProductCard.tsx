@@ -18,7 +18,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ product, language, onNext, onPrev }: ProductCardProps) => {
   return (
-    <div className="relative bg-primary/90 dark:bg-primary/90 rounded-lg shadow-lg overflow-hidden">
+    <div className="relative bg-white dark:bg-primary/90 rounded-lg shadow-lg overflow-hidden border border-border">
       <div className="grid md:grid-cols-2 gap-8 p-6">
         <div className="relative aspect-square overflow-hidden rounded-lg">
           {product.photo_url && (
@@ -30,13 +30,13 @@ const ProductCard = ({ product, language, onNext, onPrev }: ProductCardProps) =>
           )}
         </div>
         
-        <div className="space-y-6 text-white">
+        <div className="space-y-6 text-foreground dark:text-white">
           <h3 className="text-2xl font-bold">
             {language === 'tr' ? product.name_tr || product.name : product.name}
           </h3>
           
           {(language === 'tr' ? product.description_tr || product.description : product.description) && (
-            <p className="text-gray-100">
+            <p className="text-muted-foreground dark:text-gray-100">
               {language === 'tr' ? product.description_tr || product.description : product.description}
             </p>
           )}
@@ -54,7 +54,7 @@ const ProductCard = ({ product, language, onNext, onPrev }: ProductCardProps) =>
           variant="ghost"
           size="icon"
           onClick={onPrev}
-          className="text-white hover:bg-white/20"
+          className="text-foreground dark:text-white hover:bg-background/20"
         >
           <ChevronLeft className="h-8 w-8" />
         </Button>
@@ -65,7 +65,7 @@ const ProductCard = ({ product, language, onNext, onPrev }: ProductCardProps) =>
           variant="ghost"
           size="icon"
           onClick={onNext}
-          className="text-white hover:bg-white/20"
+          className="text-foreground dark:text-white hover:bg-background/20"
         >
           <ChevronRight className="h-8 w-8" />
         </Button>

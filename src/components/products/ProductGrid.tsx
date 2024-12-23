@@ -18,7 +18,7 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
       {products.map((product) => (
         <Card
           key={product.id}
-          className="cursor-pointer transition-transform duration-300 hover:scale-105"
+          className="cursor-pointer transition-transform duration-300 hover:scale-105 bg-white dark:bg-gray-800 border border-border"
           onClick={() => handleProductClick(product.id)}
         >
           {product.photo_url && (
@@ -31,12 +31,12 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
             </div>
           )}
           <CardHeader>
-            <CardTitle className="text-xl text-primary">
+            <CardTitle className="text-xl text-primary dark:text-white">
               {language === 'tr' ? (product.name_tr || product.name) : product.name}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600 line-clamp-3">
+            <p className="text-muted-foreground dark:text-gray-300 line-clamp-3">
               {language === 'tr' ? (product.description_tr || product.description) : product.description}
             </p>
           </CardContent>
