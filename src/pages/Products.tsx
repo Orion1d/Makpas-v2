@@ -80,7 +80,7 @@ const Products = () => {
   return (
     <div className="min-h-screen pt-24">
       <SidebarProvider>
-        <div className="flex w-full">
+        <div className="flex flex-col md:flex-row w-full">
           <ProductSidebar
             groups={productGroups}
             activeGroup={activeGroup}
@@ -112,6 +112,6 @@ const Products = () => {
       </SidebarProvider>
     </div>
   );
-};
+}
 
 export default Products;
