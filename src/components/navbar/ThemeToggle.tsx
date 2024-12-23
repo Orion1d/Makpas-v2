@@ -9,16 +9,17 @@ interface ThemeToggleProps {
 export const ThemeToggle = ({ isDarkMode, toggleDarkMode }: ThemeToggleProps) => {
   return (
     <Button
-      variant="ghost"
-      size="icon"
+      variant="outline"
+      size="sm"
       onClick={toggleDarkMode}
-      className="mr-2"
+      className="flex items-center gap-2"
     >
       {isDarkMode ? (
-        <Sun className="h-5 w-5" />
+        <Sun className="h-4 w-4" />
       ) : (
-        <Moon className="h-5 w-5" />
+        <Moon className="h-4 w-4" />
       )}
+      <span>{isDarkMode ? 'Light' : 'Dark'}</span>
     </Button>
   );
 };

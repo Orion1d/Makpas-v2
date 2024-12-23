@@ -51,8 +51,8 @@ export function ProductSidebar({
             onClick={() => onGroupChange(group)}
             className={`px-3 py-1.5 rounded-full text-sm whitespace-nowrap transition-colors ${
               activeGroup === group
-                ? "bg-primary text-primary-foreground"
-                : "bg-secondary hover:bg-secondary/80"
+                ? "bg-secondary text-secondary-foreground"
+                : "bg-muted hover:bg-muted/80"
             }`}
           >
             {group}
@@ -91,7 +91,7 @@ export function ProductSidebar({
                       onClick={() => onGroupChange(group)}
                       className={`w-full capitalize ${
                         activeGroup === group
-                          ? "bg-primary text-primary-foreground font-semibold"
+                          ? "bg-secondary text-secondary-foreground"
                           : ""
                       }`}
                     >
