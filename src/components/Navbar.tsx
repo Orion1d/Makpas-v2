@@ -42,41 +42,46 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-background/90 backdrop-blur-sm shadow-sm z-50">
-      <div className="container mx-auto px-6 py-1">
-        <div className="flex items-center justify-between h-12">
-          <Link to="/" className="flex items-center space-x-2">
-            {logo?.photo_url && (
-              <img src={logo.photo_url} alt="Logo" className="h-11" />
-            )}
-          </Link>
+    <>
+      <nav className="fixed top-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-b border-border z-50">
+        <div className="container mx-auto px-6">
+          <div className="flex items-center justify-between h-16">
+            <Link to="/" className="flex items-center space-x-2">
+              {logo?.photo_url && (
+                <img src={logo.photo_url} alt="Logo" className="h-11" />
+              )}
+            </Link>
 
-          <button
-            onClick={toggleMenu}
-            className="md:hidden p-2 text-primary hover:text-secondary"
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-          
-          <div className="hidden md:flex items-center space-x-6">
-            <NavLinks />
-            <ThemeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-            <LanguageToggle language={language} toggleLanguage={toggleLanguage} />
+            <button
+              onClick={toggleMenu}
+              className="md:hidden p-2 text-primary hover:text-secondary"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+            
+            <div className="hidden md:flex items-center space-x-2">
+              <NavLinks />
+              <div className="flex items-center gap-2 ml-4">
+                <ThemeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+                <LanguageToggle language={language} toggleLanguage={toggleLanguage} />
+              </div>
+            </div>
           </div>
-        </div>
 
-        <MobileMenu
-          isOpen={isMenuOpen}
-          onClose={() => setIsMenuOpen(false)}
-          isActive={isActive}
-          isDarkMode={isDarkMode}
-          toggleDarkMode={toggleDarkMode}
-          language={language}
-          toggleLanguage={toggleLanguage}
-        />
-      </div>
-    </nav>
+          <MobileMenu
+            isOpen={isMenuOpen}
+            onClose={() => setIsMenuOpen(false)}
+            isActive={isActive}
+            isDarkMode={isDarkMode}
+            toggleDarkMode={toggleDarkMode}
+            language={language}
+            toggleLanguage={toggleLanguage}
+          />
+        </div>
+      </nav>
+      <div className="h-16" /> {/* Spacer to prevent content from going under navbar */}
+    </>
   );
 };
 

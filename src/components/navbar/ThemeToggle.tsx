@@ -10,16 +10,15 @@ export const ThemeToggle = ({ isDarkMode, toggleDarkMode }: ThemeToggleProps) =>
   return (
     <Button
       variant="outline"
-      size="sm"
+      size="icon"
       onClick={toggleDarkMode}
-      className="flex items-center gap-2"
+      className="h-9 w-9"
     >
       {isDarkMode ? (
         <Sun className="h-4 w-4" />
       ) : (
         <Moon className="h-4 w-4" />
       )}
-      <span>{isDarkMode ? 'Light' : 'Dark'}</span>
     </Button>
   );
 };
