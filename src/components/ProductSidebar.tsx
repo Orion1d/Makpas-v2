@@ -3,8 +3,8 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -34,7 +34,7 @@ export function ProductSidebar({
 
   // Mobile filter bar component
   const MobileFilterBar = () => (
-    <div className="md:hidden w-full space-y-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4 border-b">
+    <div className="md:hidden w-full space-y-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4 border-b sticky top-0 z-20">
       <div className="relative">
         <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
@@ -65,7 +65,7 @@ export function ProductSidebar({
   return (
     <>
       <MobileFilterBar />
-      <Sidebar className={`hidden md:block ${className}`}>
+      <Sidebar className={`hidden md:block sticky top-4 h-[calc(100vh-2rem)] ${className}`}>
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel>{t('search_products')}</SidebarGroupLabel>
