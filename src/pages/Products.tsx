@@ -78,7 +78,7 @@ const Products = () => {
   }
 
   return (
-    <div className="min-h-screen pt-24">
+    <div className="min-h-screen">
       <SidebarProvider>
         <div className="flex flex-col md:flex-row w-full">
           <ProductSidebar
@@ -88,7 +88,7 @@ const Products = () => {
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
           />
-          <main className="flex-1 px-4 pb-8 pt-4">
+          <main className="flex-1 px-4 pb-8">
             <div className="container mx-auto">
               <ProductHeader 
                 title={activeGroup === "all" ? t('products_page_title') : activeGroup} 

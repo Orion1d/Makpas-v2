@@ -45,8 +45,8 @@ const Navbar = () => {
     <>
       <nav className="fixed top-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-b border-border z-50">
         <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
-            <Link to="/" className="flex items-center space-x-2">
+          <div className="flex items-center justify-between h-14">
+            <Link to="/" className="flex items-center">
               {logo?.photo_url && (
                 <img src={logo.photo_url} alt="Logo" className="h-11" />
               )}
@@ -60,9 +60,11 @@ const Navbar = () => {
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
             
-            <div className="hidden md:flex items-center space-x-2">
-              <NavLinks />
-              <div className="flex items-center gap-2 ml-4">
+            <div className="hidden md:flex items-center">
+              <div className="flex items-center space-x-6 mr-8">
+                <NavLinks />
+              </div>
+              <div className="flex items-center gap-4">
                 <ThemeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
                 <LanguageToggle language={language} toggleLanguage={toggleLanguage} />
               </div>
@@ -80,7 +82,7 @@ const Navbar = () => {
           />
         </div>
       </nav>
-      <div className="h-16" /> {/* Spacer to prevent content from going under navbar */}
+      <div className="h-14" /> {/* Reduced spacer height to match navbar */}
     </>
   );
 };

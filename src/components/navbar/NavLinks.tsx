@@ -23,7 +23,7 @@ export const NavLinks = () => {
         <Link
           key={item.path}
           to={item.path}
-          className={`flex items-center space-x-2 px-2 ${isActive(item.path)}`}
+          className={`flex items-center space-x-3 px-3 py-1 ${isActive(item.path)}`}
         >
           {item.icon}
           <span>{item.label}</span>
