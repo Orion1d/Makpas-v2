@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { useEffect } from "react";
@@ -52,6 +52,7 @@ const App = () => {
                     <Route path="/product/:id" element={<ProductDetail />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/about" element={<About />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
                 </main>
                 <Footer />
