@@ -17,13 +17,15 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, language, onNext, onPrev }: ProductCardProps) => {
+  const mainPhotoUrl = product.photo_url ? product.photo_url.split(',')[0].trim() : undefined;
+
   return (
     <div className="relative bg-white dark:bg-primary/90 rounded-lg shadow-lg overflow-hidden border border-border">
       <div className="grid md:grid-cols-2 gap-8 p-6">
         <div className="relative aspect-square overflow-hidden rounded-lg">
-          {product.photo_url && (
+          {mainPhotoUrl && (
             <img
-              src={product.photo_url}
+              src={mainPhotoUrl}
               alt={language === 'tr' ? product.name_tr || product.name : product.name}
               className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
             />

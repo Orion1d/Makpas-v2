@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import ProductImageGallery from "@/components/products/ProductImageGallery";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -67,6 +68,8 @@ const ProductDetail = () => {
     );
   }
 
+  const photoUrls = product.photo_url ? product.photo_url.split(',').map(url => url.trim()) : [];
+
   return (
     <div className="min-h-screen pt-24 px-4">
       <div className="container mx-auto max-w-4xl">
@@ -84,15 +87,10 @@ const ProductDetail = () => {
 
         <div className="bg-white dark:bg-primary/90 rounded-lg shadow-lg overflow-hidden">
           <div className="grid md:grid-cols-2 gap-8 p-6">
-            <div className="relative aspect-square overflow-hidden rounded-lg">
-              {product.photo_url && (
-                <img
-                  src={product.photo_url}
-                  alt={language === 'tr' ? product.name_tr || product.name : product.name}
-                  className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
-                />
-              )}
-            </div>
+            <ProductImageGallery 
+              photoUrls={photoUrls}
+              productName={language === 'tr' ? product.name_tr || product.name : product.name}
+            />
             
             <div className="space-y-6">
               <h1 className="text-3xl font-bold text-primary dark:text-white">
