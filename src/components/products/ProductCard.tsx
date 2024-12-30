@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import ImageLightbox from "@/components/about/ImageLightbox";
 
 interface ProductCardProps {
   product: {
@@ -24,11 +25,16 @@ const ProductCard = ({ product, language, onNext, onPrev }: ProductCardProps) =>
       <div className="grid md:grid-cols-2 gap-8 p-6">
         <div className="relative aspect-square overflow-hidden rounded-lg">
           {mainPhotoUrl && (
-            <img
-              src={mainPhotoUrl}
+            <ImageLightbox
+              imageUrl={mainPhotoUrl}
               alt={language === 'tr' ? product.name_tr || product.name : product.name}
-              className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
-            />
+            >
+              <img
+                src={mainPhotoUrl}
+                alt={language === 'tr' ? product.name_tr || product.name : product.name}
+                className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
+              />
+            </ImageLightbox>
           )}
         </div>
         
