@@ -7,11 +7,15 @@ import { useToast } from "@/components/ui/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import ProductImageGallery from "@/components/products/ProductImageGallery";
 import { RelatedProducts } from "@/components/products/RelatedProducts";
+import { ProductSidebar } from "@/components/ProductSidebar";
+import { useState } from "react";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const { toast } = useToast();
   const { language, t } = useLanguage();
+  const [activeGroup, setActiveGroup] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { data: product, isLoading, error } = useQuery({
     queryKey: ['product', id],
@@ -44,10 +48,22 @@ const ProductDetail = () => {
     },
   });
 
+  const { data: groups = [] } = useQuery({
+    queryKey: ['productGroups'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('products')
+        .select('Product_Group')
+        .not('Product_Group', 'is', null);
+      
+      return [...new Set(data?.map(p => p.Product_Group))];
+    },
+  });
+
   if (isLoading) {
     return (
-      <div className="min-h-screen pt-24 px-4">
-        <div className="container mx-auto max-w-4xl">
+      <div className="min-h-screen pt-16 px-4">
+        <div className="container mx-auto">
           <div className="flex items-center justify-center h-64">
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
           </div>
@@ -58,8 +74,8 @@ const ProductDetail = () => {
 
   if (error || !product) {
     return (
-      <div className="min-h-screen pt-24 px-4">
-        <div className="container mx-auto max-w-4xl text-center">
+      <div className="min-h-screen pt-16 px-4">
+        <div className="container mx-auto text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h1>
           <Button asChild>
             <Link to="/products">Back to Products</Link>
@@ -72,56 +88,69 @@ const ProductDetail = () => {
   const photoUrls = product.photo_url ? product.photo_url.split(',').map(url => url.trim()) : [];
 
   return (
-    <div className="min-h-screen pt-16 px-4">
-      <div className="container mx-auto max-w-4xl">
-        <Button
-          variant="ghost"
-          size="sm"
-          asChild
-          className="mb-4"
-        >
-          <Link to="/products" className="flex items-center gap-2">
-            <ArrowLeft size={20} />
-            {t('back.to.products')}
-          </Link>
-        </Button>
+    <div className="min-h-screen pt-16">
+      <div className="container mx-auto">
+        <div className="grid md:grid-cols-[280px_1fr] gap-6">
+          <ProductSidebar
+            groups={groups}
+            activeGroup={activeGroup}
+            onGroupChange={setActiveGroup}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            className="hidden md:block"
+          />
+          
+          <div className="px-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="mb-4"
+            >
+              <Link to="/products" className="flex items-center gap-2">
+                <ArrowLeft size={20} />
+                {t('back.to.products')}
+              </Link>
+            </Button>
 
-        <div className="bg-white dark:bg-primary/90 rounded-lg shadow-lg overflow-hidden">
-          <div className="grid md:grid-cols-2 gap-8 p-6">
-            <ProductImageGallery 
-              photoUrls={photoUrls}
-              productName={language === 'tr' ? product.name_tr || product.name : product.name}
-            />
-            
-            <div className="space-y-6">
-              <h1 className="text-3xl font-bold text-primary dark:text-white">
-                {language === 'tr' ? product.name_tr || product.name : product.name}
-              </h1>
-              
-              {(language === 'tr' ? product.description_tr || product.description : product.description) && (
-                <div className="prose max-w-none">
-                  <p className="text-gray-600 dark:text-gray-100">
-                    {language === 'tr' ? product.description_tr || product.description : product.description}
-                  </p>
+            <div className="bg-white dark:bg-primary/90 rounded-lg shadow-lg overflow-hidden">
+              <div className="grid md:grid-cols-2 gap-8 p-6">
+                <ProductImageGallery 
+                  photoUrls={photoUrls}
+                  productName={language === 'tr' ? product.name_tr || product.name : product.name}
+                />
+                
+                <div className="space-y-6">
+                  <h1 className="text-3xl font-bold text-foreground">
+                    {language === 'tr' ? product.name_tr || product.name : product.name}
+                  </h1>
+                  
+                  {(language === 'tr' ? product.description_tr || product.description : product.description) && (
+                    <div className="prose max-w-none">
+                      <p className="text-foreground">
+                        {language === 'tr' ? product.description_tr || product.description : product.description}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {(language === 'tr' ? product.Product_Group_tr || product.Product_Group : product.Product_Group) && (
+                    <div className="pt-4">
+                      <span className="text-sm font-medium text-muted-foreground">{t('product.category')}:</span>
+                      <span className="ml-2 text-sm text-foreground">
+                        {language === 'tr' ? product.Product_Group_tr || product.Product_Group : product.Product_Group}
+                      </span>
+                    </div>
+                  )}
                 </div>
-              )}
-              
-              {(language === 'tr' ? product.Product_Group_tr || product.Product_Group : product.Product_Group) && (
-                <div className="pt-4">
-                  <span className="text-sm font-medium text-gray-500 dark:text-gray-300">{t('product.category')}:</span>
-                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-100">
-                    {language === 'tr' ? product.Product_Group_tr || product.Product_Group : product.Product_Group}
-                  </span>
-                </div>
-              )}
+              </div>
             </div>
+
+            <RelatedProducts 
+              currentProductId={product.id} 
+              productGroup={product.Product_Group} 
+            />
           </div>
         </div>
-
-        <RelatedProducts 
-          currentProductId={product.id} 
-          productGroup={product.Product_Group} 
-        />
       </div>
     </div>
   );
