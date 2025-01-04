@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import ProductImageGallery from "@/components/products/ProductImageGallery";
 import { RelatedProducts } from "@/components/products/RelatedProducts";
+import { motion } from "framer-motion";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -72,7 +73,13 @@ const ProductDetail = () => {
   const photoUrls = product.photo_url ? product.photo_url.split(',').map(url => url.trim()) : [];
 
   return (
-    <div className="min-h-screen pt-16">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="min-h-screen pt-16"
+    >
       <div className="container mx-auto px-6 md:px-8 lg:px-12 max-w-7xl">
         <Button
           variant="ghost"
@@ -86,14 +93,24 @@ const ProductDetail = () => {
           </Link>
         </Button>
 
-        <div className="bg-white dark:bg-primary/90 rounded-lg shadow-lg overflow-hidden">
+        <motion.div 
+          initial={{ y: 20 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="bg-white dark:bg-primary/90 rounded-lg shadow-lg overflow-hidden"
+        >
           <div className="grid md:grid-cols-2 gap-8 p-6 md:p-8">
             <ProductImageGallery 
               photoUrls={photoUrls}
               productName={language === 'tr' ? product.name_tr || product.name : product.name}
             />
             
-            <div className="space-y-6">
+            <motion.div 
+              initial={{ x: 20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              className="space-y-6"
+            >
               <h1 className="text-3xl font-bold text-foreground">
                 {language === 'tr' ? product.name_tr || product.name : product.name}
               </h1>
@@ -114,16 +131,16 @@ const ProductDetail = () => {
                   </span>
                 </div>
               )}
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
 
         <RelatedProducts 
           currentProductId={product.id} 
           productGroup={product.Product_Group} 
         />
       </div>
-    </div>
+    </motion.div>
   );
 };
 
