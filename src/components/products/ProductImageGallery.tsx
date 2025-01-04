@@ -28,27 +28,22 @@ const ProductImageGallery = ({ photoUrls, productName }: ProductImageGalleryProp
       {photoUrls.length > 1 && (
         <div className="grid grid-cols-4 gap-2">
           {photoUrls.map((url, index) => (
-            <ImageLightbox
+            <button
               key={url}
-              imageUrl={url}
-              alt={`${productName} - Thumbnail ${index + 1}`}
+              onClick={() => setSelectedImageIndex(index)}
+              className={cn(
+                "relative aspect-square overflow-hidden rounded-md border-2",
+                selectedImageIndex === index
+                  ? "border-primary"
+                  : "border-transparent hover:border-primary/50"
+              )}
             >
-              <button
-                onClick={() => setSelectedImageIndex(index)}
-                className={cn(
-                  "relative aspect-square overflow-hidden rounded-md border-2",
-                  selectedImageIndex === index
-                    ? "border-primary"
-                    : "border-transparent hover:border-primary/50"
-                )}
-              >
-                <img
-                  src={url}
-                  alt={`${productName} - Thumbnail ${index + 1}`}
-                  className="object-cover w-full h-full"
-                />
-              </button>
-            </ImageLightbox>
+              <img
+                src={url}
+                alt={`${productName} - Thumbnail ${index + 1}`}
+                className="object-cover w-full h-full"
+              />
+            </button>
           ))}
         </div>
       )}

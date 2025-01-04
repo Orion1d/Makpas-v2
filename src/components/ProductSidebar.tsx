@@ -32,6 +32,13 @@ export function ProductSidebar({
   const { t } = useLanguage();
   const sortedGroups = ["all", ...groups.sort()];
 
+  const getGroupDisplayName = (group: string) => {
+    if (group === "all") {
+      return t('all_products');
+    }
+    return group;
+  };
+
   // Mobile filter bar component
   const MobileFilterBar = () => (
     <div className="md:hidden w-full space-y-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4 border-b sticky top-14 z-20">
@@ -55,7 +62,7 @@ export function ProductSidebar({
                 : "bg-muted hover:bg-muted/80"
             }`}
           >
-            {group}
+            {getGroupDisplayName(group)}
           </button>
         ))}
       </div>
@@ -95,7 +102,7 @@ export function ProductSidebar({
                           : ""
                       }`}
                     >
-                      <span>{group}</span>
+                      <span>{getGroupDisplayName(group)}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
