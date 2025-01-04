@@ -73,7 +73,7 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen pt-16">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6 md:px-8 lg:px-12 max-w-7xl">
         <Button
           variant="ghost"
           size="sm"
@@ -87,7 +87,7 @@ const ProductDetail = () => {
         </Button>
 
         <div className="bg-white dark:bg-primary/90 rounded-lg shadow-lg overflow-hidden">
-          <div className="grid md:grid-cols-2 gap-8 p-6">
+          <div className="grid md:grid-cols-2 gap-8 p-6 md:p-8">
             <ProductImageGallery 
               photoUrls={photoUrls}
               productName={language === 'tr' ? product.name_tr || product.name : product.name}
