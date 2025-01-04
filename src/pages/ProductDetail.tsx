@@ -72,13 +72,13 @@ const ProductDetail = () => {
   const photoUrls = product.photo_url ? product.photo_url.split(',').map(url => url.trim()) : [];
 
   return (
-    <div className="min-h-screen pt-24 px-4">
+    <div className="min-h-screen pt-16 px-4">
       <div className="container mx-auto max-w-4xl">
         <Button
           variant="ghost"
           size="sm"
           asChild
-          className="mb-6"
+          className="mb-4"
         >
           <Link to="/products" className="flex items-center gap-2">
             <ArrowLeft size={20} />
