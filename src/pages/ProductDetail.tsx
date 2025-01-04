@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import ProductImageGallery from "@/components/products/ProductImageGallery";
+import { RelatedProducts } from "@/components/products/RelatedProducts";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -116,6 +117,11 @@ const ProductDetail = () => {
             </div>
           </div>
         </div>
+
+        <RelatedProducts 
+          currentProductId={product.id} 
+          productGroup={product.Product_Group} 
+        />
       </div>
     </div>
   );
