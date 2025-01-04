@@ -13,11 +13,12 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import ProductsSkeleton from "./products/ProductsSkeleton";
 import Autoplay from "embla-carousel-autoplay";
+import type { CarouselApi } from "@/components/ui/carousel";
 
 const ProductShowcase = () => {
   const { t, language } = useLanguage();
   const navigate = useNavigate();
-  const [api, setApi] = useState<any>();
+  const [api, setApi] = useState<CarouselApi>();
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ['products'],
@@ -49,7 +50,8 @@ const ProductShowcase = () => {
     return null;
   }
 
-  const plugin = Autoplay({ delay: 4000 });
+  // Initialize autoplay plugin with proper typing
+  const autoplayPlugin = Autoplay({ delay: 4000, stopOnInteraction: false }) as unknown as CarouselPlugin;
 
   return (
     <section className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-colors duration-500">
@@ -63,7 +65,7 @@ const ProductShowcase = () => {
             align: "start",
             loop: true,
           }}
-          plugins={[plugin]}
+          plugins={[autoplayPlugin]}
           setApi={setApi}
           className="w-full max-w-6xl mx-auto"
         >
