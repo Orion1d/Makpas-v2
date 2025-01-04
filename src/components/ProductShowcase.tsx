@@ -14,7 +14,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import ProductsSkeleton from "./products/ProductsSkeleton";
 import Autoplay from "embla-carousel-autoplay";
-import type { LoosePluginType } from "embla-carousel/components/OptionsHandler";
+import type { EmblaPluginType as LoosePluginType } from "embla-carousel";
 
 const ProductShowcase = () => {
   const { t, language } = useLanguage();
