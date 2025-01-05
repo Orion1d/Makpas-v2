@@ -51,11 +51,10 @@ const ProductShowcase = () => {
     return null;
   }
 
-  // Initialize autoplay plugin with proper typing
   const autoplayPlugin = Autoplay({ delay: 4000, stopOnInteraction: false }) as unknown as LoosePluginType;
 
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-colors duration-500">
+    <section className="min-h-screen py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-all duration-700 ease-in-out">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-16 text-primary dark:text-white transform hover:scale-105 transition-transform duration-300">
           {t('products.title')}

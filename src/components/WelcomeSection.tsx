@@ -44,9 +44,9 @@ const WelcomeSection = () => {
   }
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative h-screen w-full overflow-hidden transition-opacity duration-700 ease-in-out">
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat transform hover:scale-105 transition-transform duration-[2s]"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat transform transition-transform duration-[2s] hover:scale-105"
         style={{
           backgroundImage: `url(${welcomeImage})`,
           backgroundAttachment: "fixed"
