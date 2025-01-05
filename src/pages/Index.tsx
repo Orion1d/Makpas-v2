@@ -1,11 +1,10 @@
 import WelcomeSection from "@/components/WelcomeSection";
 import ServicesShowcase from "@/components/ServicesShowcase";
 import ProductShowcase from "@/components/ProductShowcase";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const Index = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -13,11 +12,6 @@ const Index = () => {
 
     let isScrolling = false;
     let startY = 0;
-
-    // Reduced timeout to show content faster
-    requestAnimationFrame(() => {
-      setIsLoading(false);
-    });
 
     const handleWheel = (e: WheelEvent) => {
       if (isScrolling) return;
@@ -35,10 +29,9 @@ const Index = () => {
         behavior: 'smooth'
       });
 
-      // Increased timeout for smoother transitions
       setTimeout(() => {
         isScrolling = false;
-      }, 1500); // Increased from 1000ms to 1500ms
+      }, 1500);
     };
 
     const handleTouchStart = (e: TouchEvent) => {
@@ -62,10 +55,9 @@ const Index = () => {
           behavior: 'smooth'
         });
 
-        // Increased timeout for smoother transitions
         setTimeout(() => {
           isScrolling = false;
-        }, 1500); // Increased from 1000ms to 1500ms
+        }, 1500);
       }
     };
 
@@ -80,36 +72,22 @@ const Index = () => {
     };
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="h-screen w-full flex items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-          <p className="text-sm text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div 
       ref={containerRef} 
-      className="h-screen overflow-y-auto scroll-smooth opacity-0 animate-fade-in"
+      className="h-screen overflow-y-auto"
       style={{
         scrollSnapType: "y mandatory",
         scrollBehavior: "smooth",
-        animationDuration: '0.3s',
-        animationDelay: '0s',
-        animationFillMode: 'forwards'
       }}
     >
-      <div className="h-screen snap-start snap-always transition-all duration-1000 ease-in-out">
+      <div className="h-screen snap-start snap-always">
         <WelcomeSection />
       </div>
-      <div className="h-screen snap-start snap-always transition-all duration-1000 ease-in-out">
+      <div className="h-screen snap-start snap-always">
         <ServicesShowcase />
       </div>
-      <div className="h-screen snap-start snap-always transition-all duration-1000 ease-in-out">
+      <div className="h-screen snap-start snap-always">
         <ProductShowcase />
       </div>
     </div>
