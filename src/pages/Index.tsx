@@ -2,7 +2,7 @@ import WelcomeSection from "@/components/WelcomeSection";
 import ServicesShowcase from "@/components/ServicesShowcase";
 import ProductShowcase from "@/components/ProductShowcase";
 import { useEffect, useRef } from "react";
-import { createScrollSnap } from "react-scroll-snap";
+import scrollSnap from "react-scroll-snap";
 
 const Index = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -10,7 +10,7 @@ const Index = () => {
   useEffect(() => {
     if (containerRef.current) {
       const element = containerRef.current;
-      createScrollSnap(element, {
+      scrollSnap(element, {
         snapDestinationY: "100%",
         timeout: 100,
         duration: 300,
