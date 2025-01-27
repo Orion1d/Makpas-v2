@@ -10,7 +10,7 @@ interface ProductGroupSectionProps {
 export const ProductGroupSection = ({ group, products, language }: ProductGroupSectionProps) => {
   return (
     <div className="mb-12">
-      <h2 className="text-2xl font-semibold mb-6 text-primary dark:text-white capitalize">
+      <h2 className="text-2xl font-semibold mb-6 text-primary capitalize">
         {group}
       </h2>
       <ProductGrid products={products} language={language} />
