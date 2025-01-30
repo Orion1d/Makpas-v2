@@ -13,7 +13,4 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       'Cache-Control': 'public, max-age=300, stale-while-revalidate=60',
     },
   },
-  db: {
-    schema: 'public',
-  },
 });
