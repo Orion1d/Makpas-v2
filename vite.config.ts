@@ -54,17 +54,4 @@ export default defineConfig(({ mode }) => ({
       '@tanstack/react-query'
     ],
   },
-  css: {
-    postcss: {
-      plugins: [
-        // Add plugin to handle Tailwind class warnings
-        require('tailwindcss')({
-          future: {
-            respectDefaultRingColorOpacity: true,
-          },
-        }),
-        require('autoprefixer'),
-      ],
-    },
-  },
 }));
