@@ -17,10 +17,15 @@ const ProductDetail = () => {
   const { data: product, isLoading, error } = useQuery({
     queryKey: ['product', id],
     queryFn: async () => {
+      const numericId = parseInt(id!, 10);
+      if (isNaN(numericId)) {
+        throw new Error("Invalid product ID");
+      }
+
       const { data, error } = await supabase
         .from('products')
         .select('*')
-        .eq('id', id)
+        .eq('id', numericId)
         .single();
       
       if (error) {
@@ -136,7 +141,7 @@ const ProductDetail = () => {
         </motion.div>
 
         <RelatedProducts 
-          currentProductId={product.id} 
+          currentProductId={parseInt(id!, 10)} 
           productGroup={product.Product_Group} 
         />
       </div>
