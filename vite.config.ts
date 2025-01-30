@@ -28,11 +28,11 @@ export default defineConfig(({ mode }) => ({
         },
       },
     },
-    // Enable source maps for better debugging
-    sourcemap: true,
+    // Configure sourcemap generation
+    sourcemap: mode === 'development',
     // Optimize minification
-    minify: 'terser',
-    terserOptions: {
+    minify: mode === 'development' ? false : 'terser',
+    terserOptions: mode === 'development' ? undefined : {
       compress: {
         drop_console: true,
         drop_debugger: true,
@@ -53,5 +53,18 @@ export default defineConfig(({ mode }) => ({
       '@radix-ui/react-slot',
       '@tanstack/react-query'
     ],
+  },
+  css: {
+    postcss: {
+      plugins: [
+        // Add plugin to handle Tailwind class warnings
+        require('tailwindcss')({
+          future: {
+            respectDefaultRingColorOpacity: true,
+          },
+        }),
+        require('autoprefixer'),
+      ],
+    },
   },
 }));
