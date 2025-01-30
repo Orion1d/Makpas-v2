@@ -22,7 +22,7 @@ const queryClient = new QueryClient({
       staleTime: 5 * 60 * 1000,
       retry: 1,
       // Add caching configuration
-      cacheTime: 10 * 60 * 1000, // Cache for 10 minutes
+      gcTime: 10 * 60 * 1000, // Cache for 10 minutes
       refetchOnWindowFocus: false,
     },
   },
