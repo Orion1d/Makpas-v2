@@ -18,13 +18,24 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    // Optimize chunks
+    // Enable chunk splitting for better caching
     rollupOptions: {
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
           'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-slot'],
+          'query': ['@tanstack/react-query'],
         },
+      },
+    },
+    // Enable source maps for better debugging
+    sourcemap: true,
+    // Optimize minification
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
       },
     },
     // Enable chunk size warnings
@@ -35,6 +46,12 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', '@radix-ui/react-dialog', '@radix-ui/react-slot'],
+    include: [
+      'react', 
+      'react-dom', 
+      '@radix-ui/react-dialog', 
+      '@radix-ui/react-slot',
+      '@tanstack/react-query'
+    ],
   },
 }));
