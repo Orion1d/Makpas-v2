@@ -10,7 +10,7 @@ const ServiceCard = ({ title, description, imageUrl }: ServiceCardProps) => {
   return (
     <Card className="overflow-hidden group backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 hover:shadow-xl transition-all duration-500">
       {imageUrl && (
-        <div className="relative h-48 w-full overflow-hidden">
+        <div className="relative h-64 w-full overflow-hidden">
           <img
             src={imageUrl}
             alt={title}
