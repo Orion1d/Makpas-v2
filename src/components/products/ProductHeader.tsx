@@ -5,7 +5,7 @@ interface ProductHeaderProps {
 export const ProductHeader = ({ title }: ProductHeaderProps) => {
   return (
     <div className="flex items-center justify-between mb-8">
-      <h1 className="text-4xl font-bold text-primary capitalize">
+      <h1 className="text-4xl font-bold text-primary dark:text-white capitalize">
         {title}
       </h1>
     </div>

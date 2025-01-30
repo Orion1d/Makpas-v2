@@ -38,13 +38,13 @@ const ProductCard = ({ product, language, onNext, onPrev }: ProductCardProps) =>
           )}
         </div>
         
-        <div className="space-y-6 text-foreground dark:text-white">
-          <h3 className="text-2xl font-bold">
+        <div className="space-y-6">
+          <h3 className="text-2xl font-bold text-primary dark:text-gray-100">
             {language === 'tr' ? product.name_tr || product.name : product.name}
           </h3>
           
           {(language === 'tr' ? product.description_tr || product.description : product.description) && (
-            <p className="text-muted-foreground dark:text-gray-100">
+            <p className="text-muted-foreground dark:text-gray-200">
               {language === 'tr' ? product.description_tr || product.description : product.description}
             </p>
           )}
@@ -62,7 +62,7 @@ const ProductCard = ({ product, language, onNext, onPrev }: ProductCardProps) =>
           variant="ghost"
           size="icon"
           onClick={onPrev}
-          className="text-foreground dark:text-white hover:bg-background/20"
+          className="text-foreground dark:text-gray-100 hover:bg-background/20"
         >
           <ChevronLeft className="h-8 w-8" />
         </Button>
@@ -73,7 +73,7 @@ const ProductCard = ({ product, language, onNext, onPrev }: ProductCardProps) =>
           variant="ghost"
           size="icon"
           onClick={onNext}
-          className="text-foreground dark:text-white hover:bg-background/20"
+          className="text-foreground dark:text-gray-100 hover:bg-background/20"
         >
           <ChevronRight className="h-8 w-8" />
         </Button>
