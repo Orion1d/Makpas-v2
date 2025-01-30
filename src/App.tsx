@@ -56,9 +56,11 @@ const App = () => {
                     <Route
                       path="/products"
                       element={
-                        <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
-                          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-                        </div>}>
+                        <Suspense fallback={
+                          <div className="flex items-center justify-center min-h-screen">
+                            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+                          </div>
+                        }>
                           <Products />
                         </Suspense>
                       }
@@ -66,9 +68,11 @@ const App = () => {
                     <Route
                       path="/product/:id"
                       element={
-                        <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
-                          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-                        </div>}>
+                        <Suspense fallback={
+                          <div className="flex items-center justify-center min-h-screen">
+                            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+                          </div>
+                        }>
                           <ProductDetail />
                         </Suspense>
                       }
@@ -76,9 +80,11 @@ const App = () => {
                     <Route
                       path="/contact"
                       element={
-                        <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
-                          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-                        </Suspense>}>
+                        <Suspense fallback={
+                          <div className="flex items-center justify-center min-h-screen">
+                            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+                          </div>
+                        }>
                           <Contact />
                         </Suspense>
                       }
@@ -86,9 +92,11 @@ const App = () => {
                     <Route
                       path="/about"
                       element={
-                        <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
-                          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-                        </Suspense>}>
+                        <Suspense fallback={
+                          <div className="flex items-center justify-center min-h-screen">
+                            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+                          </div>
+                        }>
                           <About />
                         </Suspense>
                       }
