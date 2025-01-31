@@ -41,20 +41,6 @@ export const CertificatesSection = ({ isoCertificate }: CertificatesSectionProps
             </p>
           </Card>
         )}
-        
-        <Card className="p-6 bg-white/80 dark:bg-primary/70 border-dashed border-2 border-gray-300 dark:border-gray-500 flex flex-col items-center justify-center aspect-[4/3]">
-          <div className="text-4xl text-gray-400 dark:text-gray-300 mb-4">+</div>
-          <p className="text-gray-500 dark:text-gray-300 text-center font-medium">
-            Future Certificate
-          </p>
-        </Card>
-        
-        <Card className="p-6 bg-white/80 dark:bg-primary/70 border-dashed border-2 border-gray-300 dark:border-gray-500 flex flex-col items-center justify-center aspect-[4/3]">
-          <div className="text-4xl text-gray-400 dark:text-gray-300 mb-4">+</div>
-          <p className="text-gray-500 dark:text-gray-300 text-center font-medium">
-            Future Certificate
-          </p>
-        </Card>
       </div>
     </div>
   );
