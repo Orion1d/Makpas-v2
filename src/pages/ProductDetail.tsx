@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const { toast } = useToast();
   const { language, t } = useLanguage();
+  const navigate = useNavigate();
 
   const { data: product, isLoading, error } = useQuery({
     queryKey: ['product', id],
@@ -50,6 +51,16 @@ const ProductDetail = () => {
     },
   });
 
+  const handleBackClick = () => {
+    const productGroup = language === 'tr' 
+      ? (product?.Product_Group_tr || product?.Product_Group)
+      : product?.Product_Group;
+    
+    navigate('/products', { 
+      state: { activeGroup: productGroup || 'all' }
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen pt-16 px-4">
@@ -67,8 +78,8 @@ const ProductDetail = () => {
       <div className="min-h-screen pt-16 px-4">
         <div className="container mx-auto text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h1>
-          <Button asChild>
-            <Link to="/products">Back to Products</Link>
+          <Button onClick={handleBackClick}>
+            {t('back.to.products')}
           </Button>
         </div>
       </div>
@@ -89,13 +100,13 @@ const ProductDetail = () => {
         <Button
           variant="ghost"
           size="sm"
-          asChild
+          onClick={handleBackClick}
           className="mb-4"
         >
-          <Link to="/products" className="flex items-center gap-2">
+          <span className="flex items-center gap-2">
             <ArrowLeft size={20} />
             {t('back.to.products')}
-          </Link>
+          </span>
         </Button>
 
         <motion.div 

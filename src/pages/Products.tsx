@@ -8,10 +8,14 @@ import ProductGrid from "@/components/products/ProductGrid";
 import { ProductHeader } from "@/components/products/ProductHeader";
 import { ProductGroupSection } from "@/components/products/ProductGroupSection";
 import type { Product } from "@/types/product";
+import { useLocation } from "react-router-dom";
 
 const Products = () => {
+  const location = useLocation();
+  const initialGroup = location.state?.activeGroup || "all";
+  
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeGroup, setActiveGroup] = useState("all");
+  const [activeGroup, setActiveGroup] = useState(initialGroup);
   const { t, language } = useLanguage();
 
   const { data: products = [], isLoading } = useQuery({
