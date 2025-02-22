@@ -1,14 +1,4 @@
+
 project_id = "esbovmwrbjoryndhgvvh"
-
-[api]
-enabled = true
-url = "https://esbovmwrbjoryndhgvvh.supabase.co"
-
-[db]
-enabled = true
-host = "db.esbovmwrbjoryndhgvvh.supabase.co"
-port = 6543
-
-[functions]
-[functions.send-contact-email]
+[functions.keep-alive]
 verify_jwt = false
