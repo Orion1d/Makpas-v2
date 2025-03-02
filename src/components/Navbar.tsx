@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -43,7 +44,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-b border-border z-50">
+      <nav className="fixed top-0 left-0 right-0 bg-gradient-to-r from-primary/95 to-primary/85 backdrop-blur-sm border-b border-border z-50 shadow-md">
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-14">
             <Link to="/" className="flex items-center">
@@ -54,7 +55,7 @@ const Navbar = () => {
 
             <button
               onClick={toggleMenu}
-              className="md:hidden p-2 text-primary hover:text-secondary"
+              className="md:hidden p-2 text-white hover:text-secondary/90"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
