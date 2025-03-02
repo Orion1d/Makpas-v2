@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 
@@ -12,12 +13,12 @@ export const ThemeToggle = ({ isDarkMode, toggleDarkMode }: ThemeToggleProps) =>
       variant="outline"
       size="icon"
       onClick={toggleDarkMode}
-      className="h-9 w-9"
+      className={`h-9 w-9 ${isDarkMode ? 'bg-secondary/20 border-secondary/30 hover:bg-secondary/30' : 'bg-background/80 border-primary/20 hover:bg-background'}`}
     >
       {isDarkMode ? (
-        <Sun className="h-4 w-4" />
+        <Sun className="h-4 w-4 text-secondary-foreground" />
       ) : (
-        <Moon className="h-4 w-4" />
+        <Moon className="h-4 w-4 text-primary" />
       )}
     </Button>
   );

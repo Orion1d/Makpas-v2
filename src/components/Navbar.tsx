@@ -44,7 +44,11 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 bg-gradient-to-r from-primary/95 to-primary/85 backdrop-blur-sm border-b border-border z-50 shadow-md">
+      <nav className={`fixed top-0 left-0 right-0 z-50 shadow-sm border-b border-border backdrop-blur-md ${
+        isDarkMode 
+          ? 'bg-background/40 dark-navbar' 
+          : 'bg-white/70 light-navbar'
+      }`}>
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-14">
             <Link to="/" className="flex items-center">
@@ -55,7 +59,7 @@ const Navbar = () => {
 
             <button
               onClick={toggleMenu}
-              className="md:hidden p-2 text-white hover:text-secondary/90"
+              className={`md:hidden p-2 ${isDarkMode ? 'text-white hover:text-secondary/90' : 'text-primary hover:text-secondary'}`}
               aria-label="Toggle menu"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
