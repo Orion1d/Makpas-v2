@@ -66,7 +66,8 @@ const ProductShowcase = () => {
             opts={{
               align: "start",
               loop: true,
-              slidesToScroll: { default: 3, sm: 2, xs: 1 }
+              // Fix: Replace object with number for slidesToScroll
+              slidesToScroll: 1
             }}
             plugins={[autoplayPlugin]}
             setApi={setApi}
