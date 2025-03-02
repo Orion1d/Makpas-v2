@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -65,7 +66,7 @@ const ProductShowcase = () => {
             opts={{
               align: "start",
               loop: true,
-              slidesToScroll: 3,
+              slidesToScroll: { default: 3, sm: 2, xs: 1 }
             }}
             plugins={[autoplayPlugin]}
             setApi={setApi}
@@ -73,7 +74,7 @@ const ProductShowcase = () => {
           >
             <CarouselContent className="-ml-2 md:-ml-4">
               {products.map((product) => (
-                <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-full md:basis-1/3">
+                <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
                   <Card 
                     className="cursor-pointer group overflow-hidden backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 hover:shadow-xl transition-all duration-500 transform hover:scale-[1.02]"
                     onClick={() => handleProductClick(product.id)}

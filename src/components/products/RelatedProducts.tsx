@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -69,7 +70,13 @@ function RelatedProducts({ currentProductId, productGroup }: RelatedProductsProp
           <h2 className="text-2xl font-bold text-primary dark:text-white">
             {language === 'tr' ? 'Benzer Ürünler' : 'Related Products'}
           </h2>
-          <Carousel setApi={setApi} className="w-full">
+          <Carousel 
+            setApi={setApi} 
+            className="w-full"
+            opts={{
+              slidesToScroll: 1
+            }}
+          >
             <CarouselContent>
               {relatedProducts.map((product) => (
                 <CarouselItem 
