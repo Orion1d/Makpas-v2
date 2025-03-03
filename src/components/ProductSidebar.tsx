@@ -1,4 +1,5 @@
-import { Search } from "lucide-react";
+
+import { Search, Download } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -11,6 +12,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
 
 interface ProductSidebarProps {
   groups: string[];
@@ -37,6 +39,16 @@ export function ProductSidebar({
       return t('all_products');
     }
     return group;
+  };
+
+  const handleCatalogDownload = () => {
+    const link = document.createElement('a');
+    link.href = '/src/components/Makpas_catalog_EN.pdf';
+    link.download = 'Makpas_catalog_EN.pdf';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   // Mobile filter bar component
@@ -66,6 +78,14 @@ export function ProductSidebar({
           </button>
         ))}
       </div>
+      <Button 
+        variant="outline" 
+        className="w-full flex items-center gap-2" 
+        onClick={handleCatalogDownload}
+      >
+        <Download className="h-4 w-4" />
+        <span>{t('download_catalog') || 'Download Catalog'}</span>
+      </Button>
     </div>
   );
 
@@ -107,6 +127,18 @@ export function ProductSidebar({
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+          <SidebarGroup>
+            <SidebarGroupContent className="px-2 mt-4">
+              <Button 
+                variant="outline" 
+                className="w-full flex items-center gap-2" 
+                onClick={handleCatalogDownload}
+              >
+                <Download className="h-4 w-4" />
+                <span>{t('download_catalog') || 'Download Catalog'}</span>
+              </Button>
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
