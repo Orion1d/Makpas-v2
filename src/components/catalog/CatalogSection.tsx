@@ -20,7 +20,7 @@ const CatalogSection = () => {
           {/* Catalog Description and Download Button */}
           <BlurFade delay={0.4} inView>
             <div className="w-full md:w-1/2 text-center md:text-left space-y-6">
-              <h2 className="text-3xl font-bold text-primary dark:text-white">
+              <h2 className="text-primary dark:text-white mx-0 text-left font-bold text-2xl px-[44px]">
                 {t('catalog.title') || 'Product Catalog'}
               </h2>
               <p className="text-lg text-gray-700 dark:text-gray-300">
