@@ -25,7 +25,7 @@ const ServicesShowcase = () => {
   if (isLoading) {
     return <ServicesSkeleton />;
   }
-  return <section className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 transition-all duration-700 ease-in-out py-0 bg-cyan-100">
+  return <section className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 transition-all duration-700 ease-in-out bg-white my-0 py-[25px]">
       <div className="container mx-auto px-4 bg-slate-50">
         <h2 className="text-4xl font-bold text-center mb-16 text-primary dark:text-white transform hover:scale-105 transition-transform duration-300">
           {t('services.title')}
