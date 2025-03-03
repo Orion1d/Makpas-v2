@@ -47,7 +47,7 @@ const ProductShowcase = () => {
     delay: 4000,
     stopOnInteraction: false
   }) as unknown as LoosePluginType;
-  return <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-all duration-700 ease-in-out my-0 py-0">
+  return <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-all duration-700 ease-in-out py-[25px] ">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-16 text-primary dark:text-white transform hover:scale-105 transition-transform duration-300">
           {t('products.title')}
