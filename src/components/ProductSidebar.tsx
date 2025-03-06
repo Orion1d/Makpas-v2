@@ -92,8 +92,8 @@ export function ProductSidebar({
   return (
     <>
       <MobileFilterBar />
-      <Sidebar className={`hidden md:block sticky top-16 h-[calc(100vh-4rem)] ${className}`}>
-        <SidebarContent>
+      <Sidebar className={`hidden md:block sticky top-16 h-[calc(100vh-4rem)] flex flex-col ${className}`}>
+        <SidebarContent className="flex-grow">
           <SidebarGroup>
             <SidebarGroupLabel>{t('search_products')}</SidebarGroupLabel>
             <SidebarGroupContent className="px-2">
@@ -129,19 +129,17 @@ export function ProductSidebar({
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
-          <SidebarGroup>
-            <SidebarGroupContent className="px-2 mt-4">
-              <Button 
-                variant="outline" 
-                className="w-full flex items-center gap-2" 
-                onClick={handleCatalogDownload}
-              >
-                <Download className="h-4 w-4" />
-                <span>{t('download_catalog') || 'Download Catalog'}</span>
-              </Button>
-            </SidebarGroupContent>
-          </SidebarGroup>
         </SidebarContent>
+        <div className="px-4 py-6 mt-auto border-t">
+          <Button 
+            variant="outline" 
+            className="w-full flex items-center gap-2 shadow-sm hover:shadow-md transition-all" 
+            onClick={handleCatalogDownload}
+          >
+            <Download className="h-4 w-4" />
+            <span>{t('download_catalog') || 'Download Catalog'}</span>
+          </Button>
+        </div>
       </Sidebar>
     </>
   );
