@@ -1,8 +1,10 @@
+
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Download } from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { useTheme } from "@/contexts/ThemeContext";
+
 const CatalogSection = () => {
   const {
     t
@@ -10,13 +12,22 @@ const CatalogSection = () => {
   const {
     isDarkMode
   } = useTheme();
+  
   return <section className="px-0 my-[30px] py-[20px] mx-[209px]">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 mx-auto">
           {/* Catalog Cover Image */}
           <BlurFade delay={0.2} inView>
             <div className="flex items-center gap-4">
-              <img src="/src/components/catalog_cover.png" alt="Makpas Catalog Cover" className="rounded-lg shadow-lg transform hover:scale-105 transition-all duration-500 h-20 md:h-28" />
+              <img 
+                src="/src/components/catalog_cover.png" 
+                alt="Makpas Catalog Cover" 
+                className="rounded-lg shadow-lg transform hover:scale-105 transition-all duration-500 h-20 md:h-28" 
+                onError={(e) => {
+                  console.log("Image failed to load, trying alternative path");
+                  e.currentTarget.src = "/Makpas_catalog_cover.png";
+                }}
+              />
               
               <h2 className={`text-xl md:text-2xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
                 {t('catalog.title') || 'Product Catalog'}
@@ -37,4 +48,5 @@ const CatalogSection = () => {
       </div>
     </section>;
 };
+
 export default CatalogSection;
