@@ -1,4 +1,5 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -94,7 +95,7 @@ const ProductDetail = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="min-h-screen pt-16"
+      className="min-h-screen pt-16 bg-pattern-triangles bg-transition"
     >
       <div className="container mx-auto px-6 md:px-8 lg:px-12 max-w-7xl">
         <Button
@@ -113,9 +114,12 @@ const ProductDetail = () => {
           initial={{ y: 20 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
-          className="bg-white dark:bg-primary/90 rounded-lg shadow-lg overflow-hidden"
+          className="bg-white dark:bg-primary/90 rounded-lg shadow-lg overflow-hidden relative"
         >
-          <div className="grid md:grid-cols-2 gap-8 p-6 md:p-8">
+          <div className="absolute inset-0 opacity-5 dark:opacity-10">
+            <div className="absolute inset-0 bg-pattern-waves"></div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8 p-6 md:p-8 relative z-10">
             <ProductImageGallery 
               photoUrls={photoUrls}
               productName={language === 'tr' ? product.name_tr || product.name : product.name}

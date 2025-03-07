@@ -6,16 +6,13 @@ import { BlurFade } from "@/components/ui/blur-fade";
 import { useTheme } from "@/contexts/ThemeContext";
 
 const CatalogSection = () => {
-  const {
-    t
-  } = useLanguage();
-  const {
-    isDarkMode
-  } = useTheme();
+  const { t } = useLanguage();
+  const { isDarkMode } = useTheme();
   
-  return <section className="px-0 my-[30px] py-[20px] mx-[209px]">
+  return (
+    <section className="px-0 my-[30px] py-[40px] bg-pattern-circles bg-transition">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mx-auto bg-white/80 dark:bg-primary/80 backdrop-blur-sm p-6 rounded-lg shadow-md">
           {/* Catalog Cover Image */}
           <BlurFade delay={0.2} inView>
             <div className="flex items-center gap-4">
@@ -46,7 +43,8 @@ const CatalogSection = () => {
           </BlurFade>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 
 export default CatalogSection;

@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -49,7 +50,7 @@ const About = () => {
   };
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen bg-pattern-bubbles bg-transition">
       {companyBuilding?.photo_url && (
         <div 
           className="fixed inset-0 w-full h-full opacity-25 pointer-events-none"
@@ -69,7 +70,7 @@ const About = () => {
               {t('about_title')}
             </h1>
             
-            <div className="space-y-6 mb-20">
+            <div className="space-y-6 mb-20 bg-white/80 dark:bg-primary/80 backdrop-blur-sm p-6 rounded-lg shadow-md">
               <AboutContent sentences={getAboutText()} />
             </div>
 

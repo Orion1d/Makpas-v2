@@ -92,8 +92,8 @@ export function ProductSidebar({
   return (
     <>
       <MobileFilterBar />
-      <Sidebar className={`hidden md:block sticky top-16 h-[calc(100vh-4rem)] ${className}`}>
-        <SidebarContent>
+      <Sidebar className={`hidden md:flex md:flex-col sticky top-16 h-[calc(100vh-4rem)] bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm ${className}`}>
+        <SidebarContent className="flex-grow">
           <SidebarGroup>
             <SidebarGroupLabel>{t('search_products')}</SidebarGroupLabel>
             <SidebarGroupContent className="px-2">
@@ -108,9 +108,9 @@ export function ProductSidebar({
               </div>
             </SidebarGroupContent>
           </SidebarGroup>
-          <SidebarGroup>
+          <SidebarGroup className="flex-grow">
             <SidebarGroupLabel>{t('product_groups')}</SidebarGroupLabel>
-            <SidebarGroupContent>
+            <SidebarGroupContent className="h-full overflow-auto">
               <SidebarMenu>
                 {sortedGroups.map((group) => (
                   <SidebarMenuItem key={group}>
@@ -129,19 +129,19 @@ export function ProductSidebar({
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
-          <SidebarGroup>
-            <SidebarGroupContent className="px-2 mt-4">
-              <Button 
-                variant="outline" 
-                className="w-full flex items-center gap-2" 
-                onClick={handleCatalogDownload}
-              >
-                <Download className="h-4 w-4" />
-                <span>{t('download_catalog') || 'Download Catalog'}</span>
-              </Button>
-            </SidebarGroupContent>
-          </SidebarGroup>
         </SidebarContent>
+        
+        {/* Sticky catalog download button */}
+        <div className="sticky bottom-0 mt-auto p-2 border-t border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm">
+          <Button 
+            variant="outline" 
+            className="w-full flex items-center gap-2 shadow-sm hover:shadow-md transition-all" 
+            onClick={handleCatalogDownload}
+          >
+            <Download className="h-4 w-4" />
+            <span>{t('download_catalog') || 'Download Catalog'}</span>
+          </Button>
+        </div>
       </Sidebar>
     </>
   );
