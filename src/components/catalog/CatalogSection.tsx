@@ -10,7 +10,7 @@ const CatalogSection = () => {
   const { isDarkMode } = useTheme();
   
   return (
-    <section className="px-0 my-[30px] py-[40px] bg-pattern-circles bg-transition">
+    <section className="px-0 my-[30px] py-[40px]">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 mx-auto bg-white/80 dark:bg-primary/80 backdrop-blur-sm p-6 rounded-lg shadow-md">
           {/* Catalog Cover Image */}

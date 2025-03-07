@@ -50,7 +50,7 @@ const About = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-pattern-bubbles bg-transition">
+    <div className="relative min-h-screen">
       {companyBuilding?.photo_url && (
         <div 
           className="fixed inset-0 w-full h-full opacity-25 pointer-events-none"

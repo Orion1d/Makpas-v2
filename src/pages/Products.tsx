@@ -70,7 +70,7 @@ const Products = () => {
   }
 
   return (
-    <div className="min-h-screen bg-pattern-circles bg-transition">
+    <div className="min-h-screen">
       <SidebarProvider>
         <div className="flex flex-col md:flex-row w-full">
           <ProductSidebar 

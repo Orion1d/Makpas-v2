@@ -92,7 +92,7 @@ export function ProductSidebar({
   return (
     <>
       <MobileFilterBar />
-      <Sidebar className={`hidden md:flex md:flex-col sticky top-16 h-[calc(100vh-4rem)] bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm ${className}`}>
+      <Sidebar className={`hidden md:flex md:flex-col sticky top-16 h-[calc(100vh-4rem)] ${className}`}>
         <SidebarContent className="flex-grow">
           <SidebarGroup>
             <SidebarGroupLabel>{t('search_products')}</SidebarGroupLabel>
