@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -162,5 +164,24 @@
   /* Background transitions */
   .bg-transition {
     @apply transition-all duration-500 ease-in-out;
+  }
+  
+  /* Button styles for hero section */
+  .hero-btn-primary {
+    @apply bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white shadow-lg transition-all duration-300;
+  }
+  
+  .hero-btn-secondary {
+    @apply bg-transparent hover:bg-white/10 text-white border-[#FF6B35] hover:border-white shadow-[0_0_15px_rgba(255,107,53,0.5)] transition-all duration-300;
+  }
+  
+  /* New animations for the hero section */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
 }
