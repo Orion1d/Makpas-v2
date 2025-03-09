@@ -9,7 +9,7 @@ interface ServiceCardProps {
   index: number;
 }
 
-const ServiceCard = ({ title, description, imageUrl, index }: ServiceCardProps) => {
+const ServiceCard = ({ title, description, imageUrl }: ServiceCardProps) => {
   return (
     <motion.div
       whileHover={{ y: -8 }}
@@ -17,11 +17,6 @@ const ServiceCard = ({ title, description, imageUrl, index }: ServiceCardProps) 
       className="h-full"
     >
       <Card className="overflow-hidden group h-full relative bg-white dark:bg-gray-800/90 hover:shadow-lg transition-all duration-500 hover:border-l-[3px] hover:border-l-safety-orange">
-        {/* Numbered Badge */}
-        <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-safety-orange flex items-center justify-center text-white font-bold text-xl shadow-md z-10">
-          {index + 1}
-        </div>
-        
         {imageUrl && (
           <div className="relative h-48 w-full overflow-hidden">
             <img

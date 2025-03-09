@@ -81,7 +81,10 @@ const ServicesShowcase = () => {
           </motion.div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 gap-8 max-w-7xl mx-auto" 
+             style={{ 
+               gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" 
+             }}>
           {services.map((service, index) => (
             <motion.div 
               key={service.id} 
