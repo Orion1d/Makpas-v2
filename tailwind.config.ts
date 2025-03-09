@@ -105,6 +105,17 @@ export default {
         "bounce": "bounce 2s ease-in-out infinite",
         "pulse": "pulse 2s ease-in-out infinite",
       },
+      backdropBlur: {
+        xs: '2px',
+        sm: '4px',
+        DEFAULT: '8px',
+        md: '12px',
+        lg: '16px',
+        xl: '24px',
+      },
+      backgroundOpacity: {
+        '96': '0.96',
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

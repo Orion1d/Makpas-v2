@@ -26,7 +26,7 @@ const StickyQuoteBar: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className="sticky top-16 z-40 hidden md:flex items-center justify-center w-full py-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-md"
+          className="sticky top-16 z-40 hidden md:flex items-center justify-center w-full py-3 backdrop-overlay shadow-md safe-area-padding"
         >
           <div className="flex items-center gap-4">
             <span className="text-primary dark:text-white font-medium">

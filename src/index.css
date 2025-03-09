@@ -36,6 +36,11 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+
+    /* New CSS variables */
+    --overlay-bg: 0, 0, 0;
+    --text-inverse: #FFFFFF;
+    --card-bg-opacity: 0.96;
   }
 
   .dark {
@@ -66,6 +71,11 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
+    /* New CSS variables for dark mode */
+    --overlay-bg: 255, 255, 255;
+    --text-inverse: #0A1A2F;
+    --card-bg-opacity: 0.96;
   }
 
   * {
@@ -88,6 +98,16 @@
     a:nth-of-type(2) .logo {
       animation: logo-spin infinite 20s linear;
     }
+  }
+
+  /* New global image rule */
+  img {
+    filter: brightness(0.98);
+  }
+
+  /* Form transition rule */
+  input, textarea, select, button {
+    transition: all 200ms ease-in-out;
   }
 }
 
@@ -118,6 +138,17 @@
   
   .nav-link-active {
     @apply text-secondary border-b-2 border-secondary;
+  }
+
+  /* Backdrop overlay for components */
+  .backdrop-overlay {
+    backdrop-filter: blur(8px);
+    background-color: rgba(var(--overlay-bg), var(--card-bg-opacity));
+  }
+
+  /* Safe area padding for mobile */
+  .safe-area-padding {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
 
   /* Vector background patterns */
@@ -185,3 +216,4 @@
     animation: float 3s ease-in-out infinite;
   }
 }
+
