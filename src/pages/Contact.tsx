@@ -369,7 +369,7 @@ const Contact = () => {
         </div>
         
         {/* Map Section */}
-        <div className="bg-white dark:bg-primary/90 p-4 md:p-6 rounded-lg shadow-md py-[10px] relative overflow-hidden group border-2 border-gray-200 dark:border-gray-700 transition-all duration-250 hover:border-safety-orange hover:shadow-lg">
+        <div className="bg-white dark:bg-primary/90 p-4 md:p-6 rounded-lg shadow-md relative overflow-hidden group border-2 border-gray-200 dark:border-gray-700 transition-all duration-250 hover:border-safety-orange hover:shadow-lg px-[5px] py-[9px]">
           <h2 className="text-2xl md:text-3xl font-bold text-primary dark:text-white mb-4 font-space-grotesk">
             {t('contact_our_location') || 'Our Location'}
           </h2>
