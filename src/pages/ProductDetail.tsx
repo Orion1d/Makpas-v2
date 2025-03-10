@@ -1,9 +1,8 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, FileText, Certificate, ChevronRight } from "lucide-react";
+import { ArrowLeft, FileText, Award, ChevronRight, MessageSquare } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import ProductImageGallery from "@/components/products/ProductImageGallery";
@@ -103,7 +102,6 @@ const ProductDetail = () => {
       className="min-h-screen pt-16 bg-pattern-triangles bg-transition"
     >
       <div className="container mx-auto px-4 md:px-8 lg:px-12 max-w-7xl">
-        {/* Breadcrumbs Navigation */}
         <nav className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
           <Button
             variant="ghost"
@@ -130,13 +128,11 @@ const ProductDetail = () => {
             <div className="absolute inset-0 bg-pattern-waves"></div>
           </div>
           <div className="grid md:grid-cols-2 gap-8 p-6 md:p-8 relative z-10">
-            {/* Product Gallery */}
             <ProductImageGallery 
               photoUrls={photoUrls}
               productName={productName}
             />
             
-            {/* Product Info */}
             <motion.div 
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -147,7 +143,6 @@ const ProductDetail = () => {
                 {productName}
               </h1>
               
-              {/* Product tabs for different types of content */}
               <Tabs defaultValue="details" className="w-full">
                 <TabsList className="grid grid-cols-3 mb-4">
                   <TabsTrigger value="details">{t('details') || "Details"}</TabsTrigger>
@@ -175,7 +170,6 @@ const ProductDetail = () => {
                 </TabsContent>
                 
                 <TabsContent value="specifications" className="space-y-4">
-                  {/* Example specification fields - replace with actual data from your database */}
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <tbody>
@@ -205,7 +199,6 @@ const ProductDetail = () => {
                 </TabsContent>
                 
                 <TabsContent value="documents" className="space-y-4">
-                  {/* Example document links - replace with actual data */}
                   <div className="space-y-3">
                     <Card className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                       <CardContent className="p-4 flex items-center justify-between">
@@ -225,7 +218,7 @@ const ProductDetail = () => {
                     <Card className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                       <CardContent className="p-4 flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <Certificate className="h-5 w-5 text-safety-orange" />
+                          <Award className="h-5 w-5 text-safety-orange" />
                           <div>
                             <p className="font-medium">{t('quality_certificate') || "Quality Certificate"}</p>
                             <p className="text-sm text-gray-500">PDF, 0.8 MB</p>
@@ -240,12 +233,11 @@ const ProductDetail = () => {
                 </TabsContent>
               </Tabs>
               
-              {/* Quote CTA */}
               <div className="pt-4">
                 <Card className="bg-gray-50 dark:bg-gray-800/50 border-safety-orange/20">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-lg flex items-center gap-2">
-                      <QuoteIcon className="h-5 w-5 text-safety-orange" />
+                      <MessageSquare className="h-5 w-5 text-safety-orange" />
                       {t('request_quote') || "Request a Quote"}
                     </CardTitle>
                   </CardHeader>
@@ -267,7 +259,6 @@ const ProductDetail = () => {
           </div>
         </motion.div>
 
-        {/* Related Products Section */}
         <RelatedProducts 
           currentProductId={parseInt(id!, 10)} 
           productGroup={product.Product_Group} 
