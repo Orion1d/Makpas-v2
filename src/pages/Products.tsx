@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -8,14 +8,22 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import ProductGrid from "@/components/products/ProductGrid";
 import { ProductHeader } from "@/components/products/ProductHeader";
 import { ProductGroupSection } from "@/components/products/ProductGroupSection";
-import type { Product } from "@/types/product";
+import StickyQuoteBar from "@/components/ctas/StickyQuoteBar";
+import { Filter, SlidersHorizontal, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useLocation } from "react-router-dom";
+import type { Product } from "@/types/product";
+import { motion } from "framer-motion";
+import FloatingActionButton from "@/components/ctas/FloatingActionButton";
 
 const Products = () => {
   const location = useLocation();
   const initialGroup = location.state?.activeGroup || "all";
   const [searchQuery, setSearchQuery] = useState("");
   const [activeGroup, setActiveGroup] = useState(initialGroup);
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const { t, language } = useLanguage();
 
   const { data: products = [], isLoading } = useQuery({
@@ -56,6 +64,30 @@ const Products = () => {
   }, {} as Record<string, Product[]>);
 
   const sortedGroups = Object.keys(groupedProducts).sort();
+  
+  const handleClearFilters = () => {
+    setSearchQuery("");
+    setActiveGroup("all");
+    setActiveFilters([]);
+  };
+  
+  const removeFilter = (filter: string) => {
+    if (filter === 'group') {
+      setActiveGroup("all");
+    } else if (filter === 'search') {
+      setSearchQuery("");
+    } else {
+      setActiveFilters(activeFilters.filter(f => f !== filter));
+    }
+  };
+
+  // Determine if we have active filters
+  const hasActiveFilters = searchQuery !== "" || activeGroup !== "all" || activeFilters.length > 0;
+
+  useEffect(() => {
+    // Set page title
+    document.title = `${t('products_page_title')} | Makpas`;
+  }, [t]);
 
   if (isLoading) {
     return (
@@ -70,21 +102,189 @@ const Products = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-light-gray/30 dark:bg-gray-900">
+      <FloatingActionButton />
+      <StickyQuoteBar />
+      
+      {/* Mobile Filter Controls */}
+      <div className="sticky top-16 z-30 md:hidden bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b shadow-sm px-4 py-3">
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-bold text-primary dark:text-white truncate">
+            {activeGroup === "all" ? t('products_page_title') : activeGroup}
+          </h1>
+          
+          <div className="flex items-center gap-2">
+            <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="sm" className="flex items-center gap-1">
+                  <Filter className="h-4 w-4" />
+                  <span className="sr-only md:not-sr-only">{t('filters') || 'Filters'}</span>
+                  {hasActiveFilters && <span className="bg-safety-orange text-white rounded-full px-1.5 py-0.5 text-xs">{activeFilters.length + (searchQuery ? 1 : 0) + (activeGroup !== "all" ? 1 : 0)}</span>}
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-full sm:max-w-lg">
+                <div className="h-full overflow-auto px-1">
+                  <ProductSidebar 
+                    groups={productGroups} 
+                    activeGroup={activeGroup} 
+                    onGroupChange={(group) => {
+                      setActiveGroup(group);
+                      setMobileFiltersOpen(false);
+                    }} 
+                    searchQuery={searchQuery} 
+                    onSearchChange={setSearchQuery}
+                    onClearFilters={handleClearFilters}
+                    activeFilters={activeFilters}
+                    className="h-full w-full"
+                  />
+                </div>
+              </SheetContent>
+            </Sheet>
+            
+            <Button variant="outline" size="sm" className="flex items-center gap-1">
+              <SlidersHorizontal className="h-4 w-4" />
+              <span>{t('sort') || 'Sort'}</span>
+            </Button>
+          </div>
+        </div>
+        
+        {/* Active Filters */}
+        {hasActiveFilters && (
+          <div className="flex flex-wrap gap-2 mt-2 pb-2 overflow-x-auto">
+            {searchQuery && (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="inline-flex items-center gap-1 text-xs bg-primary/10 text-primary dark:bg-primary/20 dark:text-white px-2 py-1 rounded-full"
+              >
+                <span>"{searchQuery}"</span>
+                <button onClick={() => removeFilter('search')} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                  <X className="h-3 w-3" />
+                </button>
+              </motion.div>
+            )}
+            
+            {activeGroup !== "all" && (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="inline-flex items-center gap-1 text-xs bg-primary/10 text-primary dark:bg-primary/20 dark:text-white px-2 py-1 rounded-full"
+              >
+                <span>{activeGroup}</span>
+                <button onClick={() => removeFilter('group')} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                  <X className="h-3 w-3" />
+                </button>
+              </motion.div>
+            )}
+            
+            {activeFilters.map(filter => (
+              <motion.div 
+                key={filter}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="inline-flex items-center gap-1 text-xs bg-primary/10 text-primary dark:bg-primary/20 dark:text-white px-2 py-1 rounded-full"
+              >
+                <span>{filter}</span>
+                <button onClick={() => removeFilter(filter)} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                  <X className="h-3 w-3" />
+                </button>
+              </motion.div>
+            ))}
+            
+            <button 
+              onClick={handleClearFilters}
+              className="text-xs text-secondary hover:text-secondary/80 px-2 py-1"
+            >
+              {t('clear_all') || 'Clear all'}
+            </button>
+          </div>
+        )}
+      </div>
+      
       <SidebarProvider>
-        <div className="flex flex-col md:flex-row w-full">
+        <div className="flex flex-col md:flex-row w-full max-w-[1440px] mx-auto">
+          {/* Desktop Sidebar */}
           <ProductSidebar 
             groups={productGroups} 
             activeGroup={activeGroup} 
             onGroupChange={setActiveGroup} 
             searchQuery={searchQuery} 
-            onSearchChange={setSearchQuery} 
+            onSearchChange={setSearchQuery}
+            onClearFilters={handleClearFilters}
+            activeFilters={activeFilters}
+            className="hidden md:flex"
           />
+          
           <main className="flex-1 px-4 pb-8">
             <div className="container mx-auto py-0 px-0 my-[4px]">
-              <ProductHeader 
-                title={activeGroup === "all" ? t('products_page_title') : activeGroup} 
-              />
+              {/* Desktop header - hidden on mobile */}
+              <div className="hidden md:block">
+                <ProductHeader 
+                  title={activeGroup === "all" ? t('products_page_title') : activeGroup} 
+                />
+              </div>
+              
+              {/* Active Filters - Desktop */}
+              {hasActiveFilters && (
+                <div className="hidden md:flex flex-wrap gap-2 mt-4 mb-6">
+                  {searchQuery && (
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="inline-flex items-center gap-1 bg-primary/10 text-primary dark:bg-primary/20 dark:text-white px-3 py-1.5 rounded-full"
+                    >
+                      <span>"{searchQuery}"</span>
+                      <button onClick={() => removeFilter('search')} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 ml-1">
+                        <X className="h-4 w-4" />
+                      </button>
+                    </motion.div>
+                  )}
+                  
+                  {activeGroup !== "all" && (
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="inline-flex items-center gap-1 bg-primary/10 text-primary dark:bg-primary/20 dark:text-white px-3 py-1.5 rounded-full"
+                    >
+                      <span>{activeGroup}</span>
+                      <button onClick={() => removeFilter('group')} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 ml-1">
+                        <X className="h-4 w-4" />
+                      </button>
+                    </motion.div>
+                  )}
+                  
+                  {activeFilters.map(filter => (
+                    <motion.div 
+                      key={filter}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="inline-flex items-center gap-1 bg-primary/10 text-primary dark:bg-primary/20 dark:text-white px-3 py-1.5 rounded-full"
+                    >
+                      <span>{filter}</span>
+                      <button onClick={() => removeFilter(filter)} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 ml-1">
+                        <X className="h-4 w-4" />
+                      </button>
+                    </motion.div>
+                  ))}
+                  
+                  <button 
+                    onClick={handleClearFilters}
+                    className="text-secondary hover:text-secondary/80 px-3 py-1.5 rounded-full border border-secondary/20 hover:border-secondary/40 transition-colors"
+                  >
+                    {t('clear_all') || 'Clear all'}
+                  </button>
+                </div>
+              )}
+
+              {/* Count of results */}
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-sm text-gray-500 dark:text-gray-400 mt-2 mb-4"
+              >
+                {filteredProducts.length} {filteredProducts.length === 1 ? t('product') || 'product' : t('products') || 'products'}
+              </motion.div>
 
               {activeGroup === "all" ? (
                 sortedGroups.map(group => (
