@@ -148,7 +148,7 @@ const Contact = () => {
             {t('contact_us') || 'Contact Us'}
           </h1>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg">
-            {t('contact_intro') || 'We're here to help and answer any question you might have.'}
+            {t('contact_intro') || "We're here to help and answer any question you might have."}
           </p>
         </motion.div>
         
