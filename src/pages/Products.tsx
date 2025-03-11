@@ -102,7 +102,7 @@ const Products = () => {
   }
 
   return (
-    <div className="min-h-screen bg-light-gray/30 dark:bg-gray-900 bg-pattern-machining">
+    <div className="min-h-screen bg-light-gray/30 dark:bg-gray-900">
       <FloatingActionButton />
       <StickyQuoteBar />
       
