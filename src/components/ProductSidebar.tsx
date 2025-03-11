@@ -13,10 +13,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
+import { Slider } from "@/components/ui/slider";
 
 interface ProductSidebarProps {
   groups: string[];
@@ -44,8 +45,9 @@ export function ProductSidebar({
   const [isFocused, setIsFocused] = useState(false);
   const [openCategory, setOpenCategory] = useState<string | null>("categories");
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const [priceRange, setPriceRange] = useState([0, 1000]);
 
-  // Demo filter categories for the industrial sidebar
+  // Simplified filter categories
   const filterCategories = [
     {
       id: "categories",
@@ -55,39 +57,9 @@ export function ProductSidebar({
         name: getGroupDisplayName(group),
         checked: activeGroup === group
       }))
-    },
-    {
-      id: "material",
-      name: t('material') || "Material",
-      options: [
-        { id: "steel", name: t('steel') || "Steel", checked: activeFilters.includes("steel") },
-        { id: "aluminum", name: t('aluminum') || "Aluminum", checked: activeFilters.includes("aluminum") },
-        { id: "plastic", name: t('plastic') || "Plastic", checked: activeFilters.includes("plastic") },
-      ]
-    },
-    {
-      id: "certification",
-      name: t('certification') || "Certification",
-      options: [
-        { id: "iso9001", name: "ISO 9001", checked: activeFilters.includes("iso9001") },
-        { id: "ce", name: "CE", checked: activeFilters.includes("ce") },
-      ]
     }
   ];
   
-  // Simulated search suggestions for autocomplete
-  const searchSuggestions = [
-    "Industrial Parts",
-    "Mechanical Components",
-    "Hydraulic Systems",
-    "Control Units",
-    "Safety Equipment"
-  ].filter(suggestion => 
-    searchQuery && 
-    suggestion.toLowerCase().includes(searchQuery.toLowerCase()) && 
-    suggestion.toLowerCase() !== searchQuery.toLowerCase()
-  );
-
   function getGroupDisplayName(group: string) {
     if (group === "all") {
       return t('all_products');
@@ -160,32 +132,6 @@ export function ProductSidebar({
             </button>
           )}
         </div>
-        
-        {/* Search Autocomplete Dropdown */}
-        <AnimatePresence>
-          {isFocused && searchQuery && searchSuggestions.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-              className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden"
-            >
-              <ul className="py-1">
-                {searchSuggestions.map((suggestion) => (
-                  <li key={suggestion}>
-                    <button
-                      className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                      onClick={() => onSearchChange(suggestion)}
-                    >
-                      {suggestion}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
       
       <div className="space-y-2">
@@ -220,6 +166,23 @@ export function ProductSidebar({
             </AccordionItem>
           ))}
         </Accordion>
+
+        {/* Price Range Slider */}
+        <div className="mt-4 px-2">
+          <h4 className="text-sm font-medium mb-3">{t('price_range') || 'Price Range'}</h4>
+          <Slider
+            defaultValue={[0, 1000]}
+            max={1000}
+            step={10}
+            value={priceRange}
+            onValueChange={setPriceRange}
+            className="my-6"
+          />
+          <div className="flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
+            <span>€{priceRange[0]}</span>
+            <span>€{priceRange[1]}</span>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -229,7 +192,7 @@ export function ProductSidebar({
       <MobileFilterBar />
       <Sidebar className={`hidden md:flex md:flex-col sticky top-16 h-[calc(100vh-4rem)] ${className}`}>
         <SidebarContent className="flex-grow pb-2">
-          {/* Enhanced Search Bar */}
+          {/* Simplified Search Bar */}
           <SidebarGroup>
             <SidebarGroupLabel>{t('search_products')}</SidebarGroupLabel>
             <SidebarGroupContent className="px-3">
@@ -258,37 +221,11 @@ export function ProductSidebar({
                     </button>
                   )}
                 </div>
-                
-                {/* Search Autocomplete Dropdown */}
-                <AnimatePresence>
-                  {isFocused && searchQuery && searchSuggestions.length > 0 && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden"
-                    >
-                      <ul className="py-1">
-                        {searchSuggestions.map((suggestion) => (
-                          <li key={suggestion}>
-                            <button
-                              className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                              onClick={() => onSearchChange(suggestion)}
-                            >
-                              {suggestion}
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </div>
             </SidebarGroupContent>
           </SidebarGroup>
           
-          {/* Filters */}
+          {/* Simplified Filters */}
           <div className="overflow-auto flex-grow">
             <Accordion
               type="single"
@@ -330,6 +267,23 @@ export function ProductSidebar({
                 </AccordionItem>
               ))}
             </Accordion>
+
+            {/* Price Range Slider */}
+            <div className="mt-4 px-4">
+              <h4 className="text-sm font-medium mb-3">{t('price_range') || 'Price Range'}</h4>
+              <Slider
+                defaultValue={[0, 1000]}
+                max={1000}
+                step={10}
+                value={priceRange}
+                onValueChange={setPriceRange}
+                className="my-6"
+              />
+              <div className="flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
+                <span>€{priceRange[0]}</span>
+                <span>€{priceRange[1]}</span>
+              </div>
+            </div>
           </div>
         </SidebarContent>
         
