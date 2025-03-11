@@ -371,9 +371,7 @@ const Contact = () => {
           }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" className="rounded-lg"></iframe>
             
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-250 flex items-center justify-center opacity-0 group-hover:opacity-100">
-              <a href="https://www.google.com/maps?ll=40.239897,28.943823&z=17&t=h&hl=tr&gl=ES&mapclient=embed&cid=3140769231945303382" target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-safety-orange text-white rounded-lg shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-250">
-                {t('view_full_map') || 'View Full Map'}
-              </a>
+              
             </div>
           </div>
         </div>
