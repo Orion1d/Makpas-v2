@@ -370,9 +370,7 @@ const Contact = () => {
             border: 0
           }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" className="rounded-lg"></iframe>
             
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-250 flex items-center justify-center opacity-0 group-hover:opacity-100">
-              
-            </div>
+            
           </div>
         </div>
       </div>
