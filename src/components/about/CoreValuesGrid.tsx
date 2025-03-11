@@ -1,7 +1,7 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Shield, Tool, Clock, Award, BarChart, Settings } from "lucide-react";
+import { Shield, Wrench, Clock, Award, BarChart, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -64,7 +64,7 @@ export const CoreValuesGrid = () => {
       description: t('quality_description') || 'We maintain strict quality control processes to ensure every product meets international standards and specifications.',
     },
     {
-      icon: <Tool size={48} />,
+      icon: <Wrench size={48} />,
       title: t('precision_engineering') || 'Precision Engineering',
       description: t('precision_description') || 'Our advanced CNC machinery delivers components with exceptional accuracy and tight tolerances for critical applications.',
     },

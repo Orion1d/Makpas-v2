@@ -1,7 +1,6 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
-import { Award, Cpu, Factory, Certificate, Target } from "lucide-react";
+import { Award, Cpu, Factory, Medal, Target } from "lucide-react";
 
 interface TimelineItemProps {
   year: string;
@@ -64,7 +63,7 @@ export const TimelineSection = () => {
       year: '2010',
       title: t('iso_certification') || 'ISO Certification',
       description: t('iso_description') || 'Achieved ISO 9001 certification for quality management systems.',
-      icon: <Certificate size={20} />,
+      icon: <Medal size={20} />,
       isLeft: true,
     },
     {
