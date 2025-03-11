@@ -322,9 +322,7 @@ const Contact = () => {
                   <div className={`py-2 ${currentDay === 'wednesday' ? 'text-safety-orange font-semibold' : 'text-gray-600 dark:text-gray-300'}`}>
                     {t('wednesday') || 'Wednesday'}
                   </div>
-                  <div className={`py-2 ${currentDay === 'wednesday' ? 'text-safety-orange font-semibold' : 'text-gray-600 dark:text-gray-300'}`}>
-                    9:00 - 17:00
-                  </div>
+                  <div className={`py-2 ${currentDay === 'wednesday' ? 'text-safety-orange font-semibold' : 'text-gray-600 dark:text-gray-300'}`}>8:00 - 18:00</div>
                   
                   <div className={`py-2 ${currentDay === 'thursday' ? 'text-safety-orange font-semibold' : 'text-gray-600 dark:text-gray-300'}`}>
                     {t('thursday') || 'Thursday'}
