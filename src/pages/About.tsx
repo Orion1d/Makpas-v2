@@ -47,11 +47,7 @@ const About = () => {
   };
   return <div className="relative min-h-screen">
       {/* Hero Section with Gradient Background */}
-      <div className="relative h-[60vh] min-h-[400px] overflow-hidden bg-gradient-to-b from-[#0A1A2F] to-[#122240]">
-        
-        
-        
-      </div>
+      
 
       <div className="relative z-10 py-[30px]">
         <div className="container mx-auto px-4">
