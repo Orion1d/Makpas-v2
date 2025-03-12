@@ -10,7 +10,7 @@ const Contact = () => {
   const {
     t
   } = useLanguage();
-  return <div className="min-h-[90vh] pt-20 pb-12 px-4 bg-pattern-waves section-bg-pattern py-[45px] md:px-[25px]">
+  return <div className="min-h-[90vh] pt-20 pb-12 px-4 bg-pattern-waves section-bg-pattern md:px-[25px] py-[45px]">
       <StickyQuoteBar />
       
       <div className="container mx-auto max-w-7xl space-y-16">
