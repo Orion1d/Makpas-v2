@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -7,102 +6,68 @@ import { MinimalCoreValues } from "@/components/about/MinimalCoreValues";
 import { IsoCertification } from "@/components/about/IsoCertification";
 import { ContactModule } from "@/components/about/ContactModule";
 import { motion } from "framer-motion";
-
 const About = () => {
-  const { language, t } = useLanguage();
-  
-  const { data: aboutText } = useQuery({
+  const {
+    language,
+    t
+  } = useLanguage();
+  const {
+    data: aboutText
+  } = useQuery({
     queryKey: ['about-text', language],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('translations')
-        .select('*')
-        .eq('key', 'about_text')
-        .single();
-      
+      const {
+        data,
+        error
+      } = await supabase.from('translations').select('*').eq('key', 'about_text').single();
       if (error) throw error;
       return data;
-    },
+    }
   });
-
-  const { data: images } = useQuery({
+  const {
+    data: images
+  } = useQuery({
     queryKey: ['about-images'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('icons')
-        .select('*')
-        .in('name', ['company_building', 'iso_certificate']);
-      
+      const {
+        data,
+        error
+      } = await supabase.from('icons').select('*').in('name', ['company_building', 'iso_certificate']);
       if (error) throw error;
       return data;
-    },
+    }
   });
-
   const companyBuilding = images?.find(img => img.name === 'company_building');
   const isoCertificate = images?.find(img => img.name === 'iso_certificate');
-
   const getAboutText = (): string[] => {
     if (!aboutText?.en && !aboutText?.tr) return [];
     const text = language === 'en' ? aboutText.en : aboutText.tr;
     if (!text) return [];
-    
-    return text.split(/(?<!\d)\.(?!\d|\w)(?!\s*[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g)
-      .map(sentence => sentence.trim())
-      .filter(sentence => sentence && !sentence.toLowerCase().includes('contact'))
-      .map(sentence => sentence.endsWith('.') ? sentence : sentence + '.');
+    return text.split(/(?<!\d)\.(?!\d|\w)(?!\s*[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g).map(sentence => sentence.trim()).filter(sentence => sentence && !sentence.toLowerCase().includes('contact')).map(sentence => sentence.endsWith('.') ? sentence : sentence + '.');
   };
-
-  return (
-    <div className="relative min-h-screen">
+  return <div className="relative min-h-screen">
       {/* Hero Section with Gradient Background */}
       <div className="relative h-[60vh] min-h-[400px] overflow-hidden bg-gradient-to-b from-[#0A1A2F] to-[#122240]">
-        <div className="absolute inset-0 opacity-10" style={{ 
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
+        <div className="absolute inset-0 opacity-10" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+      }} />
         
-        <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-          <motion.h1 
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7 }}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 font-rubik"
-          >
-            {language === 'tr' ? 'Makpaş Ambalaj & Sanayi - 2000\'den Beri Güvenle' : 'Makpas Packaging & Industry - Trusted Since 2000'}
-          </motion.h1>
-          
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-lg md:text-xl text-white/90 max-w-3xl mb-8"
-          >
-            {language === 'tr' ? 'Kalite ve Müşteri Memnuniyeti Odaklı Hizmet' : 'Quality and Customer Satisfaction Focused Service'}
-          </motion.div>
-          
-          {/* Experience Timeline */}
-          <motion.div 
-            className="w-full max-w-md bg-white/10 rounded-full h-6 mb-8 overflow-hidden"
-            initial={{ width: 0, opacity: 0 }}
-            animate={{ width: "100%", opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-          >
-            <div className="bg-[#FF6B35] h-full rounded-full flex items-center justify-end pr-4 text-white font-medium text-sm"
-                 style={{ width: '100%' }}>
-              <span>2000 → 2024 (24 {language === 'tr' ? 'yıllık deneyim' : 'years of experience'})</span>
-            </div>
-          </motion.div>
-        </div>
+        
       </div>
 
       <div className="relative z-10 py-16">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="mb-20"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 20
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.5
+        }} viewport={{
+          once: true
+        }} className="mb-20">
             <h2 className="text-3xl font-bold text-primary dark:text-white mb-8 text-center font-rubik">
               {t('about_company')}
             </h2>
@@ -119,8 +84,6 @@ const About = () => {
           <ContactModule />
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default About;
