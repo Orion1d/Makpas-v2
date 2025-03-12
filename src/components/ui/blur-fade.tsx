@@ -1,67 +1,57 @@
-"use client"
 
-import { useRef } from "react"
-import {
-  AnimatePresence,
-  motion,
-  useInView,
-  UseInViewOptions,
-  Variants,
-} from "framer-motion"
-
-type MarginType = UseInViewOptions["margin"]
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { useInView } from "framer-motion";
+import { prefersReducedMotion } from "@/utils/deviceUtils";
 
 interface BlurFadeProps {
-  children: React.ReactNode
-  className?: string
-  variant?: {
-    hidden: { y: number }
-    visible: { y: number }
-  }
-  duration?: number
-  delay?: number
-  yOffset?: number
-  inView?: boolean
-  inViewMargin?: MarginType
-  blur?: string
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  duration?: number;
+  inView?: boolean;
+  once?: boolean;
 }
 
-export function BlurFade({
+export const BlurFade: React.FC<BlurFadeProps> = ({
   children,
   className,
-  variant,
-  duration = 0.4,
   delay = 0,
-  yOffset = 6,
-  inView = false,
-  inViewMargin = "-50px",
-  blur = "6px",
-}: BlurFadeProps) {
-  const ref = useRef(null)
-  const inViewResult = useInView(ref, { once: true, margin: inViewMargin })
-  const isInView = !inView || inViewResult
-  const defaultVariants: Variants = {
-    hidden: { y: yOffset, opacity: 0, filter: `blur(${blur})` },
-    visible: { y: -yOffset, opacity: 1, filter: `blur(0px)` },
+  duration = 0.4,
+  inView: propInView,
+  once = true,
+}) => {
+  const ref = React.useRef(null);
+  const isInView = useInView(ref, { once });
+  const [reducedMotion, setReducedMotion] = useState(false);
+  
+  // Check for reduced motion preference
+  useEffect(() => {
+    setReducedMotion(prefersReducedMotion());
+  }, []);
+
+  // Use the prop value if provided, otherwise use the inView hook result
+  const shouldAnimate = propInView !== undefined ? propInView : isInView;
+  
+  // If reduced motion is preferred, we skip the animation
+  if (reducedMotion) {
+    return <div className={className}>{children}</div>;
   }
-  const combinedVariants = variant || defaultVariants
+
   return (
-    <AnimatePresence>
-      <motion.div
-        ref={ref}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-        exit="hidden"
-        variants={combinedVariants}
-        transition={{
-          delay: 0.04 + delay,
-          duration,
-          ease: "easeOut",
-        }}
-        className={className}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
-  )
-}
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, filter: "blur(4px)" }}
+      animate={shouldAnimate ? { opacity: 1, filter: "blur(0px)" } : { opacity: 0, filter: "blur(4px)" }}
+      transition={{ 
+        duration: duration, 
+        delay: delay,
+        ease: "easeOut"
+      }}
+      className={cn("will-change-[opacity,filter]", className)}
+    >
+      {children}
+    </motion.div>
+  );
+};

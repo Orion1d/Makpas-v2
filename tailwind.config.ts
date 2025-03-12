@@ -46,6 +46,10 @@ export default {
           DEFAULT: "#FF6B35", // Safety orange
           foreground: "#ffffff",
         },
+        "safety-yellow": {
+          DEFAULT: "#FFD700", // Safety yellow 
+          foreground: "#000000",
+        },
         "light-gray": {
           DEFAULT: "#F5F5F5", // Light gray
           foreground: "#0A1A2F",
@@ -97,6 +101,10 @@ export default {
           "0%, 100%": { opacity: "1", transform: "scale(1)" },
           "50%": { opacity: "0.8", transform: "scale(1.05)" },
         },
+        "blur-in": {
+          "0%": { filter: "blur(5px)", opacity: "0" },
+          "100%": { filter: "blur(0)", opacity: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -104,6 +112,7 @@ export default {
         "float": "float 4s ease-in-out infinite",
         "bounce": "bounce 2s ease-in-out infinite",
         "pulse": "pulse 2s ease-in-out infinite",
+        "blur-in": "blur-in 0.4s ease-out forwards",
       },
       backdropBlur: {
         xs: '2px',
@@ -115,6 +124,24 @@ export default {
       },
       backgroundOpacity: {
         '96': '0.96',
+      },
+      zIndex: {
+        '60': '60',
+        '70': '70',
+        '80': '80',
+        '90': '90',
+        '100': '100',
+      },
+      transitionDuration: {
+        '400': '400ms',
+      },
+      boxShadow: {
+        'inner-light': 'inset 0 1px 4px 0 rgba(0, 0, 0, 0.05)',
+        'inner-medium': 'inset 0 2px 6px 0 rgba(0, 0, 0, 0.1)',
+      },
+      backgroundImage: {
+        'brushed-metal': 'linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%)',
+        'diagonal-lines': 'var(--diagonal-pattern)',
       },
     },
   },

@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { QuoteIcon, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { isTouchDevice } from "@/utils/deviceUtils";
 
 interface ProductGridProps {
   products: any[];
@@ -13,6 +15,12 @@ interface ProductGridProps {
 
 const ProductGrid = ({ products, language }: ProductGridProps) => {
   const navigate = useNavigate();
+  const [isTouch, setIsTouch] = useState(false);
+  
+  useEffect(() => {
+    // Check if we're on a touch device
+    setIsTouch(isTouchDevice());
+  }, []);
 
   const handleProductClick = (productId: number) => {
     navigate(`/product/${productId}`);
@@ -24,21 +32,26 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
     navigate(`/contact?product=${productId}`);
   };
 
-  // Calculate grid columns based on product count
+  // Calculate grid columns based on product count and screen size
   const getGridClass = () => {
-    if (products.length >= 4) {
-      return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6";
-    } else if (products.length === 3) {
-      return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6";
-    } else if (products.length === 2) {
-      return "grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6";
+    // For mobile, always use 1 column with 24px gap
+    if (isTouch) {
+      return "grid grid-cols-1 gap-6";
     }
-    return "grid grid-cols-1 gap-4 md:gap-6";
+    
+    if (products.length >= 4) {
+      return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12";
+    } else if (products.length === 3) {
+      return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12";
+    } else if (products.length === 2) {
+      return "grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12";
+    }
+    return "grid grid-cols-1 gap-8 md:gap-12";
   };
 
   return (
     <div className={getGridClass()}>
-      {products.map((product) => (
+      {products.map((product, idx) => (
         <motion.div
           key={product.id}
           layout
@@ -46,10 +59,11 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          whileHover={{ y: -5 }}
+          whileHover={isTouch ? {} : { y: -5, scale: 1.03 }}
+          className="z-50"
         >
           <Card
-            className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white dark:bg-gray-800 border border-border relative overflow-hidden group h-full"
+            className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white dark:bg-gray-800 border border-border relative overflow-hidden group h-[420px] contain-content card-brushed-metal"
             onClick={() => handleProductClick(product.id)}
           >
             {product.photo_url && (
@@ -59,6 +73,7 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
                   src={product.photo_url.split(',')[0]?.trim()}
                   alt={language === 'tr' ? (product.name_tr || product.name) : product.name}
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  loading={idx < 3 ? "eager" : "lazy"}
                 />
                 {/* Status indicator - example for in stock products */}
                 <div className="absolute top-2 right-2 z-20">
@@ -70,21 +85,34 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
               </div>
             )}
             <CardHeader className="p-4">
-              <CardTitle className="text-lg text-primary dark:text-white line-clamp-2">
+              <CardTitle className="text-lg font-space-grotesk text-safety-orange dark:text-safety-orange line-clamp-2">
                 {language === 'tr' ? (product.name_tr || product.name) : product.name}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-4 pt-0">
-              <p className="text-muted-foreground dark:text-gray-300 text-sm line-clamp-2">
+              <p className="text-base font-inter text-muted-foreground dark:text-gray-300 line-clamp-2">
                 {language === 'tr' ? (product.description_tr || product.description) : product.description}
               </p>
+              
+              {/* Price display with badge */}
+              <div className="mt-4 flex items-center">
+                <span className="text-xl font-rubik font-medium text-foreground">
+                  {product.price ? `€${product.price}` : ''}
+                </span>
+                {product.on_sale && (
+                  <span className="ml-2 bg-yellow-400 text-black text-xs px-2 py-1 rounded-full">
+                    SALE
+                  </span>
+                )}
+              </div>
             </CardContent>
             
             {/* Product Quote Hover Overlay */}
             <div className={cn(
-              "absolute inset-0 bg-gradient-to-t from-primary/30 to-primary/10 flex items-center justify-center",
+              "absolute inset-0 bg-gradient-to-t from-[#0A1A2F] via-[#0A1A2F99] to-[#12224099] flex items-center justify-center",
               "opacity-0 group-hover:opacity-100 transition-opacity duration-300",
-              "rounded-md backdrop-blur-sm z-20"
+              "rounded-md backdrop-blur-sm z-20",
+              isTouch ? "touch-action-none" : ""
             )}>
               <motion.div
                 initial={{ opacity: 0, y: 100 }}

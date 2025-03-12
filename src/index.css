@@ -41,6 +41,7 @@
     --overlay-bg: 0, 0, 0;
     --text-inverse: #FFFFFF;
     --card-bg-opacity: 0.96;
+    --diagonal-pattern: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.08' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 5v1H0V0h5z'/%3E%3C/g%3E%3C/svg%3E");
   }
 
   .dark {
@@ -76,6 +77,7 @@
     --overlay-bg: 255, 255, 255;
     --text-inverse: #0A1A2F;
     --card-bg-opacity: 0.96;
+    --diagonal-pattern: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.08' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 5v1H0V0h5z'/%3E%3C/g%3E%3C/svg%3E");
   }
 
   * {
@@ -90,6 +92,21 @@
     @apply bg-background text-foreground transition-colors duration-300;
     overflow-y: auto;
     overflow-x: hidden;
+  }
+  
+  /* Add performance optimizations */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  
+  .main-content {
+    min-height: 80vh;
+    padding-bottom: 120px;
   }
 }
 
@@ -160,6 +177,19 @@
     @apply bg-transparent hover:bg-white/10 text-white border-[#FF6B35] hover:border-white shadow-[0_0_15px_rgba(255,107,53,0.5)] transition-all duration-300;
   }
   
+  /* Section background with pattern and gradient */
+  .section-bg-pattern {
+    background-image: var(--diagonal-pattern), linear-gradient(45deg, #0A1A2F22, #12224055);
+    background-attachment: fixed;
+  }
+  
+  /* Brushed metal effect for cards */
+  .card-brushed-metal {
+    background-image: linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.05) 75%, transparent 75%);
+    background-size: 4px 4px;
+    background-color: rgba(255,255,255,0.03);
+  }
+  
   /* New animations for the hero section */
   @keyframes float {
     0%, 100% { transform: translateY(0); }
@@ -168,6 +198,22 @@
   
   .animate-float {
     animation: float 3s ease-in-out infinite;
+  }
+  
+  /* Product grid adjustments */
+  .product-grid-mobile {
+    @apply grid grid-cols-1 gap-6;
+  }
+  
+  .product-grid-desktop {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12;
+  }
+  
+  /* Touch device adjustments */
+  @media (hover: none) {
+    .hover-effect {
+      display: none !important;
+    }
   }
 }
 
@@ -187,5 +233,27 @@
   .rotate-y-180 {
     transform: rotateY(180deg);
   }
+  
+  /* Added utilities */
+  .contain-strict {
+    contain: strict;
+  }
+  
+  .contain-content {
+    contain: content;
+  }
+  
+  .loading-priority {
+    loading: "eager";
+  }
+  
+  .loading-lazy {
+    loading: "lazy";
+  }
+  
+  .fx-cap-60 {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
 }
-
