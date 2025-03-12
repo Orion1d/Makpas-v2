@@ -156,7 +156,7 @@ const Contact = () => {
           delay: 0.2
         }} className="md:col-span-3 bg-white dark:bg-primary/90 p-6 md:p-8 rounded-lg shadow-md relative overflow-hidden">
             <div className="absolute inset-0 opacity-5 dark:opacity-10">
-              <div className="absolute inset-0 bg-pattern-bubbles"></div>
+              
             </div>
             <div className="relative z-10">
               <div className="flex items-center mb-8 gap-3">
