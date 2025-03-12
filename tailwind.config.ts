@@ -142,6 +142,8 @@ export default {
       backgroundImage: {
         'brushed-metal': 'linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%)',
         'diagonal-lines': 'var(--diagonal-pattern)',
+        'blueprint-pattern': 'linear-gradient(0deg, rgba(10, 26, 47, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(10, 26, 47, 0.05) 1px, transparent 1px)',
+        'pattern-waves': 'url("data:image/svg+xml,%3Csvg width=\'100%25\' height=\'100%25\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cdefs%3E%3Cpattern id=\'smallGrid\' width=\'10\' height=\'10\' patternUnits=\'userSpaceOnUse\'%3E%3Cpath d=\'M 10 0 L 0 0 0 10\' fill=\'none\' stroke=\'%230A1A2F\' stroke-opacity=\'0.05\' stroke-width=\'0.5\'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'url(%23smallGrid)\'/%3E%3C/svg%3E")',
       },
     },
   },
