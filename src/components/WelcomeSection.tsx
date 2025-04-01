@@ -90,7 +90,7 @@ const WelcomeSection = () => {
                   asChild 
                   className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white border-none shadow-lg text-lg px-8 py-6 h-auto w-full sm:w-auto"
                 >
-                  <Link to="/contact">{t('nav.contact_us')}</Link>
+                  <Link to="/contact">{t('nav.contact_us') || "Contact Us"}</Link>
                 </Button>
               </motion.div>
               
@@ -105,7 +105,7 @@ const WelcomeSection = () => {
                   variant="outline" 
                   className="bg-transparent hover:bg-white/10 text-white border-[#FF6B35] hover:border-white backdrop-blur-md shadow-[0_0_15px_rgba(255,107,53,0.5)] text-lg px-8 py-6 h-auto w-full sm:w-auto"
                 >
-                  <Link to="/products">{t('nav.view_products')}</Link>
+                  <Link to="/products">{t('nav.view_products') || "View Products"}</Link>
                 </Button>
               </motion.div>
             </div>
