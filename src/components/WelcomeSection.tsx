@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -89,11 +90,11 @@ const WelcomeSection = () => {
                   asChild 
                   className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white border-none shadow-lg text-lg px-8 py-6 h-auto w-full sm:w-auto"
                 >
-                  <Link to="/contact">{t('nav.contact_us') || "Contact Us"}</Link>
+                  <Link to="/contact">{t('nav.contact_us')}</Link>
                 </Button>
               </motion.div>
               
-              {/* Secondary CTA - Changed to About Us */}
+              {/* Secondary CTA */}
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
@@ -104,22 +105,7 @@ const WelcomeSection = () => {
                   variant="outline" 
                   className="bg-transparent hover:bg-white/10 text-white border-[#FF6B35] hover:border-white backdrop-blur-md shadow-[0_0_15px_rgba(255,107,53,0.5)] text-lg px-8 py-6 h-auto w-full sm:w-auto"
                 >
-                  <Link to="/about">{t('nav.about_us') || "About Us"}</Link>
-                </Button>
-              </motion.div>
-              
-              {/* Added third button for Products */}
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Button 
-                  asChild 
-                  variant="outline" 
-                  className="bg-transparent hover:bg-white/10 text-white border-[#FF6B35] hover:border-white backdrop-blur-md shadow-[0_0_15px_rgba(255,107,53,0.5)] text-lg px-8 py-6 h-auto w-full sm:w-auto"
-                >
-                  <Link to="/products">{t('nav.view_products') || "View Products"}</Link>
+                  <Link to="/products">{t('nav.view_products')}</Link>
                 </Button>
               </motion.div>
             </div>
