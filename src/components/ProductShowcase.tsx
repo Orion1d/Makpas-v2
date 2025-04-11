@@ -11,23 +11,14 @@ import Autoplay from "embla-carousel-autoplay";
 import type { EmblaPluginType as LoosePluginType } from "embla-carousel";
 
 const ProductShowcase = () => {
-  const {
-    t,
-    language
-  } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
   const [api, setApi] = useState<CarouselApi>();
   
-  const {
-    data: products = [],
-    isLoading
-  } = useQuery({
+  const { data: products = [], isLoading } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
-      const {
-        data,
-        error
-      } = await supabase.from('products').select('*');
+      const { data, error } = await supabase.from('products').select('*');
       if (error) throw error;
       return data || [];
     }
@@ -70,7 +61,7 @@ const ProductShowcase = () => {
         }} plugins={[autoplayPlugin]} setApi={setApi} className="w-full">
             <CarouselContent className="-ml-2 md:-ml-4">
               {products.map(product => <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
-                  <Card className="cursor-pointer overflow-hidden backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 hover:shadow-xl transition-all duration-500" onClick={() => handleProductClick(product.id)}>
+                  <Card className="cursor-pointer overflow-hidden backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300" onClick={() => handleProductClick(product.id)}>
                     {product.photo_url && <div className="relative h-72 w-full overflow-hidden rounded-t-lg">
                         <img src={product.photo_url} alt={language === 'tr' ? product.name_tr || product.name : product.name} className="object-cover w-full h-full" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />

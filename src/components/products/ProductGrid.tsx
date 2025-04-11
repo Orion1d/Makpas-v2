@@ -55,7 +55,7 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
           className="z-50"
         >
           <Card
-            className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white dark:bg-gray-800 border border-border relative overflow-hidden h-[420px] contain-content card-brushed-metal"
+            className="cursor-pointer transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px] bg-white dark:bg-gray-800 border border-border relative overflow-hidden h-[420px] contain-content card-brushed-metal"
             onClick={() => handleProductClick(product.id)}
           >
             {product.photo_url && (
@@ -99,19 +99,7 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
               </div>
             </CardContent>
 
-            {/* Quick specs overlay on bottom */}
-            <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent p-3 z-10">
-              <div className="text-white text-sm space-y-1">
-                <div className="flex justify-between">
-                  <span>Material:</span>
-                  <span className="font-semibold">Industrial Steel</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Tolerance:</span>
-                  <span className="font-semibold">±0.05mm</span>
-                </div>
-              </div>
-            </div>
+            {/* Removed the gradient overlay at the bottom */}
           </Card>
         </motion.div>
       ))}
