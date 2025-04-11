@@ -2,8 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { QuoteIcon, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { isTouchDevice } from "@/utils/deviceUtils";
@@ -24,12 +23,6 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
 
   const handleProductClick = (productId: number) => {
     navigate(`/product/${productId}`);
-  };
-
-  const handleQuoteClick = (e: React.MouseEvent, productId: number) => {
-    e.stopPropagation();
-    // Navigate to contact page with product ID
-    navigate(`/contact?product=${productId}`);
   };
 
   // Calculate grid columns based on product count and screen size
@@ -59,11 +52,10 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          whileHover={isTouch ? {} : { y: -5, scale: 1.03 }}
           className="z-50"
         >
           <Card
-            className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white dark:bg-gray-800 border border-border relative overflow-hidden group h-[420px] contain-content card-brushed-metal"
+            className="cursor-pointer transition-all duration-300 hover:shadow-lg bg-white dark:bg-gray-800 border border-border relative overflow-hidden h-[420px] contain-content card-brushed-metal"
             onClick={() => handleProductClick(product.id)}
           >
             {product.photo_url && (
@@ -72,7 +64,7 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
                 <img
                   src={product.photo_url.split(',')[0]?.trim()}
                   alt={language === 'tr' ? (product.name_tr || product.name) : product.name}
-                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  className="object-cover w-full h-full"
                   loading={idx < 3 ? "eager" : "lazy"}
                 />
                 {/* Status indicator - example for in stock products */}
@@ -106,34 +98,9 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
                 )}
               </div>
             </CardContent>
-            
-            {/* Product Quote Hover Overlay */}
-            <div className={cn(
-              "absolute inset-0 bg-gradient-to-t from-[#0A1A2F] via-[#0A1A2F99] to-[#12224099] flex items-center justify-center",
-              "opacity-0 group-hover:opacity-100 transition-opacity duration-300",
-              "rounded-md backdrop-blur-sm z-20",
-              isTouch ? "touch-action-none" : ""
-            )}>
-              <motion.div
-                initial={{ opacity: 0, y: 100 }}
-                whileHover={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300"
-              >
-                <Button 
-                  variant="accent"
-                  size="lg" 
-                  className="px-6 py-2 text-white shadow-lg"
-                  onClick={(e) => handleQuoteClick(e, product.id)}
-                >
-                  <QuoteIcon className="mr-2 h-4 w-4" />
-                  {language === 'tr' ? 'Teklif Al' : 'Get Quote'}
-                </Button>
-              </motion.div>
-            </div>
 
             {/* Quick specs overlay on bottom */}
-            <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent p-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-10">
+            <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent p-3 z-10">
               <div className="text-white text-sm space-y-1">
                 <div className="flex justify-between">
                   <span>Material:</span>
