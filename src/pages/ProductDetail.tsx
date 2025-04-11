@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,7 +10,6 @@ import ProductImageGallery from "@/components/products/ProductImageGallery";
 import { RelatedProducts } from "@/components/products/RelatedProducts";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { BlurFade } from "@/components/ui/blur-fade";
 import { type Product } from "@/types/product";
 import StickyQuoteBar from "@/components/ctas/StickyQuoteBar";
 const ProductDetail = () => {
@@ -88,23 +88,7 @@ const ProductDetail = () => {
   const photoUrls = product.photo_url ? product.photo_url.split(',').map(url => url.trim()) : [];
   const productName = language === 'tr' ? product.name_tr || product.name : product.name;
   const productDescription = language === 'tr' ? product.description_tr || product.description : product.description;
-  const technicalSpecs = [{
-    icon: <Wrench className="h-5 w-5 text-safety-orange" />,
-    name: t('material') || "Material",
-    value: t('industrial_steel') || "Industrial Steel"
-  }, {
-    icon: <Factory className="h-5 w-5 text-safety-orange" />,
-    name: t('tolerance') || "Tolerance",
-    value: "±0.05mm"
-  }, {
-    icon: <Cpu className="h-5 w-5 text-safety-orange" />,
-    name: t('origin') || "Country of Origin",
-    value: t('turkey') || "Turkey"
-  }, {
-    icon: <CheckCircle className="h-5 w-5 text-safety-orange" />,
-    name: t('certification') || "Certification",
-    value: "ISO 9001:2015"
-  }];
+  
   return <motion.div initial={{
     opacity: 0
   }} animate={{
@@ -162,15 +146,7 @@ const ProductDetail = () => {
                   </p>
                 </div>}
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                {technicalSpecs.map((spec, index) => <BlurFade key={spec.name} delay={index * 0.1} className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                    {spec.icon}
-                    <div>
-                      <p className="text-sm font-medium text-gray-600 dark:text-gray-300">{spec.name}</p>
-                      <p className="text-sm font-bold text-safety-orange">{spec.value}</p>
-                    </div>
-                  </BlurFade>)}
-              </div>
+              {/* Technical specs section removed as requested */}
               
               {(language === 'tr' ? product.Product_Group_tr || product.Product_Group : product.Product_Group) && <div className="pt-2">
                   <span className="text-sm font-medium text-muted-foreground">{t('product.category')}:</span>
