@@ -6,10 +6,10 @@ import { OperatingHoursCard } from "@/components/contact/OperatingHoursCard";
 import { MapCard } from "@/components/contact/MapCard";
 import StickyQuoteBar from "@/components/ctas/StickyQuoteBar";
 import { motion } from "framer-motion";
+
 const Contact = () => {
-  const {
-    t
-  } = useLanguage();
+  const { t } = useLanguage();
+  
   return <div className="min-h-[90vh] pt-20 pb-12 px-4 bg-pattern-waves section-bg-pattern md:px-[25px] py-[45px]">
       <StickyQuoteBar />
       
@@ -28,9 +28,7 @@ const Contact = () => {
           </h1>
         </motion.div>
         
-        {/* Main content section with 50/50 split on desktop */}
         <div className="grid md:grid-cols-2 gap-12 md:gap-16">
-          {/* Left side: Contact Info */}
           <motion.div initial={{
           opacity: 0,
           y: 20
@@ -41,7 +39,6 @@ const Contact = () => {
           duration: 0.5,
           delay: 0.2
         }} className="space-y-8">
-            {/* Address Card */}
             <ContactInfoCard title={t('our_address') || 'Our Address'} icon={<MapPin className="text-safety-orange h-6 w-6" />}>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
@@ -52,14 +49,13 @@ const Contact = () => {
                   </p>
                 </div>
                 
-                <a href="https://maps.google.com/?q=40.199428,29.052986" target="_blank" rel="noopener noreferrer" className="text-safety-orange hover:underline inline-flex items-center gap-1 transition-all duration-200 hover:text-safety-orange/80">
+                <a href="https://maps.app.goo.gl/fRdsqY1A3EndCywF7" target="_blank" rel="noopener noreferrer" className="text-safety-orange hover:underline inline-flex items-center gap-1 transition-all duration-200 hover:text-safety-orange/80">
                   {t('view_on_google_maps') || 'View on Google Maps'}
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                 </a>
               </div>
             </ContactInfoCard>
             
-            {/* Communication Card */}
             <ContactInfoCard title={t('contact_information') || 'Contact Information'} icon={<Phone className="text-safety-orange h-6 w-6" />}>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
@@ -94,11 +90,9 @@ const Contact = () => {
               </div>
             </ContactInfoCard>
             
-            {/* Operating Hours Card */}
             <OperatingHoursCard />
           </motion.div>
           
-          {/* Right side: Map */}
           <motion.div initial={{
           opacity: 0,
           y: 20
@@ -115,4 +109,5 @@ const Contact = () => {
       </div>
     </div>;
 };
+
 export default Contact;

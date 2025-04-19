@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -36,7 +35,7 @@ export const ContactModule = () => {
                   Minareliçavuş Mah. Milas Sokak No:18/1 Nilüfer/Bursa
                 </p>
                 <a 
-                  href="https://maps.google.com/?q=40.199428,29.052986" 
+                  href="https://maps.app.goo.gl/fRdsqY1A3EndCywF7" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-safety-orange text-sm hover:underline inline-flex items-center gap-1 mt-2"
@@ -105,7 +104,6 @@ export const ContactModule = () => {
           </div>
         </Card>
         
-        {/* Map Card */}
         <Card className="bg-white/90 dark:bg-primary/90 shadow-md overflow-hidden h-full">
           <div className="h-full w-full relative border-2 border-safety-orange rounded-lg overflow-hidden">
             <iframe 
