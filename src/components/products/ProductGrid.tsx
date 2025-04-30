@@ -39,7 +39,8 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
     } else if (products.length === 2) {
       return "grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12";
     }
-    return "grid grid-cols-1 gap-8 md:gap-12";
+    // Modified this to ensure single products don't stretch full width
+    return "grid grid-cols-1 max-w-md mx-auto gap-8 md:gap-12";
   };
 
   return (
