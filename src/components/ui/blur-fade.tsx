@@ -25,16 +25,23 @@ export const BlurFade: React.FC<BlurFadeProps> = ({
   const ref = React.useRef(null);
   const isInView = useInView(ref, { once });
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [mounted, setMounted] = useState(false);
   
   // Check for reduced motion preference
   useEffect(() => {
     setReducedMotion(prefersReducedMotion());
+    setMounted(true);
   }, []);
 
   // Use the prop value if provided, otherwise use the inView hook result
   const shouldAnimate = propInView !== undefined ? propInView : isInView;
   
-  // If reduced motion is preferred, we skip the animation
+  // If not mounted yet, render nothing to prevent flash
+  if (!mounted) {
+    return <div className={className}>{children}</div>;
+  }
+  
+  // If reduced motion is preferred, skip the animation
   if (reducedMotion) {
     return <div className={className}>{children}</div>;
   }
