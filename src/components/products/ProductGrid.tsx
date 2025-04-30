@@ -52,7 +52,7 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className="z-50"
+          className="z-10" // Changed from z-50 to z-10 to prevent overlapping with navbar
         >
           <Card
             className="cursor-pointer transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px] bg-white dark:bg-gray-800 border border-border relative overflow-hidden h-[420px] contain-content card-brushed-metal"
@@ -60,20 +60,12 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
           >
             {product.photo_url && (
               <div className="relative h-48 w-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/10 z-10"></div>
                 <img
                   src={product.photo_url.split(',')[0]?.trim()}
                   alt={language === 'tr' ? (product.name_tr || product.name) : product.name}
-                  className="object-cover w-full h-full"
+                  className="object-cover w-full h-full max-w-full" // Added max-w-full to fix image width issue
                   loading={idx < 3 ? "eager" : "lazy"}
                 />
-                {/* Status indicator - example for in stock products */}
-                <div className="absolute top-2 right-2 z-20">
-                  <span className="inline-flex items-center gap-1 bg-secondary/90 text-white text-xs px-2 py-1 rounded">
-                    <CheckCircle className="h-3 w-3" />
-                    <span>In Stock</span>
-                  </span>
-                </div>
               </div>
             )}
             <CardHeader className="p-4">
@@ -98,8 +90,6 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
                 )}
               </div>
             </CardContent>
-
-            {/* Removed the gradient overlay at the bottom */}
           </Card>
         </motion.div>
       ))}

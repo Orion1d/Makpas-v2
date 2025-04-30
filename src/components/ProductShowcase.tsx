@@ -61,12 +61,11 @@ const ProductShowcase = () => {
         }} plugins={[autoplayPlugin]} setApi={setApi} className="w-full">
             <CarouselContent className="-ml-2 md:-ml-4">
               {products.map(product => <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
-                  <Card className="cursor-pointer overflow-hidden backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300" onClick={() => handleProductClick(product.id)}>
+                  <Card className="cursor-pointer overflow-hidden backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300 z-10" onClick={() => handleProductClick(product.id)}>
                     {product.photo_url && <div className="relative h-72 w-full overflow-hidden rounded-t-lg">
-                        <img src={product.photo_url} alt={language === 'tr' ? product.name_tr || product.name : product.name} className="object-cover w-full h-full" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                        <img src={product.photo_url.split(',')[0]?.trim()} alt={language === 'tr' ? product.name_tr || product.name : product.name} className="object-cover w-full h-full max-w-full" />
                       </div>}
-                    <CardContent className="p-6 bg-gradient-to-b from-transparent to-white/5">
+                    <CardContent className="p-6">
                       <h3 className="text-xl font-semibold text-primary dark:text-white text-center hover:text-secondary transition-colors duration-300">
                         {language === 'tr' ? product.name_tr || product.name : product.name}
                       </h3>
