@@ -1,3 +1,4 @@
+
 export interface Product {
   id: number;
   name: string;
@@ -7,4 +8,6 @@ export interface Product {
   photo_url?: string;
   Product_Group?: string;
   Product_Group_tr?: string;
+  price?: number;
+  on_sale?: boolean;
 }

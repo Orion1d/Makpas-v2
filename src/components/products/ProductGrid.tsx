@@ -89,12 +89,15 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
               
               {/* Price display with badge - only show if price exists */}
               <div className="mt-4 flex items-center">
-                {'price' in product && product.price ? (
+                {/* Fix for the TypeScript error - check if 'price' property exists and is a number */}
+                {('price' in product && typeof product.price === 'number') ? (
                   <span className="text-xl font-rubik font-medium text-foreground">
                     €{product.price}
                   </span>
                 ) : null}
-                {'on_sale' in product && product.on_sale ? (
+                
+                {/* Fix for TypeScript error - check if 'on_sale' property exists and is a boolean */}
+                {('on_sale' in product && typeof product.on_sale === 'boolean' && product.on_sale) ? (
                   <span className="ml-2 bg-yellow-400 text-black text-xs px-2 py-1 rounded-full">
                     SALE
                   </span>
