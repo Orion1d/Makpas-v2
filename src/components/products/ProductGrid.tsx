@@ -87,16 +87,18 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
                 {language === 'tr' ? (product.description_tr || product.description) : product.description}
               </p>
               
-              {/* Price display with badge */}
+              {/* Price display with badge - only show if price exists */}
               <div className="mt-4 flex items-center">
-                <span className="text-xl font-rubik font-medium text-foreground">
-                  {product.price ? `€${product.price}` : ''}
-                </span>
-                {product.on_sale && (
+                {'price' in product && product.price ? (
+                  <span className="text-xl font-rubik font-medium text-foreground">
+                    €{product.price}
+                  </span>
+                ) : null}
+                {'on_sale' in product && product.on_sale ? (
                   <span className="ml-2 bg-yellow-400 text-black text-xs px-2 py-1 rounded-full">
                     SALE
                   </span>
-                )}
+                ) : null}
               </div>
             </CardContent>
           </Card>

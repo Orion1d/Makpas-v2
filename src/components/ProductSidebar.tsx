@@ -1,3 +1,4 @@
+
 import { Search, Download, Check, ChevronDown, ChevronUp, X } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
@@ -35,7 +36,7 @@ export function ProductSidebar({
   const [openCategory, setOpenCategory] = useState<string | null>("categories");
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Demo filter categories for the industrial sidebar
+  // Demo filter categories for the industrial sidebar - removed material and certification categories
   const filterCategories = [{
     id: "categories",
     name: t('product_groups') || "Product Groups",
@@ -44,34 +45,6 @@ export function ProductSidebar({
       name: getGroupDisplayName(group),
       checked: activeGroup === group
     }))
-  }, {
-    id: "material",
-    name: t('material') || "Material",
-    options: [{
-      id: "steel",
-      name: t('steel') || "Steel",
-      checked: activeFilters.includes("steel")
-    }, {
-      id: "aluminum",
-      name: t('aluminum') || "Aluminum",
-      checked: activeFilters.includes("aluminum")
-    }, {
-      id: "plastic",
-      name: t('plastic') || "Plastic",
-      checked: activeFilters.includes("plastic")
-    }]
-  }, {
-    id: "certification",
-    name: t('certification') || "Certification",
-    options: [{
-      id: "iso9001",
-      name: "ISO 9001",
-      checked: activeFilters.includes("iso9001")
-    }, {
-      id: "ce",
-      name: "CE",
-      checked: activeFilters.includes("ce")
-    }]
   }];
 
   // Simulated search suggestions for autocomplete
@@ -222,7 +195,9 @@ export function ProductSidebar({
           <div className="overflow-auto flex-grow">
             <Accordion type="single" collapsible value={openCategory || ""} onValueChange={handleAccordionChange} className="w-full">
               {filterCategories.map(category => <AccordionItem key={category.id} value={category.id} className="border-b border-gray-200 dark:border-gray-700 px-3">
-                  
+                  <AccordionTrigger className="py-3 text-base font-medium hover:no-underline">
+                    {category.name}
+                  </AccordionTrigger>
                   <AccordionContent>
                     <div className="space-y-2 py-2">
                       {category.options.map(option => <label key={option.id} className="flex items-center space-x-3 py-1.5 px-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" onClick={() => category.id === "categories" ? onGroupChange(option.id) : null}>
