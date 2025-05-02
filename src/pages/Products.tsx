@@ -102,7 +102,10 @@ const Products = () => {
   }
 
   return (
-    <div className="min-h-screen bg-light-gray/30 dark:bg-gray-900">
+    <div className="min-h-screen bg-blueprint-pattern bg-white/95 dark:bg-gray-900/95 relative">
+      {/* Decorative gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-light-gray/50 via-transparent to-safety-orange/5 dark:from-gray-900/50 dark:to-safety-orange/10 pointer-events-none"></div>
+      
       <FloatingActionButton />
       <StickyQuoteBar />
       
@@ -202,7 +205,7 @@ const Products = () => {
       </div>
       
       <SidebarProvider>
-        <div className="flex flex-col md:flex-row w-full max-w-[1440px] mx-auto">
+        <div className="flex flex-col md:flex-row w-full max-w-[1440px] mx-auto relative z-10">
           {/* Desktop Sidebar */}
           <ProductSidebar 
             groups={productGroups} 
