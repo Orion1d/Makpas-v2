@@ -8,6 +8,8 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+
 interface ProductSidebarProps {
   groups: string[];
   activeGroup: string;
@@ -34,9 +36,10 @@ export function ProductSidebar({
   const sortedGroups = ["all", ...groups.sort()];
   const [isFocused, setIsFocused] = useState(false);
   const [openCategory, setOpenCategory] = useState<string | null>("categories");
+  const [isMobileFilterExpanded, setIsMobileFilterExpanded] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Demo filter categories for the industrial sidebar - removed material and certification categories
+  // Demo filter categories for the industrial sidebar
   const filterCategories = [{
     id: "categories",
     name: t('product_groups') || "Product Groups",
@@ -74,74 +77,146 @@ export function ProductSidebar({
     setOpenCategory(value === openCategory ? null : value);
   };
 
-  // Mobile filter bar component
-  const MobileFilterBar = () => <div className="md:hidden w-full space-y-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4 border-b sticky top-14 z-20">
-      <div className="flex justify-between items-center mb-2">
-        <h3 className="font-semibold text-primary dark:text-white">
-          {t('filters') || 'Filters'}
-        </h3>
-        {(searchQuery || activeGroup !== "all" || activeFilters.length > 0) && <Button variant="link" size="sm" onClick={onClearFilters} className="text-secondary hover:text-secondary/80 py-0 h-auto">
-            {t('clear_all') || 'Clear all'}
-          </Button>}
-      </div>
-      
-      <div className="relative">
-        <div className={`relative border-b-2 transition-colors duration-300 ${isFocused ? 'border-safety-orange' : 'border-gray-300 dark:border-gray-700'}`}>
-          <div className="absolute left-1 top-1/2 transform -translate-y-1/2">
-            <Search className={`h-4 w-4 transition-colors duration-300 ${isFocused ? 'text-safety-orange' : 'text-muted-foreground'}`} />
+  // Mobile filter bar component - now with collapsible content
+  const MobileFilterBar = () => <div className="md:hidden w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b sticky top-14 z-10">
+      <Collapsible open={isMobileFilterExpanded} onOpenChange={setIsMobileFilterExpanded}>
+        <div className="p-4">
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="font-semibold text-primary dark:text-white">
+              {t('filters') || 'Filters'}
+            </h3>
+            <div className="flex gap-2">
+              {(searchQuery || activeGroup !== "all" || activeFilters.length > 0) && 
+                <Button variant="link" size="sm" onClick={onClearFilters} className="text-secondary hover:text-secondary/80 py-0 h-auto">
+                  {t('clear_all') || 'Clear all'}
+                </Button>
+              }
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" size="sm" className="p-1">
+                  {isMobileFilterExpanded ? 
+                    <ChevronUp className="h-4 w-4" /> :
+                    <ChevronDown className="h-4 w-4" />
+                  }
+                </Button>
+              </CollapsibleTrigger>
+            </div>
           </div>
           
-          <Input ref={searchInputRef} placeholder={t('search_placeholder')} value={searchQuery} onChange={e => onSearchChange(e.target.value)} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} className="pl-8 border-none shadow-none focus-visible:ring-0 py-2 bg-transparent" />
-          
-          {searchQuery && <button onClick={clearSearch} className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-              <X className="h-4 w-4" />
-            </button>}
+          <div className="relative">
+            <div className={`relative border-b-2 transition-colors duration-300 ${isFocused ? 'border-safety-orange' : 'border-gray-300 dark:border-gray-700'}`}>
+              <div className="absolute left-1 top-1/2 transform -translate-y-1/2">
+                <Search className={`h-4 w-4 transition-colors duration-300 ${isFocused ? 'text-safety-orange' : 'text-muted-foreground'}`} />
+              </div>
+              
+              <Input ref={searchInputRef} placeholder={t('search_placeholder')} value={searchQuery} onChange={e => onSearchChange(e.target.value)} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} className="pl-8 border-none shadow-none focus-visible:ring-0 py-2 bg-transparent" />
+              
+              {searchQuery && <button onClick={clearSearch} className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                  <X className="h-4 w-4" />
+                </button>}
+            </div>
+            
+            {/* Search Autocomplete Dropdown */}
+            <AnimatePresence>
+              {isFocused && searchQuery && searchSuggestions.length > 0 && <motion.div initial={{
+              opacity: 0,
+              y: -10
+            }} animate={{
+              opacity: 1,
+              y: 0
+            }} exit={{
+              opacity: 0,
+              y: -10
+            }} transition={{
+              duration: 0.2
+            }} className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden">
+                  <ul className="py-1">
+                    {searchSuggestions.map(suggestion => <li key={suggestion}>
+                        <button className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" onClick={() => onSearchChange(suggestion)}>
+                          {suggestion}
+                        </button>
+                      </li>)}
+                  </ul>
+                </motion.div>}
+            </AnimatePresence>
+          </div>
         </div>
-        
-        {/* Search Autocomplete Dropdown */}
-        <AnimatePresence>
-          {isFocused && searchQuery && searchSuggestions.length > 0 && <motion.div initial={{
-          opacity: 0,
-          y: -10
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} exit={{
-          opacity: 0,
-          y: -10
-        }} transition={{
-          duration: 0.2
-        }} className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden">
-              <ul className="py-1">
-                {searchSuggestions.map(suggestion => <li key={suggestion}>
-                    <button className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" onClick={() => onSearchChange(suggestion)}>
-                      {suggestion}
-                    </button>
-                  </li>)}
-              </ul>
-            </motion.div>}
-        </AnimatePresence>
-      </div>
+          
+        <CollapsibleContent>
+          <div className="space-y-2 p-4 pt-0">
+            <Accordion type="single" collapsible value={openCategory || ""} onValueChange={handleAccordionChange} className="w-full">
+              {filterCategories.map(category => <AccordionItem key={category.id} value={category.id} className="border-b border-gray-200 dark:border-gray-700">
+                  <AccordionTrigger className="py-3 text-base font-medium hover:no-underline">
+                    {category.name}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-2 py-2">
+                      {category.options.map(option => <label key={option.id} className="flex items-center space-x-3 py-1 px-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                          <div className={`w-5 h-5 rounded border flex items-center justify-center ${option.checked ? 'bg-safety-orange border-safety-orange' : 'border-gray-300 dark:border-gray-600'}`}>
+                            {option.checked && <Check className="h-3.5 w-3.5 text-white" />}
+                          </div>
+                          <span className="text-sm">{option.name}</span>
+                        </label>)}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>)}
+            </Accordion>
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
       
-      <div className="space-y-2">
-        <Accordion type="single" collapsible value={openCategory || ""} onValueChange={handleAccordionChange} className="w-full">
-          {filterCategories.map(category => <AccordionItem key={category.id} value={category.id} className="border-b border-gray-200 dark:border-gray-700">
-              <AccordionTrigger className="py-3 text-base font-medium hover:no-underline">
-                {category.name}
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-2 py-2">
-                  {category.options.map(option => <label key={option.id} className="flex items-center space-x-3 py-1 px-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
-                      <div className={`w-5 h-5 rounded border flex items-center justify-center ${option.checked ? 'bg-safety-orange border-safety-orange' : 'border-gray-300 dark:border-gray-600'}`}>
-                        {option.checked && <Check className="h-3.5 w-3.5 text-white" />}
-                      </div>
-                      <span className="text-sm">{option.name}</span>
-                    </label>)}
-                </div>
-              </AccordionContent>
-            </AccordionItem>)}
-        </Accordion>
-      </div>
+      {/* Active Filters */}
+      {(searchQuery || activeGroup !== "all" || activeFilters.length > 0) && (
+        <div className="flex flex-wrap gap-2 p-2 pb-3 px-4 overflow-x-auto">
+          {searchQuery && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-1 text-xs bg-primary/10 text-primary dark:bg-primary/20 dark:text-white px-2 py-1 rounded-full"
+            >
+              <span>"{searchQuery}"</span>
+              <button onClick={() => onSearchChange('')} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                <X className="h-3 w-3" />
+              </button>
+            </motion.div>
+          )}
+          
+          {activeGroup !== "all" && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-1 text-xs bg-primary/10 text-primary dark:bg-primary/20 dark:text-white px-2 py-1 rounded-full"
+            >
+              <span>{activeGroup}</span>
+              <button onClick={() => onGroupChange('all')} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                <X className="h-3 w-3" />
+              </button>
+            </motion.div>
+          )}
+          
+          {activeFilters.map(filter => (
+            <motion.div 
+              key={filter}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-1 text-xs bg-primary/10 text-primary dark:bg-primary/20 dark:text-white px-2 py-1 rounded-full"
+            >
+              <span>{filter}</span>
+              <button onClick={() => onClearFilters?.()} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                <X className="h-3 w-3" />
+              </button>
+            </motion.div>
+          ))}
+          
+          {(searchQuery || activeGroup !== "all" || activeFilters.length > 0) && (
+            <button 
+              onClick={onClearFilters}
+              className="text-xs text-secondary hover:text-secondary/80 px-2 py-1"
+            >
+              {t('clear_all') || 'Clear all'}
+            </button>
+          )}
+        </div>
+      )}
     </div>;
   return <>
       <MobileFilterBar />

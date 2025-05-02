@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,7 +8,7 @@ import ProductGrid from "@/components/products/ProductGrid";
 import { ProductHeader } from "@/components/products/ProductHeader";
 import { ProductGroupSection } from "@/components/products/ProductGroupSection";
 import StickyQuoteBar from "@/components/ctas/StickyQuoteBar";
-import { Filter, SlidersHorizontal, X } from "lucide-react";
+import { Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useLocation } from "react-router-dom";
@@ -110,7 +109,7 @@ const Products = () => {
       <StickyQuoteBar />
       
       {/* Mobile Filter Controls */}
-      <div className="sticky top-16 z-30 md:hidden bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b shadow-sm px-4 py-3">
+      <div className="sticky top-16 z-10 md:hidden bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b shadow-sm px-4 py-3">
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-bold text-primary dark:text-white truncate">
             {activeGroup === "all" ? t('products_page_title') : activeGroup}
@@ -144,68 +143,15 @@ const Products = () => {
               </SheetContent>
             </Sheet>
             
-            <Button variant="outline" size="sm" className="flex items-center gap-1">
-              <SlidersHorizontal className="h-4 w-4" />
-              <span>{t('sort') || 'Sort'}</span>
-            </Button>
+            {/* Sort button removed as requested */}
           </div>
         </div>
         
-        {/* Active Filters */}
-        {hasActiveFilters && (
-          <div className="flex flex-wrap gap-2 mt-2 pb-2 overflow-x-auto">
-            {searchQuery && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="inline-flex items-center gap-1 text-xs bg-primary/10 text-primary dark:bg-primary/20 dark:text-white px-2 py-1 rounded-full"
-              >
-                <span>"{searchQuery}"</span>
-                <button onClick={() => removeFilter('search')} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-                  <X className="h-3 w-3" />
-                </button>
-              </motion.div>
-            )}
-            
-            {activeGroup !== "all" && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="inline-flex items-center gap-1 text-xs bg-primary/10 text-primary dark:bg-primary/20 dark:text-white px-2 py-1 rounded-full"
-              >
-                <span>{activeGroup}</span>
-                <button onClick={() => removeFilter('group')} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-                  <X className="h-3 w-3" />
-                </button>
-              </motion.div>
-            )}
-            
-            {activeFilters.map(filter => (
-              <motion.div 
-                key={filter}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="inline-flex items-center gap-1 text-xs bg-primary/10 text-primary dark:bg-primary/20 dark:text-white px-2 py-1 rounded-full"
-              >
-                <span>{filter}</span>
-                <button onClick={() => removeFilter(filter)} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-                  <X className="h-3 w-3" />
-                </button>
-              </motion.div>
-            ))}
-            
-            <button 
-              onClick={handleClearFilters}
-              className="text-xs text-secondary hover:text-secondary/80 px-2 py-1"
-            >
-              {t('clear_all') || 'Clear all'}
-            </button>
-          </div>
-        )}
+        {/* Active Filters - Mobile view filters are now handled in the ProductSidebar component */}
       </div>
       
       <SidebarProvider>
-        <div className="flex flex-col md:flex-row w-full max-w-[1440px] mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row w-full max-w-[1440px] mx-auto relative z-0">
           {/* Desktop Sidebar */}
           <ProductSidebar 
             groups={productGroups} 
@@ -218,7 +164,7 @@ const Products = () => {
             className="hidden md:flex"
           />
           
-          <main className="flex-1 px-4 pb-8">
+          <main className="flex-1 px-4 pb-8 pt-2">
             <div className="container mx-auto py-0 px-0 my-[4px]">
               {/* Desktop header - hidden on mobile */}
               <div className="hidden md:block">
