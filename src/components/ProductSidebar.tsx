@@ -1,10 +1,10 @@
 
 import { Search, Download, Check, ChevronDown, ChevronUp, X } from "lucide-react";
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,7 @@ interface ProductSidebarProps {
   activeFilters?: string[];
   className?: string;
 }
+
 export function ProductSidebar({
   groups,
   activeGroup,
@@ -30,16 +31,14 @@ export function ProductSidebar({
   activeFilters = [],
   className = ""
 }: ProductSidebarProps) {
-  const {
-    t
-  } = useLanguage();
+  const { t } = useLanguage();
   const sortedGroups = ["all", ...groups.sort()];
   const [isFocused, setIsFocused] = useState(false);
   const [openCategory, setOpenCategory] = useState<string | null>("categories");
   const [isMobileFilterExpanded, setIsMobileFilterExpanded] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Demo filter categories for the industrial sidebar
+  // Filter categories for the sidebar
   const filterCategories = [{
     id: "categories",
     name: t('product_groups') || "Product Groups",
@@ -50,14 +49,20 @@ export function ProductSidebar({
     }))
   }];
 
-  // Simulated search suggestions for autocomplete
-  const searchSuggestions = ["Industrial Parts", "Mechanical Components", "Hydraulic Systems", "Control Units", "Safety Equipment"].filter(suggestion => searchQuery && suggestion.toLowerCase().includes(searchQuery.toLowerCase()) && suggestion.toLowerCase() !== searchQuery.toLowerCase());
+  // Search suggestions for autocomplete
+  const searchSuggestions = ["Industrial Parts", "Mechanical Components", "Hydraulic Systems", "Control Units", "Safety Equipment"].filter(suggestion => 
+    searchQuery && 
+    suggestion.toLowerCase().includes(searchQuery.toLowerCase()) && 
+    suggestion.toLowerCase() !== searchQuery.toLowerCase()
+  );
+
   function getGroupDisplayName(group: string) {
     if (group === "all") {
       return t('all_products');
     }
     return group;
   }
+
   const handleCatalogDownload = () => {
     const link = document.createElement('a');
     link.href = '/src/components/Makpas_catalog_EN.pdf';
@@ -67,18 +72,21 @@ export function ProductSidebar({
     link.click();
     document.body.removeChild(link);
   };
+
   const clearSearch = () => {
     onSearchChange("");
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
   };
+
   const handleAccordionChange = (value: string) => {
     setOpenCategory(value === openCategory ? null : value);
   };
 
-  // Mobile filter bar component - now with collapsible content
-  const MobileFilterBar = () => <div className="md:hidden w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b sticky top-14 z-10">
+  // Mobile filter component
+  const MobileFilterBar = () => (
+    <div className="md:hidden w-full bg-background border-b mb-4">
       <Collapsible open={isMobileFilterExpanded} onOpenChange={setIsMobileFilterExpanded}>
         <div className="p-4">
           <div className="flex justify-between items-center mb-2">
@@ -102,41 +110,57 @@ export function ProductSidebar({
             </div>
           </div>
           
+          {/* Search Bar */}
           <div className="relative">
             <div className={`relative border-b-2 transition-colors duration-300 ${isFocused ? 'border-safety-orange' : 'border-gray-300 dark:border-gray-700'}`}>
               <div className="absolute left-1 top-1/2 transform -translate-y-1/2">
                 <Search className={`h-4 w-4 transition-colors duration-300 ${isFocused ? 'text-safety-orange' : 'text-muted-foreground'}`} />
               </div>
               
-              <Input ref={searchInputRef} placeholder={t('search_placeholder')} value={searchQuery} onChange={e => onSearchChange(e.target.value)} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} className="pl-8 border-none shadow-none focus-visible:ring-0 py-2 bg-transparent" />
+              <Input 
+                ref={searchInputRef} 
+                placeholder={t('search_placeholder')} 
+                value={searchQuery} 
+                onChange={e => onSearchChange(e.target.value)} 
+                onFocus={() => setIsFocused(true)} 
+                onBlur={() => setIsFocused(false)} 
+                className="pl-8 border-none shadow-none focus-visible:ring-0 py-2 bg-transparent" 
+              />
               
-              {searchQuery && <button onClick={clearSearch} className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+              {searchQuery && (
+                <button 
+                  onClick={clearSearch} 
+                  className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                >
                   <X className="h-4 w-4" />
-                </button>}
+                </button>
+              )}
             </div>
             
             {/* Search Autocomplete Dropdown */}
             <AnimatePresence>
-              {isFocused && searchQuery && searchSuggestions.length > 0 && <motion.div initial={{
-              opacity: 0,
-              y: -10
-            }} animate={{
-              opacity: 1,
-              y: 0
-            }} exit={{
-              opacity: 0,
-              y: -10
-            }} transition={{
-              duration: 0.2
-            }} className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden">
+              {isFocused && searchQuery && searchSuggestions.length > 0 && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden"
+                >
                   <ul className="py-1">
-                    {searchSuggestions.map(suggestion => <li key={suggestion}>
-                        <button className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" onClick={() => onSearchChange(suggestion)}>
+                    {searchSuggestions.map(suggestion => (
+                      <li key={suggestion}>
+                        <button 
+                          className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" 
+                          onClick={() => onSearchChange(suggestion)}
+                        >
                           {suggestion}
                         </button>
-                      </li>)}
+                      </li>
+                    ))}
                   </ul>
-                </motion.div>}
+                </motion.div>
+              )}
             </AnimatePresence>
           </div>
         </div>
@@ -144,21 +168,29 @@ export function ProductSidebar({
         <CollapsibleContent>
           <div className="space-y-2 p-4 pt-0">
             <Accordion type="single" collapsible value={openCategory || ""} onValueChange={handleAccordionChange} className="w-full">
-              {filterCategories.map(category => <AccordionItem key={category.id} value={category.id} className="border-b border-gray-200 dark:border-gray-700">
+              {filterCategories.map(category => (
+                <AccordionItem key={category.id} value={category.id} className="border-b border-gray-200 dark:border-gray-700">
                   <AccordionTrigger className="py-3 text-base font-medium hover:no-underline">
                     {category.name}
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="space-y-2 py-2">
-                      {category.options.map(option => <label key={option.id} className="flex items-center space-x-3 py-1 px-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                      {category.options.map(option => (
+                        <label 
+                          key={option.id} 
+                          className="flex items-center space-x-3 py-1 px-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+                          onClick={() => onGroupChange(option.id)}
+                        >
                           <div className={`w-5 h-5 rounded border flex items-center justify-center ${option.checked ? 'bg-safety-orange border-safety-orange' : 'border-gray-300 dark:border-gray-600'}`}>
                             {option.checked && <Check className="h-3.5 w-3.5 text-white" />}
                           </div>
                           <span className="text-sm">{option.name}</span>
-                        </label>)}
+                        </label>
+                      ))}
                     </div>
                   </AccordionContent>
-                </AccordionItem>)}
+                </AccordionItem>
+              ))}
             </Accordion>
           </div>
         </CollapsibleContent>
@@ -166,7 +198,7 @@ export function ProductSidebar({
       
       {/* Active Filters */}
       {(searchQuery || activeGroup !== "all" || activeFilters.length > 0) && (
-        <div className="flex flex-wrap gap-2 p-2 pb-3 px-4 overflow-x-auto">
+        <div className="flex flex-wrap gap-2 p-2 pb-3 px-4">
           {searchQuery && (
             <motion.div 
               initial={{ opacity: 0, scale: 0.9 }}
@@ -206,21 +238,16 @@ export function ProductSidebar({
               </button>
             </motion.div>
           ))}
-          
-          {(searchQuery || activeGroup !== "all" || activeFilters.length > 0) && (
-            <button 
-              onClick={onClearFilters}
-              className="text-xs text-secondary hover:text-secondary/80 px-2 py-1"
-            >
-              {t('clear_all') || 'Clear all'}
-            </button>
-          )}
         </div>
       )}
-    </div>;
-  return <>
+    </div>
+  );
+
+  // Desktop sidebar
+  return (
+    <>
       <MobileFilterBar />
-      <Sidebar className={`hidden md:flex md:flex-col sticky top-16 h-[calc(100vh-4rem)] ${className}`}>
+      <Sidebar className={`hidden md:flex md:flex-col h-full border-r ${className}`}>
         <SidebarContent className="flex-grow pb-2">
           {/* Enhanced Search Bar */}
           <SidebarGroup>
@@ -232,60 +259,83 @@ export function ProductSidebar({
                     <Search className={`h-4 w-4 transition-colors duration-300 ${isFocused ? 'text-safety-orange' : 'text-muted-foreground'}`} />
                   </div>
                   
-                  <Input ref={searchInputRef} placeholder={t('search_placeholder')} value={searchQuery} onChange={e => onSearchChange(e.target.value)} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} className="pl-8 border-none shadow-none focus-visible:ring-0 py-2 bg-transparent" />
+                  <Input 
+                    ref={searchInputRef} 
+                    placeholder={t('search_placeholder')} 
+                    value={searchQuery} 
+                    onChange={e => onSearchChange(e.target.value)} 
+                    onFocus={() => setIsFocused(true)} 
+                    onBlur={() => setIsFocused(false)} 
+                    className="pl-8 border-none shadow-none focus-visible:ring-0 py-2 bg-transparent" 
+                  />
                   
-                  {searchQuery && <button onClick={clearSearch} className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                  {searchQuery && (
+                    <button 
+                      onClick={clearSearch} 
+                      className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    >
                       <X className="h-4 w-4" />
-                    </button>}
+                    </button>
+                  )}
                 </div>
                 
                 {/* Search Autocomplete Dropdown */}
                 <AnimatePresence>
-                  {isFocused && searchQuery && searchSuggestions.length > 0 && <motion.div initial={{
-                  opacity: 0,
-                  y: -10
-                }} animate={{
-                  opacity: 1,
-                  y: 0
-                }} exit={{
-                  opacity: 0,
-                  y: -10
-                }} transition={{
-                  duration: 0.2
-                }} className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden">
+                  {isFocused && searchQuery && searchSuggestions.length > 0 && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden"
+                    >
                       <ul className="py-1">
-                        {searchSuggestions.map(suggestion => <li key={suggestion}>
-                            <button className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" onClick={() => onSearchChange(suggestion)}>
+                        {searchSuggestions.map(suggestion => (
+                          <li key={suggestion}>
+                            <button 
+                              className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" 
+                              onClick={() => onSearchChange(suggestion)}
+                            >
                               {suggestion}
                             </button>
-                          </li>)}
+                          </li>
+                        ))}
                       </ul>
-                    </motion.div>}
+                    </motion.div>
+                  )}
                 </AnimatePresence>
               </div>
             </SidebarGroupContent>
           </SidebarGroup>
           
-          {/* Filters */}
+          {/* Filters - Desktop */}
           <div className="overflow-auto flex-grow">
             <Accordion type="single" collapsible value={openCategory || ""} onValueChange={handleAccordionChange} className="w-full">
-              {filterCategories.map(category => <AccordionItem key={category.id} value={category.id} className="border-b border-gray-200 dark:border-gray-700 px-3">
+              {filterCategories.map(category => (
+                <AccordionItem key={category.id} value={category.id} className="border-b border-gray-200 dark:border-gray-700 px-3">
                   <AccordionTrigger className="py-3 text-base font-medium hover:no-underline">
                     {category.name}
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="space-y-2 py-2">
-                      {category.options.map(option => <label key={option.id} className="flex items-center space-x-3 py-1.5 px-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" onClick={() => category.id === "categories" ? onGroupChange(option.id) : null}>
+                      {category.options.map(option => (
+                        <label 
+                          key={option.id} 
+                          className="flex items-center space-x-3 py-1.5 px-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" 
+                          onClick={() => category.id === "categories" ? onGroupChange(option.id) : null}
+                        >
                           <div className={`w-5 h-5 rounded border flex items-center justify-center ${option.checked ? 'bg-safety-orange border-safety-orange' : 'border-gray-300 dark:border-gray-600'}`}>
                             {option.checked && <Check className="h-3.5 w-3.5 text-white" />}
                           </div>
                           <span className={cn("text-sm", option.checked && "font-medium")}>
                             {option.name}
                           </span>
-                        </label>)}
+                        </label>
+                      ))}
                     </div>
                   </AccordionContent>
-                </AccordionItem>)}
+                </AccordionItem>
+              ))}
             </Accordion>
           </div>
         </SidebarContent>
@@ -298,5 +348,6 @@ export function ProductSidebar({
           </Button>
         </div>
       </Sidebar>
-    </>;
+    </>
+  );
 }
