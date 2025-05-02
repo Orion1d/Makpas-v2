@@ -4,29 +4,32 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
-import { isTouchDevice } from "@/utils/deviceUtils";
+import { useEffect, useState, useMemo } from "react";
+import { isTouchDevice, prefersReducedMotion } from "@/utils/deviceUtils";
+import type { Product } from "@/types/product";
 
 interface ProductGridProps {
-  products: any[];
+  products: Product[];
   language: string;
 }
 
 const ProductGrid = ({ products, language }: ProductGridProps) => {
   const navigate = useNavigate();
   const [isTouch, setIsTouch] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   
   useEffect(() => {
     // Check if we're on a touch device
     setIsTouch(isTouchDevice());
+    setReducedMotion(prefersReducedMotion());
   }, []);
 
   const handleProductClick = (productId: number) => {
     navigate(`/product/${productId}`);
   };
 
-  // Calculate grid columns based on product count and screen size
-  const getGridClass = () => {
+  // Memoize grid class calculation to avoid recalculations
+  const gridClass = useMemo(() => {
     // For mobile, always use 1 column with 24px gap
     if (isTouch) {
       return "grid grid-cols-1 gap-6";
@@ -40,19 +43,24 @@ const ProductGrid = ({ products, language }: ProductGridProps) => {
       return "grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12";
     }
     // For single products - maintain consistent width with other grid layouts
-    return "grid grid-cols-1 gap-8 md:gap-12";
+    return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12";
+  }, [products.length, isTouch]);
+
+  // Animation settings based on user preferences
+  const animationSettings = reducedMotion ? {} : {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 },
+    transition: { duration: 0.3 },
   };
 
   return (
-    <div className={getGridClass()}>
+    <div className={gridClass}>
       {products.map((product, idx) => (
         <motion.div
           key={product.id}
           layout
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
+          {...animationSettings}
           className="z-10" // Changed from z-50 to z-10 to prevent overlapping with navbar
         >
           <Card
