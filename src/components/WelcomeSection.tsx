@@ -64,7 +64,7 @@ const WelcomeSection = () => {
         <div className="container mx-auto px-4">
           {/* Headline */}
           <BlurFade delay={0.2} inView>
-            <h1 className="font-['Rubik'] font-bold text-4xl md:text-6xl lg:text-[68px] text-white mb-6 leading-tight tracking-tight shadow-lg">
+            <h1 className="font-['Rubik'] font-bold text-4xl md:text-6xl lg:text-[68px] text-white mb-6 leading-tight tracking-tight">
               {t('welcome.title') || "Precision Metal Solutions"}
             </h1>
           </BlurFade>
@@ -87,7 +87,7 @@ const WelcomeSection = () => {
               >
                 <Button 
                   asChild 
-                  className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white border-none shadow-lg text-lg px-8 py-6 h-auto w-full sm:w-auto"
+                  className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white border-none text-lg px-8 py-6 h-auto w-full sm:w-auto"
                 >
                   <Link to="/contact">{t('nav.contact_us')}</Link>
                 </Button>
@@ -102,7 +102,7 @@ const WelcomeSection = () => {
                 <Button 
                   asChild 
                   variant="outline" 
-                  className="bg-transparent hover:bg-white/10 text-white border-[#FF6B35] hover:border-white backdrop-blur-md shadow-[0_0_15px_rgba(255,107,53,0.5)] text-lg px-8 py-6 h-auto w-full sm:w-auto"
+                  className="bg-transparent hover:bg-white/10 text-white border-[#FF6B35] hover:border-white backdrop-blur-md text-lg px-8 py-6 h-auto w-full sm:w-auto"
                 >
                   <Link to="/products">{t('nav.view_products')}</Link>
                 </Button>
