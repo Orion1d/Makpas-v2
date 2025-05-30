@@ -12,6 +12,7 @@ import { ProductsHeader } from "@/components/products/ProductsHeader";
 import { ProductsFilters } from "@/components/products/ProductsFilters";
 import { ProductsGrid } from "@/components/products/ProductsGrid";
 import { ProductsLoading } from "@/components/products/ProductsLoading";
+import { ProductBanner } from "@/components/products/ProductBanner";
 
 const Products = () => {
   const location = useLocation();
@@ -96,6 +97,9 @@ const Products = () => {
       <StickyQuoteBar />
       
       <div className="container mx-auto px-[17px] py-0">
+        {/* Banner Section */}
+        <ProductBanner />
+        
         <ProductsHeader 
           title={activeGroup === "all" ? t('products_page_title') : activeGroup} 
           totalResults={filteredProducts.length} 
