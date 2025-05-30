@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -54,10 +53,10 @@ const WelcomeSection = () => {
           backgroundAttachment: "fixed"
         }}
       >
-        {/* Dark Gradient Overlay with Blue Accent */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A1A2F]/90 via-[#0A1A2F]/75 to-[#0A1A2F]/90">
+        {/* Dark Gradient Overlay with Reduced Opacity */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A1A2F]/60 via-[#0A1A2F]/45 to-[#0A1A2F]/60">
           {/* Blue Accent Lighting Effect */}
-          <div className="absolute inset-0 opacity-30 bg-[#0A1A2F] mix-blend-overlay"></div>
+          <div className="absolute inset-0 opacity-20 bg-[#0A1A2F] mix-blend-overlay"></div>
         </div>
       </div>
       
