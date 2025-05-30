@@ -1,22 +1,20 @@
-
 import React from 'react';
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Clock } from 'lucide-react';
-
 export const OperatingHoursCard: React.FC = () => {
-  const { language, t } = useLanguage();
-  
+  const {
+    language,
+    t
+  } = useLanguage();
+
   // Get current day to highlight in operating hours
   const getCurrentDay = () => {
     const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     return days[new Date().getDay()];
   };
-  
   const currentDay = getCurrentDay();
-  
-  return (
-    <Card className="bg-white dark:bg-industry-blue/90 shadow-md transition-transform duration-250 hover:scale-[1.02] focus-within:ring-2 focus-within:ring-safety-orange/30 overflow-hidden card-brushed-metal">
+  return <Card className="bg-white dark:bg-industry-blue/90 shadow-md transition-transform duration-250 hover:scale-[1.02] focus-within:ring-2 focus-within:ring-safety-orange/30 overflow-hidden card-brushed-metal">
       <CardHeader className="pb-3">
         <CardTitle className="text-xl text-primary dark:text-white font-space-grotesk flex items-center gap-2">
           <Clock className="text-safety-orange h-5 w-5" />
@@ -81,9 +79,7 @@ export const OperatingHoursCard: React.FC = () => {
                 <td className={`py-3 px-3 ${currentDay === 'saturday' ? 'text-safety-orange font-medium' : 'text-gray-600 dark:text-gray-300'}`}>
                   {language === 'tr' ? 'Cumartesi' : 'Saturday'}
                 </td>
-                <td className={`py-3 px-3 ${currentDay === 'saturday' ? 'text-safety-orange font-medium' : 'text-gray-600 dark:text-gray-300'}`}>
-                  08:00 - 15:00
-                </td>
+                <td className={`py-3 px-3 ${currentDay === 'saturday' ? 'text-safety-orange font-medium' : 'text-gray-600 dark:text-gray-300'}`}>08:00 - 13:00</td>
               </tr>
               <tr className={`${currentDay === 'sunday' ? 'bg-safety-orange/10' : ''}`}>
                 <td className={`py-3 px-3 ${currentDay === 'sunday' ? 'text-safety-orange font-medium' : 'text-gray-600 dark:text-gray-300'}`}>
@@ -97,6 +93,5 @@ export const OperatingHoursCard: React.FC = () => {
           </table>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
