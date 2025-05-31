@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,20 +22,27 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
   const demoBanners: Banner[] = [
     {
       id: "1",
+      title: "High-Heat Welding Gloves",
+      subtitle: "Designed for Maximum Safety, Flexibility, and Control",
+      image: "/lovable-uploads/48420f73-2f5c-4071-a15c-0f3785b48dc1.png",
+      buttonText: "View Products"
+    },
+    {
+      id: "2",
       title: "New Product Line",
       subtitle: "Discover our latest industrial solutions",
       image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&h=400&q=80",
       buttonText: "Explore Now"
     },
     {
-      id: "2", 
+      id: "3", 
       title: "Special Campaign",
       subtitle: "Limited time offer on selected products",
       image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&h=400&q=80",
       buttonText: "Learn More"
     },
     {
-      id: "3",
+      id: "4",
       title: "Popular Products",
       subtitle: "Most demanded items this month",
       image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1200&h=400&q=80",
