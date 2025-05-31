@@ -1,79 +1,83 @@
-
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { AboutContent } from "@/components/about/AboutContent";
-import { CertificatesSection } from "@/components/about/CertificatesSection";
-import { TimelineSection } from "@/components/about/TimelineSection";
-import { ContactModule } from "@/components/about/ContactModule";
 import { MinimalCoreValues } from "@/components/about/MinimalCoreValues";
-import { StatsCounter } from "@/components/about/StatsCounter";
-import StickyQuoteBar from "@/components/ctas/StickyQuoteBar";
-import FloatingActionButton from "@/components/ctas/FloatingActionButton";
-
+import { IsoCertification } from "@/components/about/IsoCertification";
+import { ContactModule } from "@/components/about/ContactModule";
+import { motion } from "framer-motion";
 const About = () => {
-  const { t, language } = useLanguage();
-
-  useEffect(() => {
-    document.title = `${t('nav.about')} | Makpas`;
-  }, [t]);
-
-  // Company information sentences based on language
-  const aboutSentences = language === 'tr' ? [
-    "Makpas, 1998 yılından bu yana endüstriyel imalat sektöründe güvenilir bir partner olarak hizmet vermektedir.",
-    "25 yılı aşkın deneyimimizle, CNC torna, freze ve hassas işleme alanlarında uzmanlaşmış bir firmayız.",
-    "Amerika'dan Uzak Doğu'ya kadar geniş bir coğrafyada ithalat ve ihracat faaliyetleri yürütmekteyiz.",
-    "ISO 9001:2015 ve ISO 14001:2015 sertifikalarına sahip olan firmamız, kalite standartlarından asla ödün vermez.",
-    "Modern CNC makinelerimiz ve deneyimli ekibimizle, müşterilerimizin en karmaşık gereksinimlerini karşılıyoruz.",
-    "Sürekli gelişim anlayışımızla, sektördeki yenilikleri yakından takip ediyor ve teknolojiye yatırım yapıyoruz."
-  ] : [
-    "Makpas has been serving as a reliable partner in the industrial manufacturing sector since 1998.",
-    "With over 25 years of experience, we are a company specialized in CNC turning, milling and precision machining.",
-    "We carry out import and export activities in a wide geography from America to the Far East.",
-    "Our company, which has ISO 9001:2015 and ISO 14001:2015 certificates, never compromises on quality standards.",
-    "With our modern CNC machines and experienced team, we meet the most complex requirements of our customers.",
-    "With our continuous improvement approach, we closely follow innovations in the sector and invest in technology."
-  ];
-
-  // Mock certificate data for demonstration
-  const mockCertificate = {
-    name: "ISO Certificate",
-    photo_url: "/lovable-uploads/f0a5c15e-55bd-4add-8fd4-ec202e3bbbe1.png"
+  const {
+    language,
+    t
+  } = useLanguage();
+  const {
+    data: aboutText
+  } = useQuery({
+    queryKey: ['about-text', language],
+    queryFn: async () => {
+      const {
+        data,
+        error
+      } = await supabase.from('translations').select('*').eq('key', 'about_text').single();
+      if (error) throw error;
+      return data;
+    }
+  });
+  const {
+    data: images
+  } = useQuery({
+    queryKey: ['about-images'],
+    queryFn: async () => {
+      const {
+        data,
+        error
+      } = await supabase.from('icons').select('*').in('name', ['company_building', 'iso_certificate']);
+      if (error) throw error;
+      return data;
+    }
+  });
+  const companyBuilding = images?.find(img => img.name === 'company_building');
+  const isoCertificate = images?.find(img => img.name === 'iso_certificate');
+  const getAboutText = (): string[] => {
+    if (!aboutText?.en && !aboutText?.tr) return [];
+    const text = language === 'en' ? aboutText.en : aboutText.tr;
+    if (!text) return [];
+    return text.split(/(?<!\d)\.(?!\d|\w)(?!\s*[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g).map(sentence => sentence.trim()).filter(sentence => sentence && !sentence.toLowerCase().includes('contact')).map(sentence => sentence.endsWith('.') ? sentence : sentence + '.');
   };
-
-  return (
-    <div className="min-h-screen bg-pattern-waves section-bg-pattern pt-16">
-      <StickyQuoteBar />
-      <FloatingActionButton />
+  return <div className="relative min-h-screen">
+      {/* Hero Section with Gradient Background */}
       
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary dark:text-white font-space-grotesk mb-4">
-            {t('nav.about')}
-          </h1>
-        </div>
-        
-        <div className="space-y-16">
-          <AboutContent sentences={aboutSentences} />
-          
-          {/* Stats Section with Background */}
-          <div className="relative py-20 bg-gradient-to-r from-primary to-secondary rounded-2xl overflow-hidden">
-            <div className="absolute inset-0 bg-pattern-circuits opacity-10"></div>
-            <div className="relative z-10 flex flex-col items-center">
-              <h2 className="text-3xl font-bold text-white mb-12 text-center font-rubik">
-                {language === 'tr' ? 'Rakamlarla Makpas' : 'Makpas in Numbers'}
-              </h2>
-              <StatsCounter />
+
+      <div className="relative z-10 py-[30px]">
+        <div className="container mx-auto px-4">
+          <motion.div initial={{
+          opacity: 0,
+          y: 20
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.5
+        }} viewport={{
+          once: true
+        }} className="mb-20">
+            <h2 className="text-3xl font-bold text-primary dark:text-white mb-8 text-center font-rubik">
+              {t('about_company')}
+            </h2>
+            
+            <div className="bg-white/90 dark:bg-primary/90 p-8 rounded-lg shadow-md">
+              <AboutContent sentences={getAboutText()} />
             </div>
-          </div>
+          </motion.div>
           
           <MinimalCoreValues />
-          <CertificatesSection isoCertificate={mockCertificate} />
-          <TimelineSection />
+          
+          <IsoCertification isoCertificate={isoCertificate} />
+          
           <ContactModule />
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default About;

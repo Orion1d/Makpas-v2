@@ -92,7 +92,7 @@ const Products = () => {
   const productsByGroup = groupedProducts();
 
   return (
-    <div className="min-h-screen bg-pattern-waves section-bg-pattern pt-16">
+    <div className="min-h-screen bg-white dark:bg-gray-900 pt-16">
       <FloatingActionButton />
       <StickyQuoteBar />
       

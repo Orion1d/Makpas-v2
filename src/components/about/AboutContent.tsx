@@ -3,10 +3,10 @@ import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 
 interface AboutContentProps {
-  sentences?: string[];
+  sentences: string[];
 }
 
-export const AboutContent = ({ sentences = [] }: AboutContentProps) => {
+export const AboutContent = ({ sentences }: AboutContentProps) => {
   if (sentences.length === 0) {
     return (
       <Card className="p-6 bg-white/95 dark:bg-primary/90">
