@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -77,7 +78,7 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
   if (activeBanners.length === 0) return null;
 
   return (
-    <div className="relative w-full h-[300px] md:h-[400px] mb-8 overflow-hidden rounded-lg shadow-lg">
+    <div className="relative w-full h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[420px] mb-8 overflow-hidden rounded-lg shadow-lg">
       {/* Banner slides */}
       <div 
         className="flex transition-transform duration-500 ease-in-out h-full"
@@ -95,21 +96,21 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
             <div className="absolute inset-0 bg-black bg-opacity-40" />
             
             {/* Content overlay */}
-            <div className="relative h-full flex items-center justify-start px-6 md:px-12">
+            <div className="relative h-full flex items-center justify-start px-4 sm:px-6 md:px-8 lg:px-12">
               <div className="text-white max-w-lg">
-                <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4">
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-1 sm:mb-2 md:mb-3 lg:mb-4">
                   {banner.title}
                 </h2>
                 {banner.subtitle && (
-                  <p className="text-lg md:text-xl mb-4 md:mb-6 opacity-90">
+                  <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-3 sm:mb-4 md:mb-5 lg:mb-6 opacity-90">
                     {banner.subtitle}
                   </p>
                 )}
                 {banner.buttonText && (
                   <Button 
                     variant="accent" 
-                    size="lg"
-                    className="bg-safety-orange hover:bg-safety-orange/90 text-white font-semibold px-6 py-3"
+                    size="sm"
+                    className="bg-safety-orange hover:bg-safety-orange/90 text-white font-semibold px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 text-sm sm:text-base"
                   >
                     {banner.buttonText}
                   </Button>
@@ -126,29 +127,29 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm h-8 w-8 sm:h-10 sm:w-10"
             onClick={prevSlide}
           >
-            <ChevronLeft className="h-6 w-6" />
+            <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm h-8 w-8 sm:h-10 sm:w-10"
             onClick={nextSlide}
           >
-            <ChevronRight className="h-6 w-6" />
+            <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6" />
           </Button>
         </>
       )}
 
       {/* Dots indicator */}
       {activeBanners.length > 1 && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+        <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
           {activeBanners.map((_, index) => (
             <button
               key={index}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
                 index === currentSlide 
                   ? 'bg-safety-orange' 
                   : 'bg-white/50 hover:bg-white/75'
