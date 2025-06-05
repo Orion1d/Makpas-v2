@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -45,7 +46,7 @@ const WelcomeSection = () => {
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      {/* Background Image with Overlay */}
+      {/* Background Image with Overlay - Optimized for performance */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat transform transition-transform duration-[2s] hover:scale-105"
         style={{
@@ -53,6 +54,16 @@ const WelcomeSection = () => {
           backgroundAttachment: "fixed"
         }}
       >
+        {/* Preload critical background image */}
+        {welcomeImage && (
+          <link 
+            rel="preload" 
+            as="image" 
+            href={welcomeImage}
+            fetchpriority="high"
+          />
+        )}
+        
         {/* Dark Gradient Overlay with Reduced Opacity */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0A1A2F]/60 via-[#0A1A2F]/45 to-[#0A1A2F]/60">
           {/* Blue Accent Lighting Effect */}

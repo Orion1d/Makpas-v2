@@ -31,6 +31,10 @@ const CatalogSection = () => {
                 src="/src/components/catalog_cover.png" 
                 alt="Makpas Catalog Cover" 
                 className="rounded-lg shadow-lg transform hover:scale-105 transition-all duration-500 h-20 md:h-28" 
+                width="80"
+                height="112"
+                loading="lazy"
+                decoding="async"
                 onError={(e) => {
                   console.log("Image failed to load, trying alternative path");
                   e.currentTarget.src = "/Makpas_catalog_cover.png";

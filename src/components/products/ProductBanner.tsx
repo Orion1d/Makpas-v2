@@ -93,6 +93,15 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: `url(${banner.image})` }}
             />
+            {/* Preload first few banner images */}
+            {index < 2 && (
+              <link 
+                rel="preload" 
+                as="image" 
+                href={banner.image}
+                fetchpriority={index === 0 ? "high" : "low"}
+              />
+            )}
             <div className="absolute inset-0 bg-black bg-opacity-40" />
             
             {/* Content overlay */}

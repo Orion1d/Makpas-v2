@@ -46,6 +46,10 @@ export const ProductsGrid = ({ products, language }: ProductsGridProps) => {
                   alt={language === 'tr' ? (product.name_tr || product.name) : product.name}
                   className="object-cover w-full h-full"
                   loading={idx < 8 ? "eager" : "lazy"}
+                  width="300"
+                  height="200"
+                  decoding={idx < 4 ? "sync" : "async"}
+                  fetchpriority={idx < 4 ? "high" : "low"}
                 />
               </div>
             )}
