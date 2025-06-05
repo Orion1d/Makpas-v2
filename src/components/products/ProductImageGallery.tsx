@@ -124,7 +124,7 @@ const ProductImageGallery = ({
               width="600"
               height="600"
               decoding={selectedImageIndex === 0 ? "sync" : "async"}
-              fetchpriority={selectedImageIndex === 0 ? "high" : "low"}
+              fetchPriority={selectedImageIndex === 0 ? "high" : "low"}
               animate={{
                 scale: isTouchDevice.current ? 1 : isHovering ? 1.1 : 1
               }} 

@@ -99,7 +99,7 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
                 rel="preload" 
                 as="image" 
                 href={banner.image}
-                fetchpriority={index === 0 ? "high" : "low"}
+                fetchPriority={index === 0 ? "high" : "low"}
               />
             )}
             <div className="absolute inset-0 bg-black bg-opacity-40" />

@@ -5,7 +5,7 @@ export const getOptimizedImageProps = (index: number, isAboveFold: boolean = fal
   return {
     loading: (isAboveFold || index < 3) ? "eager" as const : "lazy" as const,
     decoding: (isAboveFold || index < 2) ? "sync" as const : "async" as const,
-    fetchpriority: (isAboveFold || index < 2) ? "high" as const : "low" as const,
+    fetchPriority: (isAboveFold || index < 2) ? "high" as const : "low" as const,
   };
 };
 

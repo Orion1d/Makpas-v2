@@ -49,7 +49,7 @@ export const ProductsGrid = ({ products, language }: ProductsGridProps) => {
                   width="300"
                   height="200"
                   decoding={idx < 4 ? "sync" : "async"}
-                  fetchpriority={idx < 4 ? "high" : "low"}
+                  fetchPriority={idx < 4 ? "high" : "low"}
                 />
               </div>
             )}

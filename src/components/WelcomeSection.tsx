@@ -60,7 +60,7 @@ const WelcomeSection = () => {
             rel="preload" 
             as="image" 
             href={welcomeImage}
-            fetchpriority="high"
+            fetchPriority="high"
           />
         )}
         
