@@ -2,14 +2,14 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Banner {
-  id: string;
-  title: string;
-  subtitle?: string;
-  image: string;
-  link?: string;
-  buttonText?: string;
+  id: number;
+  name: string | null;
+  link: string | null;
+  created_at: string;
 }
 
 interface ProductBannerProps {
@@ -19,39 +19,20 @@ interface ProductBannerProps {
 export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Demo banners - you can replace these with data from Supabase later
-  const demoBanners: Banner[] = [
-    {
-      id: "1",
-      title: "High-Heat Welding Gloves",
-      subtitle: "Designed for Maximum Safety, Flexibility, and Control",
-      image: "/lovable-uploads/48420f73-2f5c-4071-a15c-0f3785b48dc1.png",
-      buttonText: "View Products"
-    },
-    {
-      id: "2",
-      title: "New Product Line",
-      subtitle: "Discover our latest industrial solutions",
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&h=400&q=80",
-      buttonText: "Explore Now"
-    },
-    {
-      id: "3", 
-      title: "Special Campaign",
-      subtitle: "Limited time offer on selected products",
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&h=400&q=80",
-      buttonText: "Learn More"
-    },
-    {
-      id: "4",
-      title: "Popular Products",
-      subtitle: "Most demanded items this month",
-      image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1200&h=400&q=80",
-      buttonText: "View Collection"
+  // Fetch banners from Supabase
+  const { data: supabaseBanners = [], isLoading } = useQuery({
+    queryKey: ['banners'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('banners')
+        .select('*')
+        .order('created_at', { ascending: true });
+      if (error) throw error;
+      return data || [];
     }
-  ];
+  });
 
-  const activeBanners = banners.length > 0 ? banners : demoBanners;
+  const activeBanners = banners.length > 0 ? banners : supabaseBanners;
 
   useEffect(() => {
     if (activeBanners.length <= 1) return;
@@ -75,7 +56,7 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
     setCurrentSlide((prev) => (prev - 1 + activeBanners.length) % activeBanners.length);
   };
 
-  if (activeBanners.length === 0) return null;
+  if (isLoading || activeBanners.length === 0) return null;
 
   return (
     <div className="relative w-full h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[420px] mb-8 overflow-hidden rounded-lg shadow-lg">
@@ -91,14 +72,14 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
           >
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${banner.image})` }}
+              style={{ backgroundImage: `url(${banner.link || ''})` }}
             />
             {/* Preload first few banner images */}
-            {index < 2 && (
+            {index < 2 && banner.link && (
               <link 
                 rel="preload" 
                 as="image" 
-                href={banner.image}
+                href={banner.link}
                 fetchPriority={index === 0 ? "high" : "low"}
               />
             )}
@@ -108,22 +89,15 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
             <div className="relative h-full flex items-center justify-start px-4 sm:px-6 md:px-8 lg:px-12">
               <div className="text-white max-w-lg">
                 <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-1 sm:mb-2 md:mb-3 lg:mb-4">
-                  {banner.title}
+                  {banner.name || 'Banner'}
                 </h2>
-                {banner.subtitle && (
-                  <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-3 sm:mb-4 md:mb-5 lg:mb-6 opacity-90">
-                    {banner.subtitle}
-                  </p>
-                )}
-                {banner.buttonText && (
-                  <Button 
-                    variant="accent" 
-                    size="sm"
-                    className="bg-safety-orange hover:bg-safety-orange/90 text-white font-semibold px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 text-sm sm:text-base"
-                  >
-                    {banner.buttonText}
-                  </Button>
-                )}
+                <Button 
+                  variant="accent" 
+                  size="sm"
+                  className="bg-safety-orange hover:bg-safety-orange/90 text-white font-semibold px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 text-sm sm:text-base"
+                >
+                  View Products
+                </Button>
               </div>
             </div>
           </div>
