@@ -9,7 +9,7 @@ import { getOptimizedImageProps, preloadCriticalImages } from "@/utils/imageOpti
 interface Banner {
   id: number;
   name: string | null;
-  link: string | null;
+  photo_url: string | null;
   created_at: string;
 }
 
@@ -50,8 +50,8 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
   useEffect(() => {
     if (activeBanners.length > 0) {
       const imageUrls = activeBanners
-        .filter(banner => banner.link)
-        .map(banner => banner.link!)
+        .filter(banner => banner.photo_url)
+        .map(banner => banner.photo_url!)
         .slice(0, 3);
       
       if (imageUrls.length > 0) {
@@ -134,9 +134,9 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
               key={banner.id}
               className="relative w-full h-full flex-shrink-0"
             >
-              {banner.link ? (
+              {banner.photo_url ? (
                 <img
-                  src={banner.link}
+                  src={banner.photo_url}
                   alt={banner.name || `Banner ${index + 1}`}
                   className="absolute inset-0 w-full h-full object-cover"
                   loading={imageProps.loading}
