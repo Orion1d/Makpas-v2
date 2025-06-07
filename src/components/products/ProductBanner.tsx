@@ -53,7 +53,13 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
     return <LoadingBanner />;
   }
 
+  if (error) {
+    console.error('Banner error:', error);
+    return <DefaultBanner />;
+  }
+
   if (activeBanners.length === 0) {
+    console.log('No active banners found, showing default banner');
     return <DefaultBanner />;
   }
 
@@ -75,18 +81,23 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
         ))}
       </div>
 
-      <BannerNavigation
-        onPrevious={prevSlide}
-        onNext={nextSlide}
-        showNavigation={hasMultipleBanners}
-      />
+      {/* Navigation controls - only show if multiple banners */}
+      {hasMultipleBanners && (
+        <>
+          <BannerNavigation
+            onPrevious={prevSlide}
+            onNext={nextSlide}
+            showNavigation={true}
+          />
 
-      <BannerDots
-        totalBanners={activeBanners.length}
-        currentSlide={currentSlide}
-        onSlideSelect={goToSlide}
-        showDots={hasMultipleBanners}
-      />
+          <BannerDots
+            totalBanners={activeBanners.length}
+            currentSlide={currentSlide}
+            onSlideSelect={goToSlide}
+            showDots={true}
+          />
+        </>
+      )}
     </div>
   );
 };

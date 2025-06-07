@@ -18,14 +18,19 @@ export const useBanners = (banners: Banner[] = []) => {
         throw error;
       }
       
-      console.log('Banners fetched:', data);
+      console.log('Raw banners data from Supabase:', data);
       return data || [];
-    }
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false,
   });
 
-  const activeBanners = banners.length > 0 ? banners : supabaseBanners;
+  // Use prop banners if provided, otherwise use fetched banners
+  const activeBanners = banners.length > 0 ? banners : supabaseBanners.filter(banner => banner.photo_url);
 
-  console.log('Active banners:', activeBanners);
+  console.log('Prop banners:', banners);
+  console.log('Supabase banners:', supabaseBanners);
+  console.log('Active banners (filtered):', activeBanners);
   console.log('Is loading:', isLoading);
   console.log('Error:', error);
 
