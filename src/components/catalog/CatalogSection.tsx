@@ -50,7 +50,11 @@ const CatalogSection = () => {
           {/* Download Button */}
           <BlurFade delay={0.4} inView={isVisible}>
             <Button asChild variant="secondary" className="gap-2 transform hover:scale-105 transition-all duration-300">
-              <a href="/src/components/Makpas_catalog_EN.pdf" download="Makpas_Catalog_EN.pdf">
+              <a 
+                href="https://drive.google.com/file/d/1YFLcVxCsAzhEZZBMG5NNGAg1kMkZKuU6/view?usp=sharing" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
                 <Download className="w-4 h-4 mr-1" />
                 {t('catalog.download_button') || 'Download Catalog'}
               </a>
