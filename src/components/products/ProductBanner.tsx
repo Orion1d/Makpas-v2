@@ -5,58 +5,55 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-interface Banner {
+interface BannerIcon {
   id: number;
-  name: string | null;
-  link: string | null;
-  created_at: string;
+  name: string;
+  photo_url: string | null;
 }
 
-interface ProductBannerProps {
-  banners?: Banner[];
-}
-
-export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
+export const ProductBanner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Fetch banners from Supabase
-  const { data: supabaseBanners = [], isLoading } = useQuery({
-    queryKey: ['banners'],
+  // Fetch banner images from icons table
+  const { data: bannerIcons = [], isLoading } = useQuery({
+    queryKey: ['banner-icons'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('banners')
+        .from('icons')
         .select('*')
-        .order('created_at', { ascending: true });
+        .ilike('name', 'banner_%')
+        .order('name', { ascending: true });
       if (error) throw error;
-      return data || [];
+      return (data || []) as BannerIcon[];
     }
   });
 
-  const activeBanners = banners.length > 0 ? banners : supabaseBanners;
+  // Filter banners that have valid photo URLs
+  const validBanners = bannerIcons.filter(banner => banner.photo_url);
 
   useEffect(() => {
-    if (activeBanners.length <= 1) return;
+    if (validBanners.length <= 1) return;
 
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % activeBanners.length);
+      setCurrentSlide((prev) => (prev + 1) % validBanners.length);
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [activeBanners.length]);
+  }, [validBanners.length]);
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % activeBanners.length);
+    setCurrentSlide((prev) => (prev + 1) % validBanners.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + activeBanners.length) % activeBanners.length);
+    setCurrentSlide((prev) => (prev - 1 + validBanners.length) % validBanners.length);
   };
 
-  if (isLoading || activeBanners.length === 0) return null;
+  if (isLoading || validBanners.length === 0) return null;
 
   return (
     <div className="relative w-full h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[420px] mb-8 overflow-hidden rounded-lg shadow-lg">
@@ -65,21 +62,21 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
         className="flex transition-transform duration-500 ease-in-out h-full"
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
-        {activeBanners.map((banner, index) => (
+        {validBanners.map((banner, index) => (
           <div
             key={banner.id}
             className="relative w-full h-full flex-shrink-0"
           >
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${banner.link || ''})` }}
+              style={{ backgroundImage: `url(${banner.photo_url})` }}
             />
             {/* Preload first few banner images */}
-            {index < 2 && banner.link && (
+            {index < 2 && banner.photo_url && (
               <link 
                 rel="preload" 
                 as="image" 
-                href={banner.link}
+                href={banner.photo_url}
                 fetchPriority={index === 0 ? "high" : "low"}
               />
             )}
@@ -89,7 +86,7 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
             <div className="relative h-full flex items-center justify-start px-4 sm:px-6 md:px-8 lg:px-12">
               <div className="text-white max-w-lg">
                 <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-1 sm:mb-2 md:mb-3 lg:mb-4">
-                  {banner.name || 'Banner'}
+                  {banner.name.replace('banner_', 'Banner ') || 'Banner'}
                 </h2>
                 <Button 
                   variant="accent" 
@@ -105,7 +102,7 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
       </div>
 
       {/* Navigation arrows */}
-      {activeBanners.length > 1 && (
+      {validBanners.length > 1 && (
         <>
           <Button
             variant="ghost"
@@ -127,9 +124,9 @@ export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
       )}
 
       {/* Dots indicator */}
-      {activeBanners.length > 1 && (
+      {validBanners.length > 1 && (
         <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-          {activeBanners.map((_, index) => (
+          {validBanners.map((_, index) => (
             <button
               key={index}
               className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${

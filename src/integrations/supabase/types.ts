@@ -13,20 +13,20 @@ export type Database = {
         Row: {
           created_at: string
           id: number
-          link: string | null
           name: string | null
+          photo_url: string | null
         }
         Insert: {
           created_at?: string
           id?: number
-          link?: string | null
           name?: string | null
+          photo_url?: string | null
         }
         Update: {
           created_at?: string
           id?: number
-          link?: string | null
           name?: string | null
+          photo_url?: string | null
         }
         Relationships: []
       }
