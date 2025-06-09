@@ -1,115 +1,147 @@
 
 import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-import type { EmblaPluginType as LoosePluginType } from "embla-carousel";
 
-export const ProductBanner = () => {
-  const [api, setApi] = useState<CarouselApi>();
-  
-  const { data: banners = [], isLoading } = useQuery({
+interface Banner {
+  id: number;
+  name: string | null;
+  link: string | null;
+  created_at: string;
+}
+
+interface ProductBannerProps {
+  banners?: Banner[];
+}
+
+export const ProductBanner = ({ banners = [] }: ProductBannerProps) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Fetch banners from Supabase
+  const { data: supabaseBanners = [], isLoading } = useQuery({
     queryKey: ['banners'],
     queryFn: async () => {
-      console.log('Fetching banners from Supabase...');
       const { data, error } = await supabase
         .from('banners')
         .select('*')
-        .order('id', { ascending: true });
-      
-      if (error) {
-        console.error('Error fetching banners:', error);
-        throw error;
-      }
-      
-      console.log('Raw banners data from Supabase:', data);
+        .order('created_at', { ascending: true });
+      if (error) throw error;
       return data || [];
-    },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    refetchOnWindowFocus: false,
+    }
   });
 
-  // Filter banners that have valid photo URLs
-  const activeBanners = banners.filter(banner => banner.photo_url && banner.photo_url.trim() !== '');
-
-  console.log('Active banners (filtered):', activeBanners);
+  const activeBanners = banners.length > 0 ? banners : supabaseBanners;
 
   useEffect(() => {
-    if (api) {
-      api.scrollTo(0);
-    }
-  }, [activeBanners, api]);
+    if (activeBanners.length <= 1) return;
 
-  const autoplayPlugin = Autoplay({
-    delay: 4000,
-    stopOnInteraction: false
-  }) as unknown as LoosePluginType;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % activeBanners.length);
+    }, 5000);
 
-  if (isLoading) {
-    return (
-      <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-all duration-700 ease-in-out py-[20px]">
-        <div className="container mx-auto px-4">
-          <div className="relative w-full h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[420px] mb-8 overflow-hidden rounded-lg shadow-lg">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-safety-orange/90 animate-pulse" />
-          </div>
-        </div>
-      </section>
-    );
-  }
+    return () => clearInterval(timer);
+  }, [activeBanners.length]);
 
-  if (activeBanners.length === 0) {
-    console.log('No active banners found, showing default banner');
-    return (
-      <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-all duration-700 ease-in-out py-[20px]">
-        <div className="container mx-auto px-4">
-          <div className="relative w-full h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[420px] mb-8 overflow-hidden rounded-lg shadow-lg">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-safety-orange/90" />
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % activeBanners.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + activeBanners.length) % activeBanners.length);
+  };
+
+  if (isLoading || activeBanners.length === 0) return null;
 
   return (
-    <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-all duration-700 ease-in-out py-[20px]">
-      <div className="container mx-auto px-4">
-        <div className="w-full max-w-7xl mx-auto">
-          <Carousel 
-            opts={{
-              align: "start",
-              loop: true,
-              slidesToScroll: 1
-            }} 
-            plugins={[autoplayPlugin]} 
-            setApi={setApi} 
-            className="w-full"
+    <div className="relative w-full h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[420px] mb-8 overflow-hidden rounded-lg shadow-lg">
+      {/* Banner slides */}
+      <div 
+        className="flex transition-transform duration-500 ease-in-out h-full"
+        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+      >
+        {activeBanners.map((banner, index) => (
+          <div
+            key={banner.id}
+            className="relative w-full h-full flex-shrink-0"
           >
-            <CarouselContent>
-              {activeBanners.map((banner) => (
-                <CarouselItem key={banner.id} className="pl-0">
-                  <div className="relative w-full h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[420px] overflow-hidden rounded-lg shadow-lg">
-                    <img
-                      src={banner.photo_url!}
-                      alt={banner.name || `Banner ${banner.id}`}
-                      className="object-cover w-full h-full"
-                      loading="eager"
-                      decoding="sync"
-                      fetchPriority="high"
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            {activeBanners.length > 1 && (
-              <>
-                <CarouselPrevious className="hidden md:flex -left-12 hover:scale-110 transition-transform duration-300" />
-                <CarouselNext className="hidden md:flex -right-12 hover:scale-110 transition-transform duration-300" />
-              </>
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${banner.link || ''})` }}
+            />
+            {/* Preload first few banner images */}
+            {index < 2 && banner.link && (
+              <link 
+                rel="preload" 
+                as="image" 
+                href={banner.link}
+                fetchPriority={index === 0 ? "high" : "low"}
+              />
             )}
-          </Carousel>
-        </div>
+            <div className="absolute inset-0 bg-black bg-opacity-40" />
+            
+            {/* Content overlay */}
+            <div className="relative h-full flex items-center justify-start px-4 sm:px-6 md:px-8 lg:px-12">
+              <div className="text-white max-w-lg">
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-1 sm:mb-2 md:mb-3 lg:mb-4">
+                  {banner.name || 'Banner'}
+                </h2>
+                <Button 
+                  variant="accent" 
+                  size="sm"
+                  className="bg-safety-orange hover:bg-safety-orange/90 text-white font-semibold px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 text-sm sm:text-base"
+                >
+                  View Products
+                </Button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-    </section>
+
+      {/* Navigation arrows */}
+      {activeBanners.length > 1 && (
+        <>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm h-8 w-8 sm:h-10 sm:w-10"
+            onClick={prevSlide}
+          >
+            <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm h-8 w-8 sm:h-10 sm:w-10"
+            onClick={nextSlide}
+          >
+            <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6" />
+          </Button>
+        </>
+      )}
+
+      {/* Dots indicator */}
+      {activeBanners.length > 1 && (
+        <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+          {activeBanners.map((_, index) => (
+            <button
+              key={index}
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                index === currentSlide 
+                  ? 'bg-safety-orange' 
+                  : 'bg-white/50 hover:bg-white/75'
+              }`}
+              onClick={() => goToSlide(index)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
