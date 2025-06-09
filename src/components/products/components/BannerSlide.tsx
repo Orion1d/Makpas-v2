@@ -16,10 +16,12 @@ export const BannerSlide = ({ banner, index }: BannerSlideProps) => {
         <img
           src={banner.photo_url}
           alt={banner.name || `Banner ${index + 1}`}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="object-cover w-full h-full"
           loading={imageProps.loading}
           decoding={imageProps.decoding}
           fetchPriority={imageProps.fetchPriority}
+          width="800"
+          height="400"
         />
       ) : (
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-safety-orange/90" />

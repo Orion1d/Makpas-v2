@@ -25,8 +25,10 @@ export const useBanners = (banners: Banner[] = []) => {
     refetchOnWindowFocus: false,
   });
 
-  // Use prop banners if provided, otherwise use fetched banners
-  const activeBanners = banners.length > 0 ? banners : supabaseBanners.filter(banner => banner.photo_url);
+  // Filter banners that have valid photo URLs, just like products do
+  const activeBanners = banners.length > 0 
+    ? banners.filter(banner => banner.photo_url && banner.photo_url.trim() !== '')
+    : supabaseBanners.filter(banner => banner.photo_url && banner.photo_url.trim() !== '');
 
   console.log('Prop banners:', banners);
   console.log('Supabase banners:', supabaseBanners);
