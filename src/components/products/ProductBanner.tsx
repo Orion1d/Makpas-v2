@@ -48,56 +48,68 @@ export const ProductBanner = () => {
 
   if (isLoading) {
     return (
-      <div className="relative w-full h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[420px] mb-8 overflow-hidden rounded-lg shadow-lg">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-safety-orange/90 animate-pulse" />
-      </div>
+      <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-all duration-700 ease-in-out py-[20px]">
+        <div className="container mx-auto px-4">
+          <div className="relative w-full h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[420px] mb-8 overflow-hidden rounded-lg shadow-lg">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-safety-orange/90 animate-pulse" />
+          </div>
+        </div>
+      </section>
     );
   }
 
   if (activeBanners.length === 0) {
     console.log('No active banners found, showing default banner');
     return (
-      <div className="relative w-full h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[420px] mb-8 overflow-hidden rounded-lg shadow-lg">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-safety-orange/90" />
-      </div>
+      <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-all duration-700 ease-in-out py-[20px]">
+        <div className="container mx-auto px-4">
+          <div className="relative w-full h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[420px] mb-8 overflow-hidden rounded-lg shadow-lg">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-safety-orange/90" />
+          </div>
+        </div>
+      </section>
     );
   }
 
   return (
-    <div className="w-full mb-8">
-      <Carousel 
-        opts={{
-          align: "start",
-          loop: true,
-          slidesToScroll: 1
-        }} 
-        plugins={[autoplayPlugin]} 
-        setApi={setApi} 
-        className="w-full"
-      >
-        <CarouselContent>
-          {activeBanners.map((banner) => (
-            <CarouselItem key={banner.id} className="pl-0">
-              <div className="relative w-full h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[420px] overflow-hidden rounded-lg shadow-lg">
-                <img
-                  src={banner.photo_url!}
-                  alt={banner.name || `Banner ${banner.id}`}
-                  className="object-cover w-full h-full"
-                  loading="eager"
-                  decoding="sync"
-                  fetchPriority="high"
-                />
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        {activeBanners.length > 1 && (
-          <>
-            <CarouselPrevious className="hidden md:flex -left-12 hover:scale-110 transition-transform duration-300" />
-            <CarouselNext className="hidden md:flex -right-12 hover:scale-110 transition-transform duration-300" />
-          </>
-        )}
-      </Carousel>
-    </div>
+    <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-all duration-700 ease-in-out py-[20px]">
+      <div className="container mx-auto px-4">
+        <div className="w-full max-w-7xl mx-auto">
+          <Carousel 
+            opts={{
+              align: "start",
+              loop: true,
+              slidesToScroll: 1
+            }} 
+            plugins={[autoplayPlugin]} 
+            setApi={setApi} 
+            className="w-full"
+          >
+            <CarouselContent>
+              {activeBanners.map((banner) => (
+                <CarouselItem key={banner.id} className="pl-0">
+                  <div className="relative w-full h-[200px] sm:h-[250px] md:h-[320px] lg:h-[380px] xl:h-[420px] overflow-hidden rounded-lg shadow-lg">
+                    <img
+                      src={banner.photo_url!}
+                      alt={banner.name || `Banner ${banner.id}`}
+                      className="object-cover w-full h-full"
+                      loading="eager"
+                      decoding="sync"
+                      fetchPriority="high"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {activeBanners.length > 1 && (
+              <>
+                <CarouselPrevious className="hidden md:flex -left-12 hover:scale-110 transition-transform duration-300" />
+                <CarouselNext className="hidden md:flex -right-12 hover:scale-110 transition-transform duration-300" />
+              </>
+            )}
+          </Carousel>
+        </div>
+      </div>
+    </section>
   );
 };
