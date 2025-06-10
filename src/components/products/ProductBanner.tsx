@@ -58,7 +58,7 @@ export const ProductBanner = () => {
   if (isLoading || validBanners.length === 0) return null;
 
   return (
-    <div className="relative w-full h-[150px] sm:h-[200px] md:h-[250px] lg:h-[300px] xl:h-[350px] mb-8 overflow-hidden rounded-lg shadow-lg">
+    <div className="relative w-full aspect-[2/1] mb-8 overflow-hidden rounded-lg shadow-lg">
       {/* Banner slides */}
       <div 
         className="flex transition-transform duration-500 ease-in-out h-full" 
