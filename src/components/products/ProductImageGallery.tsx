@@ -18,7 +18,11 @@ const ProductImageGallery = ({
 }: ProductImageGalleryProps) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
   const thumbnailsRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const isTouchDevice = useRef(false);
   
   useEffect(() => {
@@ -45,6 +49,24 @@ const ProductImageGallery = ({
         left: scrollAmount,
         behavior: 'smooth'
       });
+    }
+  };
+
+  // Enhanced zoom handling
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!imageRef.current || !containerRef.current || !isZoomed) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    
+    setZoomPosition({ x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) });
+  };
+
+  const handleZoomToggle = () => {
+    setIsZoomed(!isZoomed);
+    if (!isZoomed) {
+      setZoomPosition({ x: 50, y: 50 });
     }
   };
 
@@ -86,72 +108,75 @@ const ProductImageGallery = ({
   
   const handlePrevImage = () => {
     setSelectedImageIndex(prev => prev > 0 ? prev - 1 : photoUrls.length - 1);
+    setIsZoomed(false);
   };
   
   const handleNextImage = () => {
     setSelectedImageIndex(prev => prev < photoUrls.length - 1 ? prev + 1 : 0);
+    setIsZoomed(false);
   };
   
   return (
     <div className="space-y-4 contain-content">
-      {/* Main Image with CNC machine border effect and dynamic background */}
+      {/* Main Image with larger size and enhanced zoom */}
       <div 
-        className="relative aspect-square rounded-lg overflow-hidden" 
+        ref={containerRef}
+        className="relative aspect-[4/3] md:aspect-square lg:aspect-[4/3] xl:aspect-[3/2] rounded-lg overflow-hidden cursor-zoom-in" 
         style={{
           backgroundImage: dynamicGradient,
-          boxShadow: "inset 0 0 0 2px rgba(255,255,255,0.1), 0 10px 30px -10px rgba(0,0,0,0.3)"
+          boxShadow: "inset 0 0 0 2px rgba(255,255,255,0.1), 0 10px 30px -10px rgba(0,0,0,0.3)",
+          height: 'clamp(300px, 50vh, 600px)'
         }} 
         onTouchStart={handleTouchDown} 
         onTouchEnd={handleTouchUp}
+        onMouseMove={handleMouseMove}
+        onClick={handleZoomToggle}
       >
         {/* CNC machine border effect */}
         <div className="absolute inset-3 z-10 border-[6px] border-dashed border-white/10 rounded pointer-events-none"></div>
         
-        <ImageLightbox 
-          imageUrl={photoUrls[selectedImageIndex]} 
-          alt={`${productName} - Image ${selectedImageIndex + 1}`}
+        <div 
+          className="relative w-full h-full overflow-hidden group" 
+          onMouseEnter={() => !isTouchDevice.current && setIsHovering(true)} 
+          onMouseLeave={() => !isTouchDevice.current && setIsHovering(false)}
         >
-          <div 
-            className="relative aspect-square overflow-hidden group cursor-zoom-in" 
-            onMouseEnter={() => !isTouchDevice.current && setIsHovering(true)} 
-            onMouseLeave={() => !isTouchDevice.current && setIsHovering(false)}
-          >
-            <motion.img 
-              src={photoUrls[selectedImageIndex]} 
-              alt={`${productName} - Image ${selectedImageIndex + 1}`} 
-              className="object-cover w-full h-full transition-transform duration-300" 
-              loading={selectedImageIndex < 3 ? "eager" : "lazy"}
-              width="600"
-              height="600"
-              decoding={selectedImageIndex === 0 ? "sync" : "async"}
-              fetchPriority={selectedImageIndex === 0 ? "high" : "low"}
-              animate={{
-                scale: isTouchDevice.current ? 1 : isHovering ? 1.1 : 1
-              }} 
-              transition={{
-                duration: 0.4,
-                ease: "easeOut"
-              }} 
-            />
-            <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-            
-            {/* Technical badge - ISO certification */}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div></div>
-                </TooltipTrigger>
-                <TooltipContent side="bottom" className="z-[100] contain-strict">
-                  <p className="text-xs">ISO 9001 Certified Product</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            
-            <div className="absolute top-3 right-3 bg-white/80 dark:bg-black/50 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover-effect">
-              <ZoomIn className="h-5 w-5 text-primary dark:text-white" />
-            </div>
+          <motion.img 
+            ref={imageRef}
+            src={photoUrls[selectedImageIndex]} 
+            alt={`${productName} - Image ${selectedImageIndex + 1}`} 
+            className="object-contain w-full h-full transition-transform duration-500 ease-out" 
+            loading={selectedImageIndex < 3 ? "eager" : "lazy"}
+            width="800"
+            height="600"
+            decoding={selectedImageIndex === 0 ? "sync" : "async"}
+            fetchPriority={selectedImageIndex === 0 ? "high" : "low"}
+            animate={{
+              scale: isZoomed ? 2.5 : (isTouchDevice.current ? 1 : isHovering ? 1.05 : 1)
+            }} 
+            style={{
+              transformOrigin: isZoomed ? `${zoomPosition.x}% ${zoomPosition.y}%` : 'center'
+            }}
+            transition={{
+              duration: 0.3,
+              ease: "easeOut"
+            }} 
+          />
+          
+          {/* Enhanced zoom indicator */}
+          <div className={cn(
+            "absolute top-4 right-4 bg-white/90 dark:bg-black/70 p-3 rounded-full transition-all duration-300 shadow-lg",
+            isZoomed ? "bg-safety-orange text-white" : "opacity-0 group-hover:opacity-100"
+          )}>
+            <ZoomIn className="h-5 w-5" />
           </div>
-        </ImageLightbox>
+
+          {/* Zoom instructions */}
+          {!isTouchDevice.current && (
+            <div className="absolute bottom-4 left-4 bg-black/70 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              {isZoomed ? "Click to zoom out" : "Click to zoom in"}
+            </div>
+          )}
+        </div>
 
         {/* Image Navigation Arrows */}
         {photoUrls.length > 1 && (
@@ -159,35 +184,35 @@ const ProductImageGallery = ({
             <Button 
               variant="secondary" 
               size="icon" 
-              className="absolute left-2 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-white/70 dark:bg-black/40 hover:bg-white dark:hover:bg-black/60 shadow-md z-10" 
+              className="absolute left-2 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full bg-white/80 dark:bg-black/50 hover:bg-white dark:hover:bg-black/70 shadow-lg z-20 border-2 border-white/20" 
               onClick={e => {
                 e.stopPropagation();
                 handlePrevImage();
               }}
             >
-              <ArrowLeft className="h-5 w-5 text-primary dark:text-white" />
+              <ArrowLeft className="h-6 w-6 text-primary dark:text-white" />
             </Button>
             <Button 
               variant="secondary" 
               size="icon" 
-              className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-white/70 dark:bg-black/40 hover:bg-white dark:hover:bg-black/60 shadow-md z-10" 
+              className="absolute right-2 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full bg-white/80 dark:bg-black/50 hover:bg-white dark:hover:bg-black/70 shadow-lg z-20 border-2 border-white/20" 
               onClick={e => {
                 e.stopPropagation();
                 handleNextImage();
               }}
             >
-              <ArrowRight className="h-5 w-5 text-primary dark:text-white" />
+              <ArrowRight className="h-6 w-6 text-primary dark:text-white" />
             </Button>
           </>
         )}
       </div>
 
-      {/* Thumbnails with Fixed Height and Contained Scroll */}
+      {/* Thumbnails with improved layout */}
       {photoUrls.length > 1 && (
         <div className="relative">
           <div 
             ref={thumbnailsRef} 
-            className="flex space-x-2 overflow-x-auto py-2 scrollbar-hide snap-x snap-mandatory h-[120px]" 
+            className="flex space-x-3 overflow-x-auto py-2 scrollbar-hide snap-x snap-mandatory h-[100px]" 
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none'
@@ -196,13 +221,16 @@ const ProductImageGallery = ({
             {photoUrls.map((url, index) => (
               <button 
                 key={url} 
-                onClick={() => setSelectedImageIndex(index)} 
+                onClick={() => {
+                  setSelectedImageIndex(index);
+                  setIsZoomed(false);
+                }} 
                 className={cn(
                   "relative flex-shrink-0 w-20 h-20 snap-start",
-                  "overflow-hidden rounded-md transition-all duration-200",
+                  "overflow-hidden rounded-lg transition-all duration-200 border-2",
                   selectedImageIndex === index 
-                    ? "border-2 border-safety-orange ring-2 ring-safety-orange/50 shadow-[0_0_10px_0_rgba(255,107,53,0.5)]" 
-                    : "border-2 border-transparent hover:border-safety-orange/50"
+                    ? "border-safety-orange ring-2 ring-safety-orange/50 shadow-[0_0_15px_0_rgba(255,107,53,0.6)] scale-110" 
+                    : "border-gray-200 dark:border-gray-600 hover:border-safety-orange/50 hover:scale-105"
                 )}
               >
                 <img 
@@ -216,12 +244,12 @@ const ProductImageGallery = ({
                 />
                 {selectedImageIndex === index && (
                   <motion.div 
-                    className="absolute inset-0 border-2 border-safety-orange rounded-md pointer-events-none" 
+                    className="absolute inset-0 border-2 border-safety-orange rounded-lg pointer-events-none" 
                     animate={{
-                      opacity: [0.2, 1, 0.2]
+                      opacity: [0.3, 1, 0.3]
                     }} 
                     transition={{
-                      duration: 1.5,
+                      duration: 2,
                       repeat: Infinity,
                       ease: "easeInOut"
                     }} 
@@ -237,7 +265,7 @@ const ProductImageGallery = ({
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="absolute left-0 top-1/2 -translate-y-1/2 h-7 w-7 bg-white/70 dark:bg-black/40 rounded-full shadow-sm" 
+                className="absolute left-0 top-1/2 -translate-y-1/2 h-8 w-8 bg-white/80 dark:bg-black/50 rounded-full shadow-md border border-gray-200 dark:border-gray-600" 
                 onClick={() => scrollThumbnails('left')}
               >
                 <ArrowLeft className="h-4 w-4" />
@@ -245,7 +273,7 @@ const ProductImageGallery = ({
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="absolute right-0 top-1/2 -translate-y-1/2 h-7 w-7 bg-white/70 dark:bg-black/40 rounded-full shadow-sm" 
+                className="absolute right-0 top-1/2 -translate-y-1/2 h-8 w-8 bg-white/80 dark:bg-black/50 rounded-full shadow-md border border-gray-200 dark:border-gray-600" 
                 onClick={() => scrollThumbnails('right')}
               >
                 <ArrowRight className="h-4 w-4" />
