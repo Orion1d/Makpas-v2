@@ -1,23 +1,21 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Printer, Mail, ExternalLink } from "lucide-react";
+
 export const ContactModule = () => {
-  const {
-    language
-  } = useLanguage();
-  return <motion.div initial={{
-    opacity: 0,
-    y: 20
-  }} whileInView={{
-    opacity: 1,
-    y: 0
-  }} viewport={{
-    once: true
-  }} transition={{
-    duration: 0.5
-  }} className="max-w-5xl mx-auto">
+  const { language } = useLanguage();
+  
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className="max-w-5xl mx-auto"
+    >
       <h2 className="text-2xl font-bold text-primary dark:text-white mb-10 text-center font-rubik">
         {language === 'tr' ? 'İletişim' : 'Contact'}
       </h2>
@@ -88,13 +86,20 @@ export const ContactModule = () => {
         
         <Card className="bg-white/90 dark:bg-primary/90 shadow-md overflow-hidden h-full">
           <div className="h-full w-full relative border-2 border-safety-orange rounded-lg overflow-hidden">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12257.88641837282!2d29.043131302913626!3d40.19950557676905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ca3e3f05e03f6d%3A0x5e7c6dbdfb048773!2sMinareliçavuş%2C%20Milas%20Sk.%20No%3A18%2C%2016110%20Nilüfer%2FBursa!5e0!3m2!1str!2str!4v1717356978178!5m2!1str!2str" width="100%" height="100%" style={{
-            border: 0
-          }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Makpas Location" className="absolute inset-0"></iframe>
-            
-            
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1126.1154351910589!2d28.943677623011393!3d40.239940825870605!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ca11446a3f46d5%3A0x2b76598dc60f6156!2zTWFrcGHFnw!5e1!3m2!1str!2ses!4v1749550816203!5m2!1str!2ses" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Makpas Location"
+              className="absolute inset-0"
+            />
           </div>
         </Card>
       </div>
-    </motion.div>;
+    </motion.div>
+  );
 };

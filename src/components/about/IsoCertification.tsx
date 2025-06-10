@@ -21,26 +21,25 @@ export const IsoCertification = ({ isoCertificate }: IsoCertificationProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="max-w-2xl mx-auto mb-20"
+      className="max-w-4xl mx-auto mb-20"
     >
       <h2 className="text-2xl font-bold text-primary dark:text-white mb-10 text-center font-rubik">
         {language === 'tr' ? 'Teknik Mükemmellik' : 'Technical Excellence'}
       </h2>
       
-      <div className="bg-white/90 dark:bg-primary/90 p-6 rounded-lg border-2 border-[#FF6B35] transition-all duration-300 hover:shadow-lg group">
+      <div className="bg-white/90 dark:bg-primary/90 p-8 rounded-lg border-2 border-[#FF6B35] transition-all duration-300 hover:shadow-lg group">
         <div className="flex flex-col items-center">
           {isoCertificate?.photo_url ? (
-            <div className="w-40 h-40 mb-4 overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+            <div className="w-64 h-64 md:w-80 md:h-80 mb-6 overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
               <img 
                 src={isoCertificate.photo_url} 
                 alt="ISO Certificate" 
-                className="max-w-full max-h-full"
+                className="max-w-full max-h-full object-contain"
               />
             </div>
           ) : (
-            <div className="w-40 h-40 mb-4 bg-gray-200 dark:bg-gray-700 rounded-md flex items-center justify-center text 
--[#FF6B35]">
-              <Award size={64} />
+            <div className="w-64 h-64 md:w-80 md:h-80 mb-6 bg-gray-200 dark:bg-gray-700 rounded-md flex items-center justify-center text-[#FF6B35]">
+              <Award size={96} />
             </div>
           )}
           
