@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { OptimizedImage } from "./OptimizedImage";
 import type { Product } from "@/types/product";
 
 interface ProductsGridProps {
@@ -41,15 +42,16 @@ export const ProductsGrid = ({ products, language }: ProductsGridProps) => {
           >
             {product.photo_url && (
               <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
-                <img
-                  src={product.photo_url.split(',')[0]?.trim()}
+                <OptimizedImage
+                  src={product.photo_url.split(',')[0]?.trim() || ''}
                   alt={language === 'tr' ? (product.name_tr || product.name) : product.name}
-                  className="object-cover w-full h-full"
+                  className="w-full h-full"
                   loading={idx < 8 ? "eager" : "lazy"}
                   width="300"
                   height="200"
                   decoding={idx < 4 ? "sync" : "async"}
                   fetchPriority={idx < 4 ? "high" : "low"}
+                  onError={() => console.info(`Image failed to load for product: ${product.name}`)}
                 />
               </div>
             )}

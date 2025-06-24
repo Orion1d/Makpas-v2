@@ -5,7 +5,7 @@ import ImageLightbox from "@/components/about/ImageLightbox";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { OptimizedImage } from "./OptimizedImage";
 
 interface ProductImageGalleryProps {
   photoUrls: string[];
@@ -140,16 +140,8 @@ const ProductImageGallery = ({
           onMouseEnter={() => !isTouchDevice.current && setIsHovering(true)} 
           onMouseLeave={() => !isTouchDevice.current && setIsHovering(false)}
         >
-          <motion.img 
-            ref={imageRef}
-            src={photoUrls[selectedImageIndex]} 
-            alt={`${productName} - Image ${selectedImageIndex + 1}`} 
-            className="object-contain w-full h-full transition-transform duration-500 ease-out" 
-            loading={selectedImageIndex < 3 ? "eager" : "lazy"}
-            width="800"
-            height="600"
-            decoding={selectedImageIndex === 0 ? "sync" : "async"}
-            fetchPriority={selectedImageIndex === 0 ? "high" : "low"}
+          <motion.div
+            className="w-full h-full"
             animate={{
               scale: isZoomed ? 2.5 : (isTouchDevice.current ? 1 : isHovering ? 1.05 : 1)
             }} 
@@ -159,8 +151,20 @@ const ProductImageGallery = ({
             transition={{
               duration: 0.3,
               ease: "easeOut"
-            }} 
-          />
+            }}
+          >
+            <OptimizedImage
+              src={photoUrls[selectedImageIndex] || ''}
+              alt={`${productName} - Image ${selectedImageIndex + 1}`}
+              className="w-full h-full"
+              loading={selectedImageIndex < 3 ? "eager" : "lazy"}
+              width="800"
+              height="600"
+              decoding={selectedImageIndex === 0 ? "sync" : "async"}
+              fetchPriority={selectedImageIndex === 0 ? "high" : "low"}
+              onError={() => console.info(`Image failed to load for ${productName}, image ${selectedImageIndex + 1}`)}
+            />
+          </motion.div>
           
           {/* Enhanced zoom indicator */}
           <div className={cn(
@@ -220,7 +224,7 @@ const ProductImageGallery = ({
           >
             {photoUrls.map((url, index) => (
               <button 
-                key={url} 
+                key={`${url}-${index}`} 
                 onClick={() => {
                   setSelectedImageIndex(index);
                   setIsZoomed(false);
@@ -233,14 +237,15 @@ const ProductImageGallery = ({
                     : "border-gray-200 dark:border-gray-600 hover:border-safety-orange/50 hover:scale-105"
                 )}
               >
-                <img 
-                  src={url} 
-                  alt={`${productName} - Thumbnail ${index + 1}`} 
-                  className="object-cover w-full h-full" 
+                <OptimizedImage
+                  src={url}
+                  alt={`${productName} - Thumbnail ${index + 1}`}
+                  className="w-full h-full"
                   loading={index < 5 ? "eager" : "lazy"}
                   width="80"
                   height="80"
                   decoding="async"
+                  onError={() => console.info(`Thumbnail failed to load for ${productName}, thumbnail ${index + 1}`)}
                 />
                 {selectedImageIndex === index && (
                   <motion.div 
