@@ -48,7 +48,7 @@ export const ProductBanner = () => {
     setCurrentSlide(prev => (prev - 1 + validBanners.length) % validBanners.length);
   };
   if (isLoading || validBanners.length === 0) return null;
-  return <div className="w-full mb-8 px-4 sm:px-6 md:px-8 my-0 w-full lg:px-[100px]">
+  return <div className="w-full mb-8 px-4 sm:px-6 md:px-8 my-0 w-full mx-0 py-[-30px] lg:px-[150px]">
       <div className="relative overflow-hidden rounded-lg shadow-lg">
         {/* Aspect ratio container - 2:1 ratio to match banner photos */}
         <div className="aspect-[2/1] relative">
