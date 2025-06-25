@@ -7,7 +7,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useState, useEffect } from "react";
 
 const CatalogSection = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { isDarkMode } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
   
@@ -19,6 +19,14 @@ const CatalogSection = () => {
     
     return () => clearTimeout(timer);
   }, []);
+  
+  // Define catalog links based on language
+  const catalogLinks = {
+    en: "https://drive.google.com/file/d/1YFLcVxCsAzhEZZBMG5NNGAg1kMkZKuU6/view?usp=sharing",
+    tr: "https://drive.google.com/file/d/1nzJ0x_tYuicm2pZtNUGkYnBV5cBPDSle/view?usp=sharing"
+  };
+  
+  const currentCatalogLink = catalogLinks[language];
   
   return (
     <section className="px-0 my-[30px] py-[40px]">
@@ -51,7 +59,7 @@ const CatalogSection = () => {
           <BlurFade delay={0.4} inView={isVisible}>
             <Button asChild variant="secondary" className="gap-2 transform hover:scale-105 transition-all duration-300">
               <a 
-                href="https://drive.google.com/file/d/1YFLcVxCsAzhEZZBMG5NNGAg1kMkZKuU6/view?usp=sharing" 
+                href={currentCatalogLink}
                 target="_blank" 
                 rel="noopener noreferrer"
               >

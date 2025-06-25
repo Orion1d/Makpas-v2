@@ -30,33 +30,6 @@ export type Database = {
         }
         Relationships: []
       }
-      contact_submissions: {
-        Row: {
-          created_at: string | null
-          email: string
-          id: number
-          message: string
-          name: string | null
-          status: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          email: string
-          id?: number
-          message: string
-          name?: string | null
-          status?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          email?: string
-          id?: number
-          message?: string
-          name?: string | null
-          status?: string | null
-        }
-        Relationships: []
-      }
       icons: {
         Row: {
           id: number
