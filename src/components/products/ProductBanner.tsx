@@ -3,11 +3,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+
 interface BannerIcon {
   id: number;
   name: string;
   photo_url: string | null;
 }
+
 export const ProductBanner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -31,6 +33,7 @@ export const ProductBanner = () => {
 
   // Filter banners that have valid photo URLs
   const validBanners = bannerIcons.filter(banner => banner.photo_url);
+
   useEffect(() => {
     if (validBanners.length <= 1) return;
     const timer = setInterval(() => {
@@ -48,7 +51,8 @@ export const ProductBanner = () => {
     setCurrentSlide(prev => (prev - 1 + validBanners.length) % validBanners.length);
   };
   if (isLoading || validBanners.length === 0) return null;
-  return <div className="w-full mb-8 px-4 sm:px-6 md:px-8 my-0 w-full mx-0 py-[-30px] lg:px-[150px]">
+  return (
+    <div className="w-full mb-8 px-4 sm:px-6 md:px-8 mt-2 lg:px-[150px]">
       <div className="relative overflow-hidden rounded-lg shadow-lg">
         {/* Aspect ratio container - 2:1 ratio to match banner photos */}
         <div className="aspect-[2/1] relative">
@@ -90,5 +94,6 @@ export const ProductBanner = () => {
             </div>}
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
