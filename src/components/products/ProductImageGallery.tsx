@@ -35,7 +35,7 @@ const ProductImageGallery = ({
     return hash % 360;
   };
   const dynamicHue = generateDynamicHue();
-  const dynamicGradient = `linear-gradient(135deg, hsl(${dynamicHue}, 70%, 25%), hsl(${dynamicHue + 30}, 80%, 15%))`;
+  const dynamicGradient = `linear-gradient(135deg, hsl(${dynamicHue}, 15%, 95%), hsl(${dynamicHue + 30}, 20%, 90%))`;
 
   // Enhanced zoom handling
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -94,22 +94,23 @@ const ProductImageGallery = ({
   
   return (
     <div className="space-y-4 contain-content">
-      {/* Main Image with larger size and enhanced zoom */}
+      {/* Main Image with industry-standard 4:3 aspect ratio */}
       <div 
         ref={containerRef}
-        className="relative aspect-[4/3] md:aspect-square lg:aspect-[4/3] xl:aspect-[3/2] rounded-lg overflow-hidden" 
+        className="relative w-full aspect-[4/3] rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700" 
         style={{
           backgroundImage: dynamicGradient,
-          boxShadow: "inset 0 0 0 2px rgba(255,255,255,0.1), 0 10px 30px -10px rgba(0,0,0,0.3)",
-          height: 'clamp(300px, 50vh, 600px)'
+          boxShadow: "0 2px 8px 0 rgba(0,0,0,0.1), inset 0 0 0 1px rgba(255,255,255,0.1)",
+          minHeight: '400px',
+          maxHeight: '500px'
         }} 
         onTouchStart={handleTouchDown} 
         onTouchEnd={handleTouchUp}
         onMouseEnter={() => !isTouchDevice.current && setIsHovering(true)} 
         onMouseLeave={() => !isTouchDevice.current && setIsHovering(false)}
       >
-        {/* CNC machine border effect */}
-        <div className="absolute inset-3 z-10 border-[6px] border-dashed border-white/10 rounded pointer-events-none"></div>
+        {/* Professional frame border */}
+        <div className="absolute inset-2 z-10 border border-white/20 rounded pointer-events-none"></div>
         
         <ZoomControls
           isZoomed={isZoomed}
@@ -119,17 +120,19 @@ const ProductImageGallery = ({
           zoomPosition={zoomPosition}
           isTouchDevice={isTouchDevice.current}
         >
-          <OptimizedImage
-            src={photoUrls[selectedImageIndex] || ''}
-            alt={`${productName} - Image ${selectedImageIndex + 1}`}
-            className="w-full h-full"
-            loading={selectedImageIndex < 3 ? "eager" : "lazy"}
-            width="800"
-            height="600"
-            decoding={selectedImageIndex === 0 ? "sync" : "async"}
-            fetchPriority={selectedImageIndex === 0 ? "high" : "low"}
-            onError={() => console.info(`Image failed to load for ${productName}, image ${selectedImageIndex + 1}`)}
-          />
+          <div className="w-full h-full flex items-center justify-center p-4">
+            <OptimizedImage
+              src={photoUrls[selectedImageIndex] || ''}
+              alt={`${productName} - Image ${selectedImageIndex + 1}`}
+              className="max-w-full max-h-full object-contain"
+              loading={selectedImageIndex < 3 ? "eager" : "lazy"}
+              width="800"
+              height="600"
+              decoding={selectedImageIndex === 0 ? "sync" : "async"}
+              fetchPriority={selectedImageIndex === 0 ? "high" : "low"}
+              onError={() => console.info(`Image failed to load for ${productName}, image ${selectedImageIndex + 1}`)}
+            />
+          </div>
         </ZoomControls>
 
         <ImageNavigation

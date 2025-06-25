@@ -64,21 +64,24 @@ export const ThumbnailStrip = ({
             className={cn(
               "relative flex-shrink-0 w-20 h-20 snap-start",
               "overflow-hidden rounded-lg transition-all duration-200 border-2",
+              "bg-gray-50 dark:bg-gray-800",
               selectedImageIndex === index 
                 ? "border-safety-orange ring-2 ring-safety-orange/50 shadow-[0_0_15px_0_rgba(255,107,53,0.6)] scale-110" 
                 : "border-gray-200 dark:border-gray-600 hover:border-safety-orange/50 hover:scale-105"
             )}
           >
-            <OptimizedImage
-              src={url}
-              alt={`${productName} - Thumbnail ${index + 1}`}
-              className="w-full h-full"
-              loading={index < 5 ? "eager" : "lazy"}
-              width="80"
-              height="80"
-              decoding="async"
-              onError={() => console.info(`Thumbnail failed to load for ${productName}, thumbnail ${index + 1}`)}
-            />
+            <div className="w-full h-full flex items-center justify-center p-1">
+              <OptimizedImage
+                src={url}
+                alt={`${productName} - Thumbnail ${index + 1}`}
+                className="max-w-full max-h-full object-contain"
+                loading={index < 5 ? "eager" : "lazy"}
+                width="80"
+                height="80"
+                decoding="async"
+                onError={() => console.info(`Thumbnail failed to load for ${productName}, thumbnail ${index + 1}`)}
+              />
+            </div>
             {selectedImageIndex === index && (
               <motion.div 
                 className="absolute inset-0 border-2 border-safety-orange rounded-lg pointer-events-none" 
