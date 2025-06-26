@@ -54,7 +54,7 @@ export const OptimizedImage = ({
   };
 
   return (
-    <div className={cn("relative overflow-hidden", className)}>
+    <div className={cn("relative overflow-hidden flex items-center justify-center", className)}>
       <img
         ref={imgRef}
         src={currentSrc}
@@ -69,7 +69,7 @@ export const OptimizedImage = ({
         className={cn(
           "transition-opacity duration-300",
           isLoaded ? "opacity-100" : "opacity-0",
-          "w-full h-full object-cover"
+          "max-w-full max-h-full object-contain"
         )}
       />
       {!isLoaded && !hasError && (
