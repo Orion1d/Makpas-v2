@@ -1,4 +1,5 @@
-import ProductGrid from "./ProductGrid";
+
+import { ProductsGrid } from "./ProductsGrid";
 import type { Product } from "@/types/product";
 
 interface ProductGroupSectionProps {
@@ -13,7 +14,7 @@ export const ProductGroupSection = ({ group, products, language }: ProductGroupS
       <h2 className="text-2xl font-semibold mb-6 text-primary dark:text-white capitalize">
         {group}
       </h2>
-      <ProductGrid products={products} language={language} />
+      <ProductsGrid products={products} language={language} />
     </div>
   );
 };
