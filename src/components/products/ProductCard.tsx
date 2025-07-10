@@ -45,7 +45,7 @@ const ProductCard = ({ product, language, onNext, onPrev }: ProductCardProps) =>
           
           {(language === 'tr' ? product.description_tr || product.description : product.description) && (
             <div className="space-y-2">
-              {(language === 'tr' ? product.description_tr || product.description : product.description)!.split(/\n/).filter(line => line.trim() !== '').map((line, index) => (
+              {(language === 'tr' ? product.description_tr || product.description : product.description)!.replace(/\\n/g, '\n').split('\n').filter(line => line.trim() !== '').map((line, index) => (
                 <p key={index} className="text-muted-foreground dark:text-gray-200">
                   {line.trim()}
                 </p>
