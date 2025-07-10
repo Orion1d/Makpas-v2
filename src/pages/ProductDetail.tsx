@@ -129,9 +129,9 @@ const ProductDetail = () => {
               
               {productDescription && (
                 <div className="prose max-w-none dark:prose-invert space-y-2">
-                  {productDescription.split('\n').map((line, index) => (
+                  {productDescription.split(/\n/).filter(line => line.trim() !== '').map((line, index) => (
                     <p key={index} className="text-foreground">
-                      {line}
+                      {line.trim()}
                     </p>
                   ))}
                 </div>
