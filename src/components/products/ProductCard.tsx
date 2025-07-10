@@ -44,9 +44,13 @@ const ProductCard = ({ product, language, onNext, onPrev }: ProductCardProps) =>
           </h3>
           
           {(language === 'tr' ? product.description_tr || product.description : product.description) && (
-            <p className="text-muted-foreground dark:text-gray-200">
-              {language === 'tr' ? product.description_tr || product.description : product.description}
-            </p>
+            <div className="space-y-2">
+              {(language === 'tr' ? product.description_tr || product.description : product.description)!.split('\n').map((line, index) => (
+                <p key={index} className="text-muted-foreground dark:text-gray-200">
+                  {line}
+                </p>
+              ))}
+            </div>
           )}
           
           <Button asChild variant="secondary" className="mt-4">

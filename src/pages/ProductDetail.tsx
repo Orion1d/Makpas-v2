@@ -128,10 +128,12 @@ const ProductDetail = () => {
               </h1>
               
               {productDescription && (
-                <div className="prose max-w-none dark:prose-invert">
-                  <p className="text-foreground">
-                    {productDescription}
-                  </p>
+                <div className="prose max-w-none dark:prose-invert space-y-2">
+                  {productDescription.split('\n').map((line, index) => (
+                    <p key={index} className="text-foreground">
+                      {line}
+                    </p>
+                  ))}
                 </div>
               )}
               
