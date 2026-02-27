@@ -8,6 +8,7 @@ export interface Product {
   photo_url?: string;
   Product_Group?: string;
   Product_Group_tr?: string;
+  group_priority?: number | null;
   price?: number;
   on_sale?: boolean;
 }
