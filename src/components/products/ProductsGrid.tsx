@@ -8,9 +8,10 @@ import { ArrowRight } from "lucide-react";
 interface ProductsGridProps {
   products: Product[];
   language: string;
+  showDescription?: boolean;
 }
 
-export const ProductsGrid = ({ products, language }: ProductsGridProps) => {
+export const ProductsGrid = ({ products, language, showDescription = false }: ProductsGridProps) => {
   const navigate = useNavigate();
 
   const handleProductClick = (productId: number) => {
@@ -18,20 +19,26 @@ export const ProductsGrid = ({ products, language }: ProductsGridProps) => {
   };
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
       {products.map((product, idx) => {
         const name = language === 'tr' ? (product.name_tr || product.name) : product.name;
+        const description = language === 'tr' ? (product.description_tr || product.description) : product.description;
         const imageUrl = product.photo_url?.split(',')[0]?.trim() || '';
+        
+        // Get first line of description as short preview
+        const shortDesc = description 
+          ? description.replace(/\\n/g, '\n').split('\n').filter(l => l.trim())[0]?.trim() 
+          : '';
         
         return (
           <motion.div
             key={product.id}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25, delay: Math.min(idx * 0.04, 0.4) }}
+            transition={{ duration: 0.25, delay: Math.min(idx * 0.03, 0.3) }}
           >
             <div
-              className="group cursor-pointer rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg hover:border-primary/20 transition-all duration-300"
+              className="group cursor-pointer rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg hover:border-primary/20 transition-all duration-300 h-full flex flex-col"
               onClick={() => handleProductClick(product.id)}
             >
               {/* Image */}
@@ -65,10 +72,15 @@ export const ProductsGrid = ({ products, language }: ProductsGridProps) => {
               </div>
               
               {/* Info */}
-              <div className="p-3 sm:p-4">
+              <div className="p-3 sm:p-4 flex flex-col flex-1">
                 <h3 className="text-sm font-medium text-foreground line-clamp-2 leading-snug group-hover:text-primary transition-colors">
                   {name}
                 </h3>
+                {showDescription && shortDesc && (
+                  <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2 leading-relaxed">
+                    {shortDesc}
+                  </p>
+                )}
               </div>
             </div>
           </motion.div>
