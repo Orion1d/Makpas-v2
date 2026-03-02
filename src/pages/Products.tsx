@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocation } from "react-router-dom";
 import type { Product } from "@/types/product";
-import { motion } from "framer-motion";
+
 import FloatingActionButton from "@/components/ctas/FloatingActionButton";
 import StickyQuoteBar from "@/components/ctas/StickyQuoteBar";
 import { ProductsGrid } from "@/components/products/ProductsGrid";
@@ -156,12 +156,7 @@ const Products = () => {
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1400px]">
         {/* Page Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.3 }}
-          className="mb-6"
-        >
+        <div className="mb-6">
           <div className="flex items-center gap-3 mb-1">
             <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20">
               <Package className="h-5 w-5 text-primary dark:text-primary-foreground" />
@@ -173,7 +168,7 @@ const Products = () => {
           <p className="text-sm text-muted-foreground ml-[44px]">
             {filteredProducts.length} {filteredProducts.length === 1 ? t('product') || 'product' : t('products') || 'products'}
           </p>
-        </motion.div>
+        </div>
 
         {/* Sticky Category Tabs (horizontal) */}
         <div className="sticky top-16 z-30 bg-background/95 backdrop-blur-sm border-b border-border -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 mb-6">
@@ -350,7 +345,7 @@ const Products = () => {
             )}
 
             {filteredProducts.length === 0 ? (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
+              <div className="text-center py-20">
                 <Package className="h-16 w-16 text-muted-foreground/30 mx-auto mb-4" />
                 <p className="text-muted-foreground text-lg font-medium">
                   {language === 'tr' ? 'Ürün bulunamadı.' : 'No products found.'}
@@ -358,7 +353,7 @@ const Products = () => {
                 <p className="text-muted-foreground/60 text-sm mt-1">
                   {language === 'tr' ? 'Filtrelerinizi değiştirmeyi deneyin.' : 'Try adjusting your filters.'}
                 </p>
-              </motion.div>
+              </div>
             ) : (
               <div className="space-y-10">
                 {Object.entries(productsByGroup).map(([groupName, groupProducts]) => (

@@ -1,6 +1,6 @@
 
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+
 import { OptimizedImage } from "./OptimizedImage";
 import type { Product } from "@/types/product";
 import { ArrowRight } from "lucide-react";
@@ -31,12 +31,7 @@ export const ProductsGrid = ({ products, language, showDescription = false }: Pr
           : '';
         
         return (
-          <motion.div
-            key={product.id}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25, delay: Math.min(idx * 0.03, 0.3) }}
-          >
+          <div key={product.id}>
             <div
               className="group cursor-pointer rounded-xl overflow-hidden border border-border bg-card hover:shadow-lg hover:border-primary/20 transition-all duration-300 h-full flex flex-col"
               onClick={() => handleProductClick(product.id)}
@@ -83,7 +78,7 @@ export const ProductsGrid = ({ products, language, showDescription = false }: Pr
                 )}
               </div>
             </div>
-          </motion.div>
+          </div>
         );
       })}
     </div>
